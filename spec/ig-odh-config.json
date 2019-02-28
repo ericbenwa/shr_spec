@@ -27,6 +27,7 @@
 		"target": ["odh"]
 	},
     "publisher": "HL7",
+    "graphDirectory": "GraphViewerFiles",
     "contact": [
         {
             "telecom": [
