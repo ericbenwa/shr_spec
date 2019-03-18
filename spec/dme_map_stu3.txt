@@ -8,7 +8,6 @@ Library maps to Library:
 
 DTR-Questionnaire maps to http://hl7.org/fhir/StructureDefinition/cqif-questionnaire:
     PayerLibrary maps to http://hl7.org/fhir/StructureDefinition/cqif-library
-//    DTR-QuestionnaireItem.CalculatedValue maps to item.cqif-calculatedValue
-//    DTR-QuestionnaireItem.CalculatedValue maps to http://hl7.org/fhir/StructureDefinition/cqif-calculatedValue
-
-
+    constrain item.extension[cqif-initialValue] to 1..1
+    constrain item.extension[cqif-calculatedValue] to 1..1
+    DTR-QuestionnaireItem.CalculatedValue maps to item.extension[cqif-calculatedValue].valueString
