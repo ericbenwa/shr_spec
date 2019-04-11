@@ -1,0 +1,656 @@
+Grammar:           DataElement 6.0
+Namespace:         shr.core
+Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
+Uses:              brca, oncocore, dme, odh, shr.base
+CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+CodeSystem:        LNC = http://loinc.org
+
+Abstract:          EntityOrRole
+Parent:            DomainResource
+Description:       "Abstract parent class for both Entity and Role."
+
+Abstract:          Role
+Parent:            EntityOrRole
+Description:       "Capacity in which an actor is involved in an activity. For instance, 'attending physician'. Note that attributes of the actor (an entity) that remain constant regardless of the role the actor plays should be part of the entity and not the role. For instance, a person may be a practitioner and a patient. In both cases their date of birth will be the same and thus such information should not be part of the role."
+
+Abstract:          Entity
+Parent:            EntityOrRole
+Description:       "Root class for entities such as people, organizations, and devices that have a separately identifiable existence."
+Property:          PartOf 0..1
+
+Element:           PartOf
+Description:       "The larger entity that the asserted item is a portion of. For example, an organization part of a larger organization, or an encounter with a hospitalist might be part of a larger hospitalization encounter."
+Value:             DomainResource
+
+Entry:             Patient
+Parent:            Role
+Concept:           MTH#C1299487
+Description:       "A person in the role of a patient. Sometimes, the patient is not the subject of information in a clinical statement where the Patient is the SubjectOfRecord.
+
+SHR follows Argonaut and makes the value set binding on marital status required. SHR also adds optional extensions on communication ability to more fully characterize language skills.
+MaritalStatus has a required binding in Argonaut, but an extensible binding in US-Core. To be feasible under both DSTU2 Argonaut and STU3 US-Core, the required binding strength is adopted."
+Property:          Identifier 1..*
+Property:          Person 1..1
+Property:          Status 0..1
+                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+
+Element:           AccessTime
+Description:       "Point in time when data was accessed."
+Value:             dateTime
+
+Entry:             Practitioner
+Parent:            Role
+Concept:           MTH#C2220264
+Description:       "A person who practices a healing art.
+HumanName is limited to one required value by US-Core. Gender is required by US-Core. US-Core required an identifier, either a NPI (preferred) or tax id."
+Property:          Person 1..1
+Property:          Status 0..1
+Property:          Identifier 1..*
+Property:          Qualification 0..*
+                   Person
+                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+                   Identifier
+                   includes NationalProviderIdentifier 0..1
+                   Identifier
+                   includes TaxIdentificationNumber 0..1
+
+Element:           Affiliation
+Concept:           MTH#C0932026
+Description:       "Membership, association, or connection to an organization."
+Value:             Organization
+
+Element:           NationalProviderIdentifier
+Parent:            Identifier
+Description:       "NPI: a unique 10 digit number to allow US healthcare providers to identify themselves in a standard way throughout the healthcare industry."
+Property:          Type 1..1
+                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#PRN
+
+Element:           TaxIdentificationNumber
+Parent:            Identifier
+Description:       "Tax identification number for the practitioner."
+Property:          Type 1..1
+                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#TAX
+
+Element:           Qualification
+Concept:           MTH#C0037778
+Description:       "A right to practice medicine obtained by training and certification."
+Property:          Identifier 0..*
+Property:          Type 1..1
+Property:          EffectiveTimePeriod 0..1
+Property:          Issuer 0..1
+                   Type from http://hl7.org/fhir/ValueSet/v2-2.7-0360 (example)
+
+Entry:             RelatedPerson
+Parent:            Role
+Description:       "A person in a role defined in relationship to a patient"
+Property:          Person 0..1
+Property:          Status 0..1
+Property:          RelationshipToPatient 0..1
+Property:          EffectiveTimePeriod 0..1
+                   Person
+                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+
+Element:           RelationshipToPatient
+Concept:           MTH#C0015608
+Description:       "The relationship to the person of record."
+Value:             concept from http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype (required)
+
+Entry:             Group
+Parent:            Entity
+Concept:           MTH#C0441833
+Description:       "A set of entities (personnel, material, or places) to be considered together. May be a pool of like-type resources, a team, or combination of personnel, material and places."
+Property:          Status 0..1
+Property:          Type 1..1
+Property:          Title 0..1
+Property:          Actual 1..1
+Property:          GroupCharacteristic 0..*
+Property:          MemberParticipation 0..*
+Property:          Count 0..1
+                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+                   Type from http://hl7.org/fhir/ValueSet/group-type (required)
+
+Element:           Actual
+Description:       "True if the group is an actual group (as opposed to definitional)."
+Value:             boolean
+
+Element:           GroupCharacteristic
+Concept:           MTH#C0599755
+Description:       "An inclusion or exclusion criterion as part of defining a cohort."
+Property:          Code 1..1
+Property:          GroupCharacteristicValue 0..1
+Property:          ExcludeFlag 1..1
+Property:          TimePeriod 0..1
+
+Element:           GroupCharacteristicValue
+Description:       "The value or range of the characteristic."
+Value:             boolean or Quantity or Range
+
+Element:           ExcludeFlag
+Concept:           MTH#C0680251
+Description:       "If true, exclude the subjects that match the criterion."
+Value:             boolean
+
+Element:           MemberParticipation
+Concept:           MTH#C0682343 "Member of Target Group"
+Description:       "A person or entity in a group."
+Property:          Member 1..1
+Property:          ParticipationPeriod 0..1
+Property:          InactiveFlag 1..1
+
+Element:           Member
+Description:       "A person or entity in a group."
+Value:             Patient or Practitioner or Device or Medication or Substance
+
+Element:           InactiveFlag
+Description:       "Indicates if the member is inactive in the context of the group."
+Value:             boolean
+
+Entry:             Location
+Parent:            Entity
+Concept:           MTH#C1547538
+Description:       "Services and space and equipment provided for a particular purpose; a building or place that provides a particular service or is used for a particular industry. Could be a clinical site, community site, or a mobile facility."
+Property:          Status 0..1
+Property:          OperationalStatus 0..1
+Property:          LocationName 1..1
+Property:          Alias 0..*
+Property:          CommentOrDescription 0..1
+Property:          Mode 0..1
+Property:          Type 1..1
+Property:          ContactPoint 0..*
+Property:          Address 0..1
+Property:          PhysicalType 0..1
+Property:          Geoposition 0..1
+Property:          MobileFacility 0..1
+Property:          ManagingOrganization 1..1
+                   Status from http://hl7.org/fhir/ValueSet/location-status (required)
+                   Mode from http://hl7.org/fhir/ValueSet/location-mode (required)
+                   Type from http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType (extensible)
+                   PartOf only Location
+
+Element:           OperationalStatus
+Description:       "The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance."
+Value:             concept from http://terminology.hl7.org/ValueSet/v (preferred)
+
+Element:           Alias
+Description:       "A list of alternate names the subject is or was known as."
+Value:             string
+
+Element:           Mode
+Description:       "Indicates whether a resource instance represents a specific item or a class of items."
+Value:             concept
+
+Element:           LocationName
+Concept:           MTH#C3261404
+Description:       "The DBA (doing business as) or most commonly-used name for a facility."
+Value:             string
+
+Element:           PhysicalType
+Description:       "Physical form of the location, e.g. building, room, vehicle, road."
+Value:             concept from http://hl7.org/fhir/ValueSet/location-physical-type (example)
+
+Element:           MobileFacility
+Concept:           MTH#C0231435
+Description:       "A facility that moves from place to place, such as Meals-On-Wheels."
+Value:             boolean
+
+Element:           ManagingOrganization
+Concept:           MTH#C0677351
+Description:       "The organization that manages an activity, facility, document, or service provision."
+Value:             Organization
+
+Entry:             Substance
+Parent:            Entity
+Concept:           MTH#C0439861
+Description:       "Any matter of defined composition that has discrete existence, whose origin may be biological, mineral or chemical."
+Property:          Type 1..1
+Property:          Category 0..*
+Property:          Status 0..1
+Property:          CommentOrDescription 0..1
+Property:          Ingredient 0..*
+Property:          PartOf 0..0
+                   Type from http://hl7.org/fhir/ValueSet/substance-code (example)
+                   Category from http://hl7.org/fhir/ValueSet/substance-category (extensible)
+                   Status from http://hl7.org/fhir/ValueSet/substance-status (required)
+
+Element:           Ingredient
+Concept:           MTH#C3176062
+Description:       "Specifies an material component in a non-medication substance."
+Property:          SubstanceOrCode 1..1
+Property:          IngredientAmount 1..1
+Property:          IsActiveIngredient 0..1
+
+Element:           SubstanceOrCode
+Description:       "A code or substance reference identifying the ingredient."
+Value:             concept or Substance or Medication
+
+Element:           IsActiveIngredient
+Description:       "True if the ingredient is an active ingredient in the medication."
+Value:             boolean
+
+Element:           IngredientAmount
+Description:       "The amount of an ingredient in a mixture, as a ratio. For example, 250 mg per tablet is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet."
+Value:             Ratio
+
+Entry:             Medication
+Parent:            Entity
+Concept:           MTH#C0013227
+Description:       "A type of prescription drug or over-the-counter drug that is used to prevent, treat, or relieve symptoms of a disease or abnormal condition, but excluding vaccines.
+In FHIR DSTU2 and STU3, Medication lacks the identifier attribute, which is included in SHR as an extension.
+DSTU2 lacks the status attribute, which is required by US-Core.
+Batch is 0..1 in FHIR R4, and accordingly is restricted here."
+Property:          Type 1..1
+Property:          DoseForm 0..1
+Property:          Brand 0..1
+Property:          OverTheCounter 0..1
+Property:          Ingredient 0..*
+Property:          Manufacturer 0..1
+Property:          LotNumber 0..1
+Property:          ExpirationDate 0..1
+Property:          Package 0..1
+Property:          PartOf 0..0
+                   Status from http://hl7.org/fhir/ValueSet/medication-status (required)
+                   Type from http://hl7.org/fhir/us/core/ValueSet/us-core-medication-codes (extensible)
+                   Package from http://hl7.org/fhir/ValueSet/medication-package-form (example)
+
+Element:           DoseForm
+Concept:           MTH#C0013058
+Description:       "The form in which active and/or inert ingredient(s) are physically presented."
+Value:             concept from http://hl7.org/fhir/ValueSet/medication-form-concepts (required)
+
+Element:           Brand
+Description:       "If the product is branded, and if so, the brand name of a product."
+Property:          IsBrand 1..1
+Property:          BrandName 0..1
+
+Element:           IsBrand
+Description:       "If the product is branded."
+Value:             boolean
+
+Element:           BrandName
+Description:       "The marketing name for a brand name product"
+Value:             string
+
+Element:           OverTheCounter
+Description:       "True if the medication is available to consumers without a prescription."
+Value:             boolean
+
+Element:           Manufacturer
+Concept:           MTH#C1114744
+Description:       "The organization producing the product or test."
+Value:             Organization
+
+Element:           LotNumber
+Concept:           MTH#C1115660
+Description:       "A distinctive alpha-numeric identification code assigned by the manufacturer or distributor to a specific quantity of manufactured material or product within a batch."
+Value:             string
+
+Element:           ExpirationDate
+Description:       "When the item (medication, device, etc.) will expire."
+Value:             dateTime
+
+Element:           Package
+Description:       "The kind of container the medication comes in."
+Value:             concept
+
+Element:           Person
+Concept:           MTH#C0027361
+Description:       "A person relevant to the health or social situation of the subject (including the subject him- or herself)."
+Property:          HumanName 1..*
+Property:          DateOfBirth 0..1
+Property:          AdministrativeGender 1..1
+Property:          Address 0..*
+Property:          PhotographicImage 0..*
+Property:          ContactPoint 0..*
+Property:          Communication 0..*
+Property:          MaritalStatus 0..1
+Property:          MultipleBirth 0..1
+Property:          BirthSex 0..1
+Property:          Race 0..1
+Property:          Ethnicity 0..1
+Property:          Deceased 0..1
+
+Element:           PlaceOfBirth
+Concept:           MTH#C0032040
+Description:       "The location of a birth event. There may be multiple entries, but a person has only one place of birth."
+Value:             Address
+
+Element:           MultipleBirth
+Description:       "If the person was part of a multiple birth event, and if so in which order."
+Value:             boolean or integer
+
+Element:           BirthSex
+Concept:           MTH#C4086849
+Description:       "Administrative sex assigned at birth and recorded on birth certificate."
+Value:             concept from http://hl7.org/fhir/us/core/ValueSet/us-core-birthsex (required)
+
+Element:           Race
+Concept:           MTH#C0034510
+Description:       "Subjective association of a person with a named category of humans sharing common history, traits, place of family origin, nationality, tribe, or other inherited background."
+Property:          RaceCode 0..1
+Property:          RaceDetail 0..*
+
+Element:           RaceCode
+Description:       "A code for the person's race"
+Value:             concept from http://hl7.org/fhir/us/core/ValueSet/omb-race (required)
+
+Element:           RaceDetail
+Description:       "Additional description of race or heritage."
+Value:             concept from http://hl7.org/fhir/us/core/ValueSet/detailed-race (required)
+
+Element:           Ethnicity
+Concept:           MTH#C0015031
+Description:       "Indicator of Hispanic or Latino origin."
+Property:          EthnicityCode 1..1
+Property:          EthnicityDetail 0..*
+
+Element:           EthnicityCode
+Description:       "A code for the person's ethnicity"
+Value:             concept from http://hl7.org/fhir/us/core/ValueSet/omb-ethnicity (required)
+
+Element:           EthnicityDetail
+Description:       "Additional description of ethnicity."
+Value:             concept from http://hl7.org/fhir/us/core/ValueSet/detailed-ethnicity (required)
+
+Element:           MothersMaidenName
+Concept:           MTH#C0806887
+Description:       "The name of the mother as it was or likely to have been recorded on the birth certificate of the subject. This is most likely the name prior to marriage of the mother (aka the maiden name)."
+Value:             HumanName
+
+Element:           FathersName
+Description:       "The name of the father as it was or likely to have been recorded on the birth certificate of the subject; most likely the name of the father at the time of birth of the subject."
+Value:             HumanName
+
+Element:           SocialSecurityNumber
+Concept:           MTH#C1301821
+Description:       "A US social security number (SSN)."
+Value:             string
+
+Element:           DriversLicenseInformation
+Description:       "Identifying information from a drivers license."
+Property:          DriversLicenseNumber 0..1
+Property:          StateOfIssue 0..1
+Property:          EffectiveTimePeriod 0..1
+
+Element:           DriversLicenseNumber
+Description:       "The drivers license number."
+Value:             string
+
+Element:           StateOfIssue
+Description:       "A state or country acting as an assuing authority for a document."
+Value:             State
+
+Element:           PassportInformation
+Concept:           MTH#C1549737
+Description:       "Credential indicating citizenship."
+Property:          PassportNumber 1..1
+Property:          CountryOfIssue 1..1
+Property:          EffectiveTimePeriod 0..1
+
+Element:           PassportNumber
+Description:       "The passport number."
+Value:             string
+
+Element:           CountryOfIssue
+Description:       "A country acting as an assuing authority for a document."
+Value:             Country
+
+Element:           MedicalInterpreter
+Concept:           MTH#C1442531
+Description:       "Whether the subject requires an interpreter to communicate with an English-speaking provider."
+Property:          MedicalInterpreterNeeded 1..1
+Property:          Language 1..1
+
+Element:           MedicalInterpreterNeeded
+Concept:           MTH#C1442531
+Description:       "Whether the subject requires an interpreter to communicate with an English-speaking provider."
+Value:             concept from YesNoUnknownVS (required)
+
+Element:           MaritalStatus
+Concept:           MTH#C0024819
+Description:       "The most recent marital status of a person."
+Value:             concept from http://hl7.org/fhir/ValueSet/marital-status (required)
+
+Element:           AnonymizedFlag
+Concept:           MTH#C3858751
+Description:       "Flag indicating if personally identifiable information has been withheld or disguised."
+Value:             concept from YesNoVS (required)
+
+Element:           FictionalPersonFlag
+Concept:           MTH#C0887933
+Description:       "Flag indicating if this record represents a fictional (synthetic, not real) person."
+Value:             concept from YesNoVS (required)
+
+Element:           DateOfBirth
+Concept:           MTH#C2919018, LNC#21112-8
+Description:       "A date of birth or approximate year or period (year or date range), if estimated."
+Value:             date or TimePeriod
+
+Element:           AdministrativeGender
+Concept:           MTH#C1550327
+Description:       "A gender classification used for administrative purposes. Administrative gender is not necessarily the same as a biological description or a gender identity. This attribute does not include terms related to clinical gender."
+Value:             concept from http://hl7.org/fhir/ValueSet/administrative-gender (required)
+
+Element:           Communication
+Description:       "Language used for communication by a human, either the subject of record, parent, or other involved person."
+Property:          Language 1..1
+Property:          Preferred 0..1
+Property:          SpokenLanguageProficiency 0..1
+Property:          WrittenLanguageProficiency 0..1
+Property:          LanguageQualifier 0..*
+
+Element:           Preferred
+Description:       "Indicates preference."
+Value:             boolean
+
+Element:           SpokenLanguageProficiency
+Concept:           MTH#C0678997
+Description:       "Accuracy and fluency in spoken communication in a language."
+Value:             concept from PerformanceGradingScaleVS (required)
+
+Element:           WrittenLanguageProficiency
+Concept:           MTH#C0586739
+Description:       "Accuracy and fluency of reading and writing in a language."
+Value:             concept from PerformanceGradingScaleVS (required)
+
+Element:           LanguageQualifier
+Description:       "Additional information about a person's use of language."
+Value:             concept from LanguageQualifierVS (required)
+
+Element:           Deceased
+Concept:           MTH#C0011065
+Description:       "An indication that the person is no longer living, given by a date of death, or boolean value. The latter, when true, indicates the person is deceased."
+Value:             boolean or dateTime
+
+Entry:             Organization
+Parent:            Entity
+Concept:           MTH#C1561598
+Description:       "A social or legal structure formed by human beings.
+
+Organization type is restricted to 0..1 in FHIR DSTU2, similarly restricted here."
+Property:          OrganizationName 1..1
+Property:          Identifier 1..*
+Property:          Type 0..1
+Property:          Address 1..*
+Property:          ContactPoint 1..*
+Property:          Status 1..1
+Property:          PartOf 0..1
+                   Type from http://hl7.org/fhir/ValueSet/organization-type (example)
+                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+                   PartOf only Organization
+
+Element:           OrganizationName
+Description:       "The name of the organization."
+Value:             string
+
+Entry:             Device
+Parent:            Entity
+Description:       "A specific durable physical device used in diagnosis or treatment. The value is the coding for a type of device, for example, a CPAP machine. The same device might be used on multiple patients.
+Device status cannot be reconciled between Argonaut and US-Core, each having different required value sets.
+Device type has extensible mappings to different value sets in Argonaut and US-Core, however both value sets have identical SNOMED content (descendants of 49062001 (Device). We adopt the US-Core value set, which is allowable because the binding is extensible."
+Property:          Type 1..1
+Property:          DeviceUdi 1..1
+Property:          VendorModelNumber 0..1
+Property:          ManufacturerName 0..1
+Property:          ManufactureDate 0..1
+Property:          ExpirationDate 0..1
+Property:          VersionString 0..1
+Property:          Url 0..1
+                   Type from http://hl7.org/fhir/ValueSet/device-kind (required)
+
+Element:           DeviceUdi
+Description:       "Unique Device Identifier (UDI) Barcode string number for a device, assigned by the organization using the device."
+Value:             string
+
+Element:           VendorModelNumber
+Description:       "The model number of the device, assigned by the manufacturer or vendor."
+Value:             string
+
+Element:           ManufacturerName
+Description:       "The name of the company who produced the item."
+Value:             string
+
+Element:           ManufactureDate
+Description:       "When the item (medication, device, etc.) was produced."
+Value:             dateTime
+
+Element:           Url
+Description:       "A unique URL on which the device may be contacted directly."
+Value:             uri
+
+Entry:             Specimen
+Parent:            Entity
+Description:       "A specimen is a substance, physical object, or collection of objects, that the laboratory considers a single discrete, uniquely identified unit that is the subject of one or more steps in the laboratory workflow. A specimen may include multiple physical pieces as long as they are considered a single unit within the laboratory workflow. A specimen results from one to many specimen collection procedures, and may be contained in multiple specimen containers. Specimen may have one or more processing activities."
+Property:          AccessionIdentifier 0..1
+Property:          Status 0..1
+Property:          Type 1..1
+Property:          CollectionSource 0..1
+Property:          CollectionTime 0..1
+Property:          CollectionMethod 0..1
+Property:          CollectionSite 0..1
+Property:          AmountOrSize 0..1
+Property:          ReceivedTime 0..1
+Property:          SpecimenContainer 0..*
+Property:          SpecimenTreatment 0..*
+Property:          HandlingRisk 0..*
+Property:          SpecialHandling 0..*
+                   Status from http://hl7.org/fhir/ValueSet/specimen-status (required)
+                   Type from http://hl7.org/fhir/ValueSet/v2-0487 (required)
+                   PartOf only Specimen
+
+Element:           CollectionSource
+Description:       "The person or thing the sample was obtained from."
+Value:             Patient or Group or Device or Substance
+
+Element:           CollectionTime
+Description:       "When the sample was obtained, as a specific time or time period."
+Value:             dateTime or TimePeriod
+
+Element:           CollectionMethod
+Description:       "How the specimen was obtained."
+Value:             concept
+
+Element:           CollectionSite
+Description:       "The body site where specimen was collected"
+Value:             BodyLocation
+
+Element:           AccessionIdentifier
+Parent:            Identifier
+Description:       "Identifier assigned by the lab"
+Property:          Type 1..1
+                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#ACSN
+
+Element:           HandlingRisk
+Description:       "Cautions on the handling of this specimen."
+Value:             concept
+
+Element:           SpecialHandling
+Description:       "Information about the proper handling of the specimen."
+Value:             concept
+
+Element:           SpecimenTreatment
+Description:       "Additives added to the specimen."
+Property:          Additive 0..*
+
+Element:           AmountOrSize
+Description:       "The quantity of specimen collected"
+Value:             SimpleQuantity
+
+Element:           SpecimenContainer
+Description:       "Direct container of specimen (slide, etc.)"
+Property:          Identifier 0..*
+Property:          Type 0..1
+Property:          CommentOrDescription 0..1
+Property:          Capacity 0..1
+Property:          SpecimenQuantity 0..1
+Property:          Additive 0..*
+Property:          SequenceNumber 0..1
+
+Element:           Capacity
+Description:       "Container volume or size."
+Value:             SimpleQuantity
+
+Element:           SpecimenQuantity
+Description:       "Quantity of specimen within container."
+Value:             SimpleQuantity
+
+Element:           Additive
+Description:       "Additive associated with container."
+Value:             concept or Substance
+
+Element:           SequenceNumber
+Description:       "The sequence number for this specimen in a collection of specimens."
+Value:             concept
+
+Entry:             Media
+Parent:            Entity
+Description:       "A photo, video, or audio recording acquired or used in healthcare. The actual content may be inline or provided by direct reference."
+Property:          RelatedRequest 0..*
+Property:          Type 1..1
+Property:          Subtype 0..1
+Property:          View 0..1
+Property:          SubjectOfRecord 0..1
+Property:          CareContext 0..1
+Property:          RelevantTime 0..1
+Property:          Practitioner 0..1
+Property:          ReasonCode 0..*
+Property:          BodyLocation 0..1
+Property:          Device 0..1
+Property:          PixelHeight 0..1
+Property:          PixelWidth 0..1
+Property:          Frames 0..1
+Property:          NumberOfSecondsDuration 0..1
+Property:          Attachment 1..1
+Property:          Annotation 0..*
+                   RelatedRequest only ProcedureRequest
+                   Type from http://hl7.org/fhir/ValueSet/digital-media-type (required)
+                   SubjectOfRecord only MediaSubjectOfRecord
+                   ReasonCode from http://hl7.org/fhir/ValueSet/procedure-reason (example)
+
+Element:           MediaSubjectOfRecord
+Parent:            SubjectOfRecord
+Description:       "A choice of Patient, Practitioner, Group, Device or Specimen. These are choices for subject of Media resource."
+Value:             Patient or Practitioner or Group or Device or Specimen
+
+Element:           Subtype
+Description:       "A further refinement of type."
+Value:             concept
+
+Element:           View
+Description:       "The name of the imaging view e.g. Lateral or Antero-posterior (AP)."
+Value:             concept from http://hl7.org/fhir/ValueSet/media-view (example)
+
+Element:           PixelHeight
+Description:       "Height of the image in pixels (photo/video)"
+Value:             positiveInt
+
+Element:           PixelWidth
+Description:       "Width of the image in pixels (photo/video)"
+Value:             positiveInt
+
+Element:           Frames
+Description:       "Number of frames if > 1 (photo)"
+Value:             positiveInt
+
+Element:           NumberOfSecondsDuration
+Description:       "Length in seconds (rounded to nearest whole second)"
+Value:             unsignedInt

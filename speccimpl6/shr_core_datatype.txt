@@ -1,0 +1,700 @@
+Grammar:           DataElement 6.0
+Namespace:         shr.core
+Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
+Uses:              brca, oncocore, dme, odh, shr.base
+CodeSystem:        UCUM = http://unitsofmeasure.org
+CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+CodeSystem:        LNC = http://loinc.org
+CodeSystem:        SCT = http://snomed.info/sct
+
+Element:           Text
+Description:       "A simple string."
+Value:             string
+
+Element:           Quantity
+Description:       "A quantity with units, whose value may be bounded from above or below, as defined in FHIR"
+Property:          Number 0..1
+Property:          Comparator 0..1
+Property:          Units 0..1
+
+Element:           Number
+Description:       "A decimal value."
+Value:             decimal
+
+Element:           Comparator
+Description:       "A code indicated if the value represents an upper or lower bound"
+Value:             concept from http://hl7.org/fhir/ValueSet/quantity-comparator (required)
+
+Element:           Units
+Description:       "The unit of measure of the quantity."
+Value:             concept from AllUnitsVS (preferred)
+
+Element:           SimpleQuantity
+Parent:            Quantity
+Description:       "A quantity where the comparator is not used, as defined in FHIR"
+Property:          Comparator 0..0
+
+Element:           IntegerQuantity
+Parent:            Quantity
+Description:       "A Quantity that is an integer."
+                   Units = UCUM#1
+
+Element:           Age
+Parent:            Quantity
+Concept:           MTH#C0001779
+Description:       "How long someone has been alive, or something has existed."
+                   Units from http://hl7.org/fhir/ValueSet/units-of-time (required)
+
+Element:           Distance
+Parent:            Quantity
+Concept:           MTH#C0012751
+Description:       "The measure of space separating two objects or points."
+                   Units from http://hl7.org/fhir/us/projectURL/shr/core/vs/UnitsOfLengthVS (required)
+
+Element:           Duration
+Parent:            SimpleQuantity
+Concept:           MTH#C0449238
+Description:       "The length of time that something continues."
+                   Units from http://hl7.org/fhir/us/projectURL/shr/core/vs/TimeUnitOfMeasureVS (required)
+
+Element:           Money
+Parent:            Quantity
+Description:       "Representation of an amount of currency or monetary value."
+                   Units from http://hl7.org/fhir/us/projectURL/shr/core/vs/CurrencyVS (required)
+
+Element:           Coding
+Concept:           MTH#C0805701
+Description:       "Coding of a concept, drawn from a controlled vocabulary. Includes the vocabulary and version, if applicable. May include a display text, and a descriptor expressing the intended interpretation of the code."
+Property:          CodeValue 0..1
+Property:          CodeSystem 0..1
+Property:          CodeSystemVersion 0..1
+Property:          DisplayText 0..1
+
+Element:           CodeValue
+Description:       "A coded value, or expression, in syntax defined by the system"
+Value:             concept
+
+Element:           CodeSystem
+Description:       "A formal terminology system."
+Value:             uri
+
+Element:           CodeSystemVersion
+Description:       "The version of the vocabulary being used, if applicable."
+Value:             string
+
+Element:           CodeableConcept
+Description:       "A set of codes drawn from different coding systems, representing the same concept."
+Property:          DisplayText 0..1
+
+Element:           Code
+Description:       "The main type identifier for a lab, procedure, condition, etc., usually drawn from a controlled vocabulary."
+Value:             concept
+
+Element:           Range
+Description:       "An interval defined by a quantitative upper and/or lower bound. One of the two bounds must be specified, and the lower bound must be less than the upper bound. When Quantities are specified, the units of measure must be the same."
+Property:          LowerBound 0..1
+Property:          UpperBound 0..1
+
+Element:           LowerBound
+Description:       "The lower limit on a range"
+Value:             SimpleQuantity
+
+Element:           UpperBound
+Description:       "The upper limit on a quantitative value."
+Value:             SimpleQuantity
+
+Element:           Ratio
+Concept:           MTH#C0456603
+Description:       "A unit of measurement for the quotient of the amount of one entity to another."
+Property:          Numerator 0..1
+Property:          Denominator 0..1
+
+Element:           Numerator
+Concept:           MTH#C2825219
+Description:       "The dividend of a fraction."
+Value:             Quantity
+
+Element:           Denominator
+Concept:           MTH#C2825218
+Description:       "The divisor of a fraction."
+Value:             Quantity
+
+Element:           ContactPoint
+Concept:           MTH#C2986441
+Description:       "An electronic means of contacting an organization or individual."
+Property:          TelecomNumberOrAddress 0..1
+Property:          Type 0..1
+Property:          Purpose 0..1
+Property:          PriorityRank 0..1
+Property:          EffectiveTimePeriod 0..1
+                   Type from http://hl7.org/fhir/ValueSet/contact-point-system (required)
+                   Purpose from http://hl7.org/fhir/ValueSet/contact-point-use (required)
+
+Element:           TelecomNumberOrAddress
+Description:       "A user name or other identifier on a telecommunication network, such as a telephone number (including country code and extension, if necessary), email address, or SkypeID."
+Value:             string
+
+Element:           Type
+Concept:           MTH#C0332307
+Description:       "A code describing the item at a greater level of detail."
+Value:             concept
+
+Element:           Purpose
+Description:       "What it should be used for."
+Value:             concept
+
+Element:           PriorityRank
+Description:       "The priority of the procedure, as a number (1 being the highest priority)"
+Value:             positiveInt
+
+Element:           PriorityRankUnsignedInt
+Description:       "The priority of the procedure, as a number (1 being the highest priority)"
+Value:             unsignedInt
+
+Element:           ContactDetail
+Description:       "Describes an individual and how to reach them."
+Property:          HumanName 0..1
+Property:          ContactPoint 0..*
+
+Element:           TimePeriod
+Concept:           MTH#C1948053
+Description:       "A period of time defined by a start and end time, date, or year.
+If the start element is missing, the start of the period is not known. If the end element is missing, it means that the period is ongoing, or the start may be in the past, and the end date in the future, which means that period is expected/planned to end at the specified time. The end value includes any matching date/time. For example, the period 2011-05-23 to 2011-05-27 includes all the times from the start of the 23rd May through to the end of the 27th of May."
+Property:          BeginDateTime 0..1
+Property:          EndDateTime 0..1
+
+Element:           BeginDateTime
+Concept:           MTH#C1301880
+Description:       "The time at which something is to take effect, start, or did start. Boundary is considered inclusive."
+Value:             dateTime
+
+Element:           EndDateTime
+Concept:           MTH#C1522314
+Description:       "The time at which something is to end or did end. Boundary is considered inclusive."
+Value:             dateTime
+
+Element:           Timing
+Description:       "A timing schedule that specifies an event that may occur multiple times.
+Timing offers a choice of multiple OccurrenceTime (used is used to specify specific times), or recurrence patterns."
+Property:          OccurrenceTime 0..*
+Property:          TimingCode 0..1
+Property:          EventDuration 0..1
+Property:          RecurrencePattern 0..1
+Property:          RecurrenceRange 0..1
+
+Element:           TimingCode
+Description:       "A code for the timing schedule.
+Some codes such as BID are ubiquitous, but many institutions define their own additional codes. If a code is provided, the code is understood to be a complete statement of whatever is specified in the structured timing data, and either the code or the data may be used to interpret the Timing, with the exception that .repeat.bounds still applies over the code (and is not contained in the code)."
+Value:             concept from http://hl7.org/fhir/ValueSet/timing-abbreviation (extensible)
+
+Element:           EventDuration
+Description:       "The length of the recurring event."
+Value:             DurationRange
+
+Element:           RecurrencePattern
+Description:       "A set of rules that describe when a recurring event is scheduled."
+Property:          RecurrenceInterval 0..1
+Property:          DayOfWeek 0..*
+Property:          TimeOfDay 0..*
+Property:          DailyLifeEvent 0..*
+Property:          LifeEventOffset 0..1
+Property:          CountPerInterval 0..1
+
+Element:           RecurrenceInterval
+Description:       "The period of time after which the pattern repeats, for example, each day.
+To specify an event should take place every other Monday, the recurrence interval should be two weeks, and DayOfWeek should be Monday."
+Value:             Duration
+
+Element:           DayOfWeek
+Description:       "A day of the week that the pattern should take place."
+Value:             concept from http://hl7.org/fhir/ValueSet/days-of-week (required)
+
+Element:           TimeOfDay
+Description:       "Time of day the event should take place on the designated day(s).
+TimeOfDay should only be specified if the RecurrenceInterval and/or DayOfWeek establishes the day when the event should take place."
+Value:             time
+
+Element:           DailyLifeEvent
+Description:       "A quotidian landmark, such as rising, mealtime, or bedtime, when an event should take place."
+Value:             concept from http://hl7.org/fhir/ValueSet/event-timing (required)
+
+Element:           LifeEventOffset
+Description:       "A time in minutes before or after a given life event, for example, 30 minutes before a meal. Whether this means before or after is carried by the life event code."
+Value:             unsignedInt
+
+Element:           CountPerInterval
+Description:       "How many times the event should take place during one recurrence interval, for example, to specify 3-4 times per day, the CountPerInterval should be 3 to 4."
+Property:          MinCount 0..1
+Property:          MaxCount 0..1
+
+Element:           MinCount
+Description:       "Lower bound on a count."
+Value:             integer
+
+Element:           MaxCount
+Description:       "Upper bound on a count."
+Value:             integer
+
+Element:           RecurrenceRange
+Description:       "The start and end of the overall recurrence pattern in terms of dates/times or in terms of number of repeats. Could also be an event, such as when all doses are taken."
+Value:             TimePeriod or NumberOfRepeats
+
+Element:           NumberOfRepeats
+Description:       "How many times the action should be repeated."
+Value:             positiveInt
+
+Element:           SampledData
+Description:       "Data that comes from a series of measurements taken by a device, which may have upper and lower limits. The data type also supports more than one dimension in the data."
+Property:          DataAsString 1..1
+Property:          Origin 1..1
+Property:          MillisecondsBetweenSamples 1..1
+Property:          CorrectionFactor 0..1
+Property:          LowerLimit 0..1
+Property:          UpperLimit 0..1
+Property:          Dimensions 1..1
+
+Element:           DataAsString
+Description:       "Data represented as a text sting."
+Value:             string
+
+Element:           Origin
+Description:       "The shr.base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series."
+Value:             SimpleQuantity
+
+Element:           MillisecondsBetweenSamples
+Description:       "The length of time between sampling times, measured in milliseconds."
+Value:             decimal
+
+Element:           CorrectionFactor
+Description:       "A correction factor that is applied to the sampled data points before they are added to the origin."
+Value:             decimal
+
+Element:           LowerLimit
+Description:       "The lower limit of detection of the measured points. This is needed if any of the data points have the value 'L' (lower than detection limit)."
+Value:             decimal
+
+Element:           UpperLimit
+Description:       "The upper limit of detection of the measured points. This is needed if any of the data points have the value 'U' (higher than detection limit)."
+Value:             decimal
+
+Element:           Dimensions
+Description:       "The number of sample points at each time point. If this value is greater than one, then the dimensions will be interlaced - all the sample points for a point in time will be recorded at once."
+Value:             positiveInt
+
+Element:           Address
+Concept:           MTH#C0682130
+Description:       "An address expressed using postal conventions (as opposed to GPS or other location definition formats). This data type may be used to convey addresses for use in delivering mail as well as for visiting locations and which might not be valid for mail delivery. There are a variety of postal address formats defined around the world. (Source: HL7 FHIR)."
+Property:          Purpose 0..1
+Property:          Type 0..1
+Property:          DisplayText 0..1
+Property:          AddressLine 0..*
+Property:          City 0..1
+Property:          District 0..1
+Property:          State 0..1
+Property:          PostalCode 0..1
+Property:          Country 0..1
+Property:          EffectiveTimePeriod 0..1
+                   Purpose from http://hl7.org/fhir/ValueSet/address-use (required)
+                   Type from http://hl7.org/fhir/ValueSet/address-type (required)
+
+Element:           AddressLine
+Description:       "Part of an address that contains the house number, apartment number, street name, street direction, P.O. Box number, delivery hints, and similar address information. (Source: HL7 FHIR)."
+Value:             string
+
+Element:           City
+Concept:           MTH#C1555315
+Description:       "The name of a municipality, city, town, village or other community or delivery center. (Source: HL7 FHIR)."
+Value:             string
+
+Element:           District
+Concept:           MTH#C0079170
+Description:       "The name of the administrative area at a level below that of a state but above that of a city or town. In the US, a county. Outside the US, a district or the equivalent. (Source: HL7 FHIR)."
+Value:             string
+
+Element:           State
+Concept:           MTH#C1552743
+Description:       "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes). (Source: HL7 FHIR)."
+Value:             string
+
+Element:           PostalCode
+Concept:           MTH#C1514254
+Description:       "A sequence of letters and digits used as part of a postal address, often designating a geographic region"
+Value:             string
+
+Element:           Country
+Concept:           MTH#C0454664
+Description:       "Country - a nation as commonly understood or generally accepted, expressed in ISO 3166 Alpha-2 (2-letter) codes."
+Value:             string
+
+Element:           Count
+Concept:           MTH#C0750480
+Description:       "The number of items (0 or more), as an integer."
+Value:             unsignedInt
+
+Element:           CommentOrDescription
+Concept:           MTH#C0947611
+Description:       "A text note containing additional details, explanation, description, comment, or summarization."
+Value:             string
+
+Element:           DurationRange
+Parent:            Range
+Description:       "A range of durations."
+                   LowerBound only Duration
+                   UpperBound only Duration
+
+Element:           Statistic
+Parent:            Quantity
+Concept:           MTH#C2828391
+Description:       "A quantity that represents a statistic, e.g. maximum, minimum, mean, median, etc."
+Property:          StatisticType 1..1
+
+Element:           StatisticType
+Description:       "The type of statistic that is represented by the value."
+Value:             concept from StatisticTypeVS (required)
+
+Element:           PriorityCode
+Concept:           MTH#C0549179
+Description:       "An indication of the importance of an action relative to other actions."
+Value:             positiveInt or concept
+
+Element:           Percentage
+Parent:            SimpleQuantity
+Concept:           MTH#C0439165
+Description:       "A percentage value where 100.0 represents 100%."
+                   Units = UCUM#%
+
+Element:           QualitativeLikelihood
+Description:       "A qualitative (subjective) likelihood."
+Value:             concept from QualitativeLikelihoodVS (required)
+
+Element:           QualitativeDateTime
+Description:       "A point in time, described qualitatively."
+Value:             concept from QualitativeDateTimeVS (required)
+
+Element:           AgeGroup
+Concept:           MTH#C0027362
+Description:       "Subgroups of populations based on age."
+Value:             concept from AgeGroupVS (required)
+
+Element:           GestationalAge
+Parent:            Age
+Concept:           MTH#C0017504
+Description:       "The age of the embryo or fetus. This may be assessed by medical history, physical examination, early immunologic pregnancy tests, radiography, ultrasonography, and amniotic fluid analysis."
+
+Element:           GestationalTimePeriod
+Description:       "A time relative to a pregnancy or childbirth event."
+Value:             concept from GestationalTimePeriodVS (required)
+
+Element:           SemiquantDuration
+Description:       "The duration of an event, described semi-quantitatively."
+Value:             concept from SemiquantitativeDurationVS (required)
+
+Element:           Frequency
+Parent:            Ratio
+Concept:           MTH#C0376249
+Description:       "How many occurrences of an event per unit of time."
+                   Numerator = UCUM#1
+                   Denominator[Quantity].Units from http://hl7.org/fhir/ValueSet/units-of-time (required)
+
+Element:           SemiquantFrequency
+Description:       "The frequency of an event, described semi-quantitatively."
+Value:             concept from SemiquantitativeFrequencyVS (required)
+
+Element:           QualitativeFrequency
+Description:       "The frequency of an event, described qualitatively."
+Value:             concept from QualitativeFrequencyVS (required)
+
+Element:           EffectiveTimePeriod
+Parent:            TimePeriod
+Concept:           MTH#C2985763
+Description:       "The date and time span for which something is active, valid, or in force."
+
+Element:           ReceivedTime
+Concept:           MTH#C2735124
+Description:       "Time the item was delivered to, or accepted by, the receiving facility or unit."
+Value:             dateTime
+
+Element:           OccurrenceTimeOrPeriod
+Description:       "The point in time or span of time in which something happens."
+Value:             date or dateTime or TimePeriod
+
+Element:           NonOccurrenceTimeOrPeriod
+Description:       "The point in time or span of time in which something did not happen."
+Value:             date or dateTime or TimePeriod
+
+Element:           OccurrenceTime
+Parent:            OccurrenceTimeOrPeriod
+Description:       "The point in time in which something happens."
+Value:             dateTime
+
+Element:           OccurrencePeriod
+Parent:            OccurrenceTimeOrPeriod
+Description:       "The point in time or span of time in which something happens."
+Value:             TimePeriod
+
+Element:           OccurrenceDuration
+Description:       "The length of time in which something happens."
+Value:             Duration
+
+Element:           Geoposition
+Description:       "The location on the surface of the Earth, described by a latitude and longitude (and optional altitude)."
+Property:          Latitude 1..1
+Property:          Longitude 1..1
+Property:          Altitude 0..1
+
+Element:           Latitude
+Concept:           MTH#C1627936
+Description:       "The angular distance north or south between an imaginary line around a heavenly body parallel to its equator and the equator itself. Measured with with WGS84 datum."
+Value:             decimal
+
+Element:           Longitude
+Concept:           MTH#C1657623
+Description:       "An imaginary great circle on the surface of a heavenly body passing through the poles at right angles to the equator. Measured with with WGS84 datum."
+Value:             decimal
+
+Element:           Altitude
+Concept:           MTH#C0002349
+Description:       "Height above sea level or above the earth's surface. Measured with with WGS84 datum."
+Value:             decimal
+
+Element:           Setting
+Description:       "Description of the place or type of surroundings where something is positioned or where an event takes place."
+Value:             concept from SettingVS (required)
+
+Element:           UnitedStatesAddress
+Parent:            Address
+Description:       "An address for a place in the USA, conforming to US mail postal conventions. (Source: HL7 FHIR)."
+Property:          State 1..1
+Property:          Country 1..1
+                   State only UnitedStatesState
+
+Element:           UnitedStatesState
+Parent:            State
+Concept:           MTH#C3148680
+Description:       "A state or territory in the USA expressed by 2-letter US Postal code."
+
+Element:           DisplayText
+Concept:           MTH#C1548311
+Description:       "A string meant for reading by a person, for example, accompanying a code."
+Value:             string
+
+Element:           VersionString
+Concept:           MTH#C0333052
+Description:       "A string associated with the product that identifies a particular release iteration."
+Value:             string
+
+Element:           Title
+Description:       "A distinguishing word or group of words naming an item."
+Value:             string
+
+Element:           EmbeddedContent
+Description:       "Abstract class defining the common metadata of all types of encapsulated data, such as images."
+
+Element:           ParsableContent
+Parent:            EmbeddedContent
+Description:       "A string that follows a formal syntax and can be analyzed and broken into meaningful parts."
+Property:          Text 1..1
+Property:          Formalism 1..1
+
+Element:           Formalism
+Description:       "The system of formal syntax or interpretation associated with parsable content."
+Value:             concept
+
+Element:           Attachment
+Parent:            EmbeddedContent
+Description:       "A file that contains audio, video, image, or similar content."
+Property:          BinaryData 0..1
+Property:          ContentType 0..1
+Property:          Language 0..1
+Property:          ResourceLocation 0..1
+Property:          ResourceSize 0..1
+Property:          Hash 0..1
+Property:          Title 0..1
+Property:          CreationDateTime 0..1
+
+Element:           BinaryData
+Description:       "The data itself."
+Value:             base64Binary
+
+Element:           ContentType
+Description:       "The mime type of the content, with charset etc."
+Value:             concept
+
+Element:           ResourceLocation
+Description:       "URI where data can be found."
+Value:             uri
+
+Element:           ResourceSize
+Description:       "Number of bytes of content in the resource (if url provided)"
+Value:             unsignedInt
+
+Element:           Hash
+Description:       "A hash code of the data (sha-1, base64ed)"
+Value:             base64Binary
+
+Element:           CreationDateTime
+Concept:           MTH#C3669169
+Description:       "The point in time when the item was created."
+Value:             dateTime
+
+Element:           PhotographicImage
+Parent:            Attachment
+Concept:           LNC#72170-4 "Photographic image	[Attachment]"
+Description:       "An attachment of a photographic type. The mime type should be either bmp, gif, jpeg, png, svg, or tiff."
+
+Element:           Annotation
+Description:       "An added or follow-up note, often after the fact, that contains metadata about who made the statement and when."
+Property:          Text 1..1
+Property:          AnnotationAuthor 1..1
+Property:          OccurrenceTime 0..1
+
+Element:           AnnotationAuthor
+Description:       "The author of an annotation note."
+Value:             Patient or Practitioner or RelatedPerson or string
+
+Element:           Signature
+Description:       "A digital Signature - XML DigSig, JWT, Graphical image of signature, etc."
+Property:          SignatureType 1..*
+Property:          CreationDateTime 1..1
+Property:          Signatory 1..1
+Property:          OnBehalfOf 0..1
+Property:          ContentType 1..1
+Property:          BinaryData 1..1
+                   SignatureType from http://hl7.org/fhir/ValueSet/signature-type (extensible)
+
+Element:           SignatureType
+Concept:           MTH#C0332307
+Description:       "Type of signature"
+Value:             concept
+
+Element:           Signatory
+Description:       "The party signing."
+Value:             uri or Entity
+
+Element:           OnBehalfOf
+Description:       "The party represented by the actual participant."
+Value:             uri or Organization
+
+Element:           RouteIntoBody
+Concept:           MTH#C0013153
+Description:       "The way a substance enters an organism after contact, particularly, the route of drug administration."
+Value:             concept from http://hl7.org/fhir/ValueSet/route-concepts (required)
+
+Element:           BodyLocation
+Description:       "A location or structure in the body, including tissues, regions, cavities, and spaces; for example, right elbow, or left ventricle of the heart.
+The BodyLocation includes code and optional qualifiers of anatomical side or direction. The body location can also be determined from one or more body landmarks.
+If the code for the body location includes laterality and/or anatomical direction, the corresponding attributes might be unnecessary.
+Note that BodyLocation is a data type, a reusable structure, not a stand-alone entity. The concept is similar to how an address structure can apply to a person, location, or organization. This contrasts with FHIR's stand-alone BodySite (aka BodyStructure in r4) which 'is not ... intended for describing the type of anatomical location but rather a specific body site on a specific patient' (FHIR 3.5)."
+Property:          LocationCode 1..1
+Property:          Laterality 0..1
+Property:          AnatomicalDirection 0..1
+Property:          RelationToLandmark 0..*
+
+Element:           LocationCode
+Description:       "Code for the body location, optionally pre-coordinating laterality or direction."
+Value:             concept from BodyLocationVS (preferred)
+
+Element:           Laterality
+Description:       "Additional information, such as laterality or direction, that helps define the body location."
+Value:             concept from LateralityVS (extensible)
+
+Element:           RelationToLandmark
+Description:       "An anatomical landmark that helps determine a body location."
+Property:          LandmarkType 0..1
+Property:          LandmarkLocation 0..1
+Property:          LandmarkToBodyLocationDirection 0..1
+Property:          LandmarkToBodyLocationDistance 0..1
+
+Element:           LandmarkType
+Description:       "The type of feature that constitutes the landmark, for example, particularly if the landmark is an acquired body structure or physical object."
+Value:             concept from LandmarkTypeVS (extensible)
+
+Element:           LandmarkLocation
+Description:       "The body location of the landmark."
+Property:          LocationCode 0..1
+Property:          Laterality 0..1
+Property:          AnatomicalDirection 0..1
+
+Element:           LandmarkToBodyLocationDirection
+Description:       "The direction from the landmark to the body location of interest."
+Value:             ClockDirection or AnatomicalDirection
+
+Element:           ClockDirection
+Description:       "A direction indicated by an angle relative to 12 o'clock."
+Value:             concept from ClockDirectionVS (required)
+
+Element:           AnatomicalDirection
+Description:       "A direction based on planes, surfaces, and orientations of the body."
+Value:             concept from AnatomicalDirectionVS (preferred)
+
+Element:           LandmarkToBodyLocationDistance
+Description:       "How far the anatomical location of interest is from the given landmark"
+Value:             Quantity
+    Quantity.Units from UnitsOfLengthVS (required)
+
+Element:           Identifier
+Description:       "Business identifier or external id for this resource."
+Property:          IdentifierString 0..1
+Property:          Purpose 0..1
+Property:          Type 0..1
+Property:          CodeSystem 0..1
+Property:          EffectiveTimePeriod 0..1
+                   Purpose from http://hl7.org/fhir/ValueSet/identifier-use (required)
+                   Type from http://hl7.org/fhir/ValueSet/identifier-type (extensible)
+
+Element:           IdentifierString
+Description:       "An id for the item expresse as a string."
+Value:             string
+
+Element:           Issuer
+Description:       "An organization who issues a qualification, identifier, or license."
+Value:             Organization
+
+Element:           Name
+Description:       "Abstract supertype for the name of an entity."
+Property:          NameAsText 0..1
+Property:          Purpose 0..*
+Property:          EffectiveTimePeriod 0..1
+
+Element:           NameAsText
+Description:       "The name as plain unstructured or semi-structured text."
+Value:             string
+
+Element:           HumanName
+Parent:            Name
+Concept:           MTH#C1547383
+Description:       "A name used by a human being, written as it would be typically expressed. May include a breakdown of the various elements of the name (family name, given name, etc.)."
+Property:          Prefix 0..*
+Property:          GivenName 0..*
+Property:          FamilyName 0..1
+Property:          Suffix 0..*
+Property:          Purpose 0..1
+                   Purpose from http://hl7.org/fhir/ValueSet/name-use (required)
+
+Element:           Prefix
+Description:       "A string that should precede the item; for example, an honorific before a person's name, or a question number before a question."
+Value:             string
+
+Element:           GivenName
+Concept:           LNC#45392-8, SCT#408677003
+Description:       "The person's given name - e.g., John"
+Value:             string
+
+Element:           MiddleName
+Concept:           LNC#45392-8, SCT#408677003
+Description:       "The person's middle name."
+Value:             string
+
+Element:           FamilyName
+Concept:           LNC#45394-4
+Description:       "The portion of a person's name that reflects the genealogy of the person. In western cultures, this is the 'last' name. In eastern cultures, the family name appears before the person's given name(s). In some cultures (e.g. Eritrea) the family name of a son is the first name of his father. (Source: HL7 V3)."
+Value:             string
+
+Element:           Suffix
+Concept:           LNC#45395-1, SCT#715196001
+Description:       "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name."
+Value:             string
+
+Element:           Category
+Description:       "The type, kind, or class of this item."
+Value:             concept

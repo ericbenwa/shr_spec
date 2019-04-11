@@ -1,0 +1,36 @@
+Grammar:           DataElement 6.0
+Namespace:         shr.lab
+Description:       "Profiles of common laboratory tests."
+Uses:              shr.core, brca, oncocore, dme, odh, shr.base, shr.fhx, shr.financial
+
+Entry:             ProfileVariation
+Description:       "New resource that describes the acceptable variations on a given profile. Allowed variations are fixed values and value set bindings. The variations themselves are given in a CSV file."
+Property:          BaseResourceOrProfile 1..1
+Property:          TableOfVariants 1..1
+Property:          ColumnDefinition 1..*
+
+Element:           BaseResourceOrProfile
+Description:       "The resource or profile on which the variations are based."
+Value:             uri
+
+Element:           TableOfVariants
+Description:       "Where the table of variations is found."
+Value:             Url
+
+Element:           ColumnDefinition
+Description:       "The meaning of the columns in the external file with respect to the base resource or profile."
+Property:          ColumnNumber 1..1
+Property:          CorrespondingProperty 1..1
+Property:          ConstraintType 1..1
+
+Element:           ColumnNumber
+Description:       "Reference to a column in the external file. The first column is column 1."
+Value:             positiveInt
+
+Element:           CorrespondingProperty
+Description:       "A field name or path to the logical model field that the value binds. Uses path syntax."
+Value:             string
+
+Element:           ConstraintType
+Description:       "Indicates how the data in the spreadsheet should be applied."
+Value:             concept from ConstraintTypeVS (required)

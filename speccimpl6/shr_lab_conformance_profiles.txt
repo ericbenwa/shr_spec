@@ -1,0 +1,587 @@
+Grammar:           DataElement 6.0
+Namespace:         shr.lab
+Description:       "Profiles of common laboratory tests."
+Uses:              shr.core, brca, oncocore, dme, odh, shr.base, shr.fhx, shr.financial
+CodeSystem:        UCUM = http://unitsofmeasure.org
+
+Entry:             QuantitativeLabObs-percent
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units percent"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-percent (required)
+                   DataValue = UCUM#%
+
+Entry:             QuantitativeLabObs-thousand-per-uL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units thousand-per-uL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-thousand-per-uL (required)
+                   DataValue = UCUM#10*3/uL
+
+Entry:             QuantitativeLabObs-million-per-uL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units million-per-uL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-million-per-uL (required)
+                   DataValue = UCUM#10*6/L
+
+Entry:             QuantitativeLabObs-Cel
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units Cel"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-Cel (required)
+                   DataValue = UCUM#Cel
+
+Entry:             QuantitativeLabObs-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-L (required)
+                   DataValue = UCUM#L
+
+Entry:             QuantitativeLabObs-L-per-min
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units L-per-min"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-L-per-min (required)
+                   DataValue = UCUM#L/min
+
+Entry:             QuantitativeLabObs-U-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units U-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-U-per-L (required)
+                   DataValue = UCUM#U/L
+
+Entry:             QuantitativeLabObs-U-per-dL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units U-per-dL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-U-per-dL (required)
+                   DataValue = UCUM#U/dL
+
+Entry:             QuantitativeLabObs-U-per-g
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units U-per-g"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-U-per-g (required)
+                   DataValue = UCUM#U/g
+
+Entry:             QuantitativeLabObs-U-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units U-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-U-per-mL (required)
+                   DataValue = UCUM#U/mL
+
+Entry:             QuantitativeLabObs-APLU
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units APLU"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-APLU (required)
+                   DataValue = UCUM#[APL'U]
+
+Entry:             QuantitativeLabObs-IU-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units IU-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-IU-per-L (required)
+                   DataValue = UCUM#[IU]/L
+
+Entry:             QuantitativeLabObs-IU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units IU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-IU-per-mL (required)
+                   DataValue = UCUM#[IU]/mL
+
+Entry:             QuantitativeLabObs-MPLU
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units MPLU"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-MPLU (required)
+                   DataValue = UCUM#[MPL'U]
+
+Entry:             QuantitativeLabObs-arbU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units arbU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-arbU-per-mL (required)
+                   DataValue = UCUM#[arb'U]/mL
+
+Entry:             QuantitativeLabObs-lb-av
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units lb-av"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-lb-av (required)
+                   DataValue = UCUM#[lb-av]
+
+Entry:             QuantitativeLabObs-pH
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units pH"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-pH (required)
+                   DataValue = UCUM#[pH]
+
+Entry:             QuantitativeLabObs-age
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units age"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-age (required)
+                   DataValue = UCUM#a
+
+Entry:             QuantitativeLabObs-duration
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units duration"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-duration (required)
+                   DataValue = UCUM#TBD
+
+Entry:             QuantitativeLabObs-fL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units fL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-fL (required)
+                   DataValue = UCUM#fL
+
+Entry:             QuantitativeLabObs-g
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units g"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-g (required)
+                   DataValue = UCUM#g
+
+Entry:             QuantitativeLabObs-g-per-day
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units g-per-day"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-g-per-day (required)
+                   DataValue = UCUM#g/(24.h)
+
+Entry:             QuantitativeLabObs-g-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units g-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-g-per-L (required)
+                   DataValue[Quantity].Units from http://hl7.org/fhir/us/projectURL/shr/lab/vs/Equivalence-g-per-L-VS (required)
+
+Entry:             QuantitativeLabObs-g-per-dL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units g-per-dL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-g-per-dL (required)
+                   DataValue = UCUM#g/dL
+
+Entry:             QuantitativeLabObs-h
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units h"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-h (required)
+                   DataValue = UCUM#h
+
+Entry:             QuantitativeLabObs-kIU-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units kIU-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-kIU-per-L (required)
+                   DataValue = UCUM#k[IU]/L
+
+Entry:             QuantitativeLabObs-kIU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units kIU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-kIU-per-mL (required)
+                   DataValue = UCUM#k[IU]/ml
+
+Entry:             QuantitativeLabObs-kg
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units kg"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-kg (required)
+                   DataValue = UCUM#kg
+
+Entry:             QuantitativeLabObs-m2
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units m2"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-m2 (required)
+                   DataValue = UCUM#m2
+
+Entry:             QuantitativeLabObs-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mL (required)
+                   DataValue = UCUM#mL
+
+Entry:             QuantitativeLabObs-mL-per-min
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mL-per-min"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mL-per-min (required)
+                   DataValue = UCUM#mL/min
+
+Entry:             QuantitativeLabObs-mU-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mU-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mU-per-L (required)
+                   DataValue = UCUM#mU/L
+
+Entry:             QuantitativeLabObs-mU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mU-per-mL (required)
+                   DataValue = UCUM#mU/mL
+
+Entry:             QuantitativeLabObs-mIU-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mIU-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mIU-per-L (required)
+                   DataValue = UCUM#m[IU]/L
+
+Entry:             QuantitativeLabObs-mIU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mIU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mIU-per-mL (required)
+                   DataValue = UCUM#m[IU]/mL
+
+Entry:             QuantitativeLabObs-mg
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mg"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mg (required)
+                   DataValue = UCUM#mg
+
+Entry:             QuantitativeLabObs-mg-per-day
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mg-per-day"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mg-per-day (required)
+                   DataValue = UCUM#mg/(24.h)
+
+Entry:             QuantitativeLabObs-mg-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mg-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mg-per-L (required)
+                   DataValue = UCUM#mg/L
+
+Entry:             QuantitativeLabObs-mg-per-dL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mg-per-dL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mg-per-dL (required)
+                   DataValue = UCUM#mg/dL
+
+Entry:             QuantitativeLabObs-mg-per-g
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mg-per-g"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mg-per-g (required)
+                   DataValue = UCUM#mg/g
+
+Entry:             QuantitativeLabObs-min
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units min"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-min (required)
+                   DataValue = UCUM#min
+
+Entry:             QuantitativeLabObs-mm-per-h
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mm-per-h"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mm-per-h (required)
+                   DataValue = UCUM#mm/h
+
+Entry:             QuantitativeLabObs-mm3
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mm3"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mm3 (required)
+                   DataValue = UCUM#mm3
+
+Entry:             QuantitativeLabObs-mm-Hg
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mm-Hg"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mm-Hg (required)
+                   DataValue = UCUM#mm[Hg]
+
+Entry:             QuantitativeLabObs-mmol-per-day
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mmol-per-day"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mmol-per-day (required)
+                   DataValue = UCUM#mmol/(24.h)
+
+Entry:             QuantitativeLabObs-nmol-per-day
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units nmol-per-day"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-nmol-per-day (required)
+                   DataValue = UCUM#nmol/(24.h)
+
+Entry:             QuantitativeLabObs-mmol-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mmol-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mmol-per-L (required)
+                   DataValue = UCUM#mmol/L
+
+Entry:             QuantitativeLabObs-mol-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mol-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mol-per-L (required)
+                   DataValue = UCUM#mol/L
+
+Entry:             QuantitativeLabObs-mosm-per-kg
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units mosm-per-kg"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-mosm-per-kg (required)
+                   DataValue = UCUM#mosm/kg
+
+Entry:             QuantitativeLabObs-ng-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ng-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ng-per-L (required)
+                   DataValue = UCUM#ng/L
+
+Entry:             QuantitativeLabObs-ng-per-dL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ng-per-dL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ng-per-dL (required)
+                   DataValue = UCUM#ng/dL
+
+Entry:             QuantitativeLabObs-ng-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ng-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ng-per-mL (required)
+                   DataValue[Quantity].Units from http://hl7.org/fhir/us/projectURL/shr/lab/vs/Equivalence-ng-per-mL-VS (required)
+
+Entry:             QuantitativeLabObs-ng-per-mL-per-h
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ng-per-mL-per-h"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ng-per-mL-per-h (required)
+                   DataValue = UCUM#ng/mL/h
+
+Entry:             QuantitativeLabObs-nmol-per-min-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units nmol-per-min-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-nmol-per-min-per-mL (required)
+                   DataValue = UCUM#nmoL/min/mL
+
+Entry:             QuantitativeLabObs-nmol-per-h-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units nmol-per-h-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-nmol-per-h-per-mL (required)
+                   DataValue = UCUM#nmoL/h/mL
+
+Entry:             QuantitativeLabObs-nmol-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units nmol-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-nmol-per-L (required)
+                   DataValue = UCUM#nmol/L
+
+Entry:             QuantitativeLabObs-nmol-per-mmol
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units nmol-per-mmol"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-nmol-per-mmol (required)
+                   DataValue = UCUM#nmol/mmol
+
+Entry:             QuantitativeLabObs-pg
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units pg"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-pg (required)
+                   DataValue = UCUM#pg
+
+Entry:             QuantitativeLabObs-pg-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units pg-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-pg-per-L (required)
+                   DataValue = UCUM#pg/L
+
+Entry:             QuantitativeLabObs-pg-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units pg-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-pg-per-mL (required)
+                   DataValue = UCUM#pg/mL
+
+Entry:             QuantitativeLabObs-s
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units s"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-s (required)
+                   DataValue = UCUM#s
+
+Entry:             QuantitativeLabObs-uIU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units uIU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-uIU-per-mL (required)
+                   DataValue = UCUM#u[IU]/mL
+
+Entry:             QuantitativeLabObs-ug-per-day
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ug-per-day"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ug-per-day (required)
+                   DataValue = UCUM#ug/(24.h)
+
+Entry:             QuantitativeLabObs-ug-per-dL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ug-per-dL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ug-per-dL (required)
+                   DataValue = UCUM#ug/dL
+
+Entry:             QuantitativeLabObs-ug-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ug-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ug-per-mL (required)
+                   DataValue = UCUM#ug/mL
+
+Entry:             QuantitativeLabObs-um-per-s
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units um-per-s"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-um-per-s (required)
+                   DataValue = UCUM#um/s
+
+Entry:             QuantitativeLabObs-umol-per-day
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units umol-per-day"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-umol-per-day (required)
+                   DataValue = UCUM#umol/(24.h)
+
+Entry:             QuantitativeLabObs-umol-per-L
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units umol-per-L"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-umol-per-L (required)
+                   DataValue[Quantity].Units from http://hl7.org/fhir/us/projectURL/shr/lab/vs/Equivalence-umol-per-L-VS (required)
+
+Entry:             QuantitativeLabObs-wk
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units wk"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-wk (required)
+                   DataValue = UCUM#wk
+
+Entry:             QuantitativeLabObs-count
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units count"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-count (required)
+                   DataValue = UCUM#{#}
+
+Entry:             QuantitativeLabObs-count-per-HPF
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units count-per-HPF"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-count-per-HPF (required)
+                   DataValue = UCUM#{#}/[HPF]
+
+Entry:             QuantitativeLabObs-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units copies-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-copies-per-mL (required)
+                   DataValue = UCUM#/mL
+
+Entry:             QuantitativeLabObs-copies-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units copies-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-copies-per-mL (required)
+                   DataValue = UCUM#{copies}/mL
+
+Entry:             QuantitativeLabObs-per-uL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units per-uL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-per-uL (required)
+                   DataValue = UCUM#/uL
+
+Entry:             QuantitativeLabObs-count-per-uL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units count-per-uL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-count-per-uL (required)
+                   DataValue = UCUM#{#}/uL
+
+Entry:             QuantitativeLabObs-GPLU
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units GPLU"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-GPLU (required)
+                   DataValue = UCUM#[GPL'U]
+
+Entry:             QuantitativeLabObs-EhrlichU-per-dL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units per-dL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-EhrlichU-per-dL (required)
+                   DataValue = UCUM#[Ehrlich'U]/dL
+
+Entry:             QuantitativeLabObs-INR
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units INR"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-INR (required)
+                   DataValue = UCUM#{INR}
+
+Entry:             QuantitativeLabObs-MPSU
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units MPSU"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-MPSU (required)
+                   DataValue = UCUM#[MPS'U]
+
+Entry:             QuantitativeLabObs-per-min
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units {#} per-min"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-per-min (required)
+                   DataValue = UCUM#/min
+
+Entry:             QuantitativeLabObs-units-per-volume
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units units-per-volume"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-units-per-volume (required)
+                   DataValue = UCUM#[U]/mL
+
+Entry:             QuantitativeLabObs-logIU-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units logIU-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-logIU-per-mL (required)
+                   DataValue = UCUM#{log-IU}/mL
+
+Entry:             QuantitativeLabObs-log-copies-per-mL
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units log-copies-per-mL"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-log-copies-per-mL (required)
+                   DataValue = UCUM#{log-copies}/mL
+
+Entry:             QuantitativeLabObs-risk
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units risk"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-risk (required)
+                   DataValue = UCUM#{risk}
+
+Entry:             QuantitativeLabObs-MoM
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units MoM"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-MoM (required)
+                   DataValue = UCUM#{M.o.M}
+
+Entry:             QuantitativeLabObs-OD-units
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units OD-units"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-OD-units (required)
+                   DataValue = UCUM#{OD-units}
+
+Entry:             QuantitativeLabObs-ratio
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units ratio"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-ratio (required)
+                   DataValue = UCUM#{Ratio}
+
+Entry:             QuantitativeLabObs-titer
+Parent:            SimpleQuantitativeLaboratoryObservation
+Description:       "Profile to validate labs that report results with units titer"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/QuantitativeLaboratoryCodes-titer (required)
+                   DataValue = UCUM#{titer}
+
+Entry:             SimpleLaboratoryObservation-time
+Parent:            SimpleLaboratoryObservation
+Description:       "Labs whose results is expressed as a time during the day, with no date specified"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/TimeLaboratoryCodes-clock-time (required)
+                   DataValue only time
+
+Entry:             SimpleLaboratoryObservation-dateTime
+Parent:            SimpleLaboratoryObservation
+Description:       "Labs whose result is expressed as a dateTime"
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/DateTimeLaboratoryCodes-date (required)
+                   DataValue only dateTime
+
+Entry:             CodedLabObsWithDetectedNotDetected
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as detected or not detected."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithDetectedNotDetectedResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/core/vs/DetectedNotDetectedVS (required)
+
+Entry:             CodedLabObsWithNormalAbnormalResult
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as normal or abnormal."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithNormalAbnormalResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/lab/vs/NormalAbnormalVS (required)
+
+Entry:             CodedLabObsWithPositiveNegativeResult
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as positive or negative."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithPositiveNegativeResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/core/vs/PositiveNegativeVS (required)
+
+Entry:             CodedLabObsWithGradedPositiveNegativeResult
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as strong positive, positive, weakly positive, or negative."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithGradedPositiveNegativeResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/lab/vs/GradedPositiveNegativeVS (required)
+
+Entry:             CodedLabObsWithGradedQuantityResult
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as none, rare, few, moderate number, or numerous."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithGradedQuantityResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/lab/vs/GradedQuantityVS (required)
+
+Entry:             CodedLabObsWithReactiveNonreactiveResult
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as reactive or nonreactive."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithReactiveNonreactiveResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/lab/vs/ReactiveNonreactiveVS (required)
+
+Entry:             CodedLabObsWithRASTResult
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Profile to validate labs that report results as RAST scores 0-6."
+                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CodedLabsWithRASTResultVS (required)
+                   DataValue from http://hl7.org/fhir/us/projectURL/shr/lab/vs/RASTScoreVS (required)

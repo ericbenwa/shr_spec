@@ -1,0 +1,38 @@
+Grammar:           DataElement 6.0
+Namespace:         shr.financial
+Uses:              shr.core, brca, oncocore, dme, odh, shr.base, shr.fhx
+CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+
+Entry:             Coverage
+Parent:            DomainResource
+Concept:           MTH#C0021682 "HealthInsurance"
+Description:       "Health insurance coverage available (even if not used for payment for a given encounter)."
+Property:          Status 0..1
+Property:          CoverageType 0..1
+Property:          Subscriber 0..1
+Property:          SubscriberId 0..1
+Property:          Beneficiary 0..1
+Property:          PolicyHolder 0..1
+Property:          EffectiveTimePeriod 0..1
+                   Status from http://hl7.org/fhir/ValueSet/fm-status (required)
+                   CoverageType from http://hl7.org/fhir/ValueSet/coverage-type (preferred)
+
+Element:           CoverageType
+Description:       "Coverage category such as medical or accident."
+Value:             concept
+
+Element:           Subscriber
+Description:       "The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due."
+Value:             Patient or RelatedPerson
+
+Element:           SubscriberId
+Description:       "The insurer assigned ID for the Subscriber."
+Value:             string or Identifier
+
+Element:           Beneficiary
+Description:       "The party who benefits from the insurance coverage., the patient when services are provided."
+Value:             Patient
+
+Element:           PolicyHolder
+Description:       "Owner of the policy"
+Value:             Patient or RelatedPerson or Organization
