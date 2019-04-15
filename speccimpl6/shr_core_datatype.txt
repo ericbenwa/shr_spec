@@ -1,21 +1,55 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
-CodeSystem:        UCUM = http://unitsofmeasure.org
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+CodeSystem:        UCUM = http://unitsofmeasure.org
 CodeSystem:        LNC = http://loinc.org
 CodeSystem:        SCT = http://snomed.info/sct
 
-Element:           Text
-Description:       "A simple string."
-Value:             string
+Element:           BodyLocation
+Description:       "A location or structure in the body, including tissues, regions, cavities, and spaces; for example, right elbow, or left ventricle of the heart.
+The BodyLocation includes code and optional qualifiers of anatomical side or direction. The body location can also be determined from one or more body landmarks.
+If the code for the body location includes laterality and/or anatomical direction, the corresponding attributes might be unnecessary.
+Note that BodyLocation is a data type, a reusable structure, not a stand-alone entity. The concept is similar to how an address structure can apply to a person, location, or organization. This contrasts with FHIR's stand-alone BodySite (aka BodyStructure in r4) which 'is not ... intended for describing the type of anatomical location but rather a specific body site on a specific patient' (FHIR 3.5)."
+Property:          LocationCode 1..1
+Property:          Laterality 0..1
+Property:          AnatomicalDirection 0..1
+Property:          RelationToLandmark 0..*
+
+Element:           LocationCode
+Description:       "Code for the body location, optionally pre-coordinating laterality or direction."
+Value:             concept from BodyLocationVS (preferred)
 
 Element:           Quantity
 Description:       "A quantity with units, whose value may be bounded from above or below, as defined in FHIR"
 Property:          Number 0..1
 Property:          Comparator 0..1
 Property:          Units 0..1
+
+Element:           Units
+Description:       "The unit of measure of the quantity."
+Value:             concept from AllUnitsVS (preferred)
+
+Element:           Type
+Concept:           MTH#C0332307
+Description:       "A code describing the item at a greater level of detail."
+Value:             concept
+
+Element:           Code
+Description:       "The main type identifier for a lab, procedure, condition, etc., usually drawn from a controlled vocabulary."
+Value:             concept
+
+Element:           Category
+Description:       "The type, kind, or class of this item."
+Value:             concept
+
+Element:           OnBehalfOf
+Description:       "The party represented by the actual participant."
+Value:             uri or Organization
+
+Element:           Text
+Description:       "A simple string."
+Value:             string
 
 Element:           Number
 Description:       "A decimal value."
@@ -25,14 +59,10 @@ Element:           Comparator
 Description:       "A code indicated if the value represents an upper or lower bound"
 Value:             concept from http://hl7.org/fhir/ValueSet/quantity-comparator (required)
 
-Element:           Units
-Description:       "The unit of measure of the quantity."
-Value:             concept from AllUnitsVS (preferred)
-
 Element:           SimpleQuantity
 Parent:            Quantity
 Description:       "A quantity where the comparator is not used, as defined in FHIR"
-Property:          Comparator 0..0
+                   Comparator 0..0
 
 Element:           IntegerQuantity
 Parent:            Quantity
@@ -49,18 +79,18 @@ Element:           Distance
 Parent:            Quantity
 Concept:           MTH#C0012751
 Description:       "The measure of space separating two objects or points."
-                   Units from http://hl7.org/fhir/us/projectURL/shr/core/vs/UnitsOfLengthVS (required)
+                   Units from UnitsOfLengthVS (required)
 
 Element:           Duration
 Parent:            SimpleQuantity
 Concept:           MTH#C0449238
 Description:       "The length of time that something continues."
-                   Units from http://hl7.org/fhir/us/projectURL/shr/core/vs/TimeUnitOfMeasureVS (required)
+                   Units from TimeUnitOfMeasureVS (required)
 
 Element:           Money
 Parent:            Quantity
 Description:       "Representation of an amount of currency or monetary value."
-                   Units from http://hl7.org/fhir/us/projectURL/shr/core/vs/CurrencyVS (required)
+                   Units from CurrencyVS (required)
 
 Element:           Coding
 Concept:           MTH#C0805701
@@ -85,10 +115,6 @@ Value:             string
 Element:           CodeableConcept
 Description:       "A set of codes drawn from different coding systems, representing the same concept."
 Property:          DisplayText 0..1
-
-Element:           Code
-Description:       "The main type identifier for a lab, procedure, condition, etc., usually drawn from a controlled vocabulary."
-Value:             concept
 
 Element:           Range
 Description:       "An interval defined by a quantitative upper and/or lower bound. One of the two bounds must be specified, and the lower bound must be less than the upper bound. When Quantities are specified, the units of measure must be the same."
@@ -119,6 +145,10 @@ Concept:           MTH#C2825218
 Description:       "The divisor of a fraction."
 Value:             Quantity
 
+Element:           Purpose
+Description:       "What it should be used for."
+Value:             concept
+
 Element:           ContactPoint
 Concept:           MTH#C2986441
 Description:       "An electronic means of contacting an organization or individual."
@@ -133,15 +163,6 @@ Property:          EffectiveTimePeriod 0..1
 Element:           TelecomNumberOrAddress
 Description:       "A user name or other identifier on a telecommunication network, such as a telephone number (including country code and extension, if necessary), email address, or SkypeID."
 Value:             string
-
-Element:           Type
-Concept:           MTH#C0332307
-Description:       "A code describing the item at a greater level of detail."
-Value:             concept
-
-Element:           Purpose
-Description:       "What it should be used for."
-Value:             concept
 
 Element:           PriorityRank
 Description:       "The priority of the procedure, as a number (1 being the highest priority)"
@@ -339,8 +360,8 @@ Value:             string
 Element:           DurationRange
 Parent:            Range
 Description:       "A range of durations."
-                   LowerBound only Duration
-                   UpperBound only Duration
+                   LowerBound[SimpleQuantity] substitute Duration
+                   UpperBound[SimpleQuantity] substitute Duration
 
 Element:           Statistic
 Parent:            Quantity
@@ -393,7 +414,7 @@ Element:           Frequency
 Parent:            Ratio
 Concept:           MTH#C0376249
 Description:       "How many occurrences of an event per unit of time."
-                   Numerator = UCUM#1
+                   Numerator[Quantity].Units = UCUM#1
                    Denominator[Quantity].Units from http://hl7.org/fhir/ValueSet/units-of-time (required)
 
 Element:           SemiquantFrequency
@@ -464,9 +485,9 @@ Value:             concept from SettingVS (required)
 Element:           UnitedStatesAddress
 Parent:            Address
 Description:       "An address for a place in the USA, conforming to US mail postal conventions. (Source: HL7 FHIR)."
-Property:          State 1..1
-Property:          Country 1..1
-                   State only UnitedStatesState
+                   State 1..1
+                   State substitute UnitedStatesState
+                   Country 1..1
 
 Element:           UnitedStatesState
 Parent:            State
@@ -552,6 +573,11 @@ Element:           AnnotationAuthor
 Description:       "The author of an annotation note."
 Value:             Patient or Practitioner or RelatedPerson or string
 
+Element:           SignatureType
+Concept:           MTH#C0332307
+Description:       "Type of signature"
+Value:             concept
+
 Element:           Signature
 Description:       "A digital Signature - XML DigSig, JWT, Graphical image of signature, etc."
 Property:          SignatureType 1..*
@@ -562,37 +588,14 @@ Property:          ContentType 1..1
 Property:          BinaryData 1..1
                    SignatureType from http://hl7.org/fhir/ValueSet/signature-type (extensible)
 
-Element:           SignatureType
-Concept:           MTH#C0332307
-Description:       "Type of signature"
-Value:             concept
-
 Element:           Signatory
 Description:       "The party signing."
 Value:             uri or Entity
 
-Element:           OnBehalfOf
-Description:       "The party represented by the actual participant."
-Value:             uri or Organization
-
 Element:           RouteIntoBody
 Concept:           MTH#C0013153
 Description:       "The way a substance enters an organism after contact, particularly, the route of drug administration."
-Value:             concept from http://hl7.org/fhir/ValueSet/route-concepts (required)
-
-Element:           BodyLocation
-Description:       "A location or structure in the body, including tissues, regions, cavities, and spaces; for example, right elbow, or left ventricle of the heart.
-The BodyLocation includes code and optional qualifiers of anatomical side or direction. The body location can also be determined from one or more body landmarks.
-If the code for the body location includes laterality and/or anatomical direction, the corresponding attributes might be unnecessary.
-Note that BodyLocation is a data type, a reusable structure, not a stand-alone entity. The concept is similar to how an address structure can apply to a person, location, or organization. This contrasts with FHIR's stand-alone BodySite (aka BodyStructure in r4) which 'is not ... intended for describing the type of anatomical location but rather a specific body site on a specific patient' (FHIR 3.5)."
-Property:          LocationCode 1..1
-Property:          Laterality 0..1
-Property:          AnatomicalDirection 0..1
-Property:          RelationToLandmark 0..*
-
-Element:           LocationCode
-Description:       "Code for the body location, optionally pre-coordinating laterality or direction."
-Value:             concept from BodyLocationVS (preferred)
+Value:             concept from http://hl7.org/fhir/ValueSet/route-codes (required)
 
 Element:           Laterality
 Description:       "Additional information, such as laterality or direction, that helps define the body location."
@@ -668,8 +671,8 @@ Property:          Prefix 0..*
 Property:          GivenName 0..*
 Property:          FamilyName 0..1
 Property:          Suffix 0..*
-Property:          Purpose 0..1
-                   Purpose from http://hl7.org/fhir/ValueSet/name-use (required)
+                   Purpose 0..1
+                   Purpose[CodeableConcept] from http://hl7.org/fhir/ValueSet/name-use (required)
 
 Element:           Prefix
 Description:       "A string that should precede the item; for example, an honorific before a person's name, or a question number before a question."
@@ -694,7 +697,3 @@ Element:           Suffix
 Concept:           LNC#45395-1, SCT#715196001
 Description:       "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name."
 Value:             string
-
-Element:           Category
-Description:       "The type, kind, or class of this item."
-Value:             concept

@@ -10,22 +10,18 @@ Entry:             OccupationalDataForHealth
 Parent:            Composition
 Description:       "Current and past activities for profit, wages, salary, or as a service to others.
 The profile is based on FHIR Composition that contains a single section, OccupationalDataSection."
-Property:          Section 1..1
                    Type = LNC#74166-0 "Occupational summary note"
-                   Section only OccupationalDataSection
+                   Section 1..1
+                   Section substitute OccupationalDataSection
 
 Element:           OccupationalDataSection
 Parent:            Section
 Description:       "Section in the OccupationalDataForHealth composition, containing the person's occupational data, past and present."
                    DomainResource
                    includes PersonEmploymentStatus 0..*
-                   DomainResource
                    includes RetirementDate 0..*
-                   DomainResource
                    includes CombatZonePeriod 0..*
-                   DomainResource
                    includes UsualWork 0..1
-                   DomainResource
                    includes PastOrPresentJob 0..*
 
 Entry:             PersonEmploymentStatus
@@ -33,24 +29,28 @@ Parent:            CodedSocialHistoryObservation
 Description:       "The self-reported current and/or historical status about a person’s economic relationship to work (e.g. having one or more jobs), including start and end dates.
 A person's Employment Status could change over time, for example, a person could be employed following a period of choosing to not be in the labor force.
 Outside of ODH, the employment arrangement between an employer and a person (one job) has sometimes been referred to as a person's 'employment status.' However, in ODH Employment Status is used to characterize a person, Work Classification is used to characterize a job, and Retirement Date is used to characterize a person as retired."
-Property:          Components 0..0
                    Code = LNC#74165-2 "HistoryOfEmploymentStatus"
                    DataValue from https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.7129 (required)
+                   Components 0..0
 
 Entry:             RetirementDate
 Parent:            SocialHistoryObservation
 Description:       "A self-reported date that a person considers themselves to have ‘retired’.
 A person can be both retired and employed (an Employment Status); most often, a person would be retired from one job and employed in another job. A person also can have more than one retirement date; for example, a person could retire from military service, then later retire from a civilian job. Multiple retirement dates should be recorded using multiple FHIR resources.
 Outside of ODH, a characterization of the employment arrangement between an employer and a person (one job) has sometimes been referred to as a person's 'employment status' and might include values such as 'retired.' However, in ODH, Employment Status is used to characterize a person's relationship to working (e.g., employed, unemployed) and Retirement Date is used to characterize whether or not a person self-identifies as retired. For example, a person could be 'employed' (Employment Status) and have retired from a previous job (recorded at the Person level as a Retirement Date)."
-Property:          Components 0..0
-Property:          RelevantTime 0..0
-                   DataValue only dateTime
                    Code = LNC#87510-4 "Date of Retirement"
+                   DataValue only dateTime
+                   RelevantTime 0..0
+                   Components 0..0
 
 Entry:             CombatZonePeriod
 Parent:            SocialHistoryObservation
-Property:          Components 0..0
-Property:          RelevantTime 0..0
+                   RelevantTime 0..0
+                   Components 0..0
+
+Element:           SubjectOfInformationCode
+Description:       "The person referred the information in this resource relates to, if different than the person of record."
+Value:             concept
 
 Entry:             UsualWork
 Parent:            CodedSocialHistoryObservation
@@ -59,19 +59,14 @@ Knowledge of person's Usual Work can potentially assist in diagnosis, treatment 
 Example: a person has worked for a total of 30 years as a building carpenter (Occupation), but in various industries, mostly hotel construction. Her Usual Occupation is 'building carpenter' and her Usual Industry is 'hotel construction.'
 Usual Work does not include work that was unpaid or voluntary."
 Property:          SubjectOfInformationCode 0..1
-Property:          RelevantTime 1..1
-                   DataValue from https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.7186 (required)
                    Code = LNC#21843-8 "History of Usual occupation"
-                   SubjectOfInformationCode from https://vsac.nlm.nih.gov/valueset/2.16.840.1.113883.1.11.19579/expansion (required)
-                   Components
-                   includes UsualIndustry 1..1
-                   Components
-                   includes UsualOccupationDuration 0..1
+                   DataValue from https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.7186 (required)
+                   RelevantTime 1..1
                    RelevantTime only TimePeriod
-
-Element:           SubjectOfInformationCode
-Description:       "The person referred the information in this resource relates to, if different than the person of record."
-Value:             concept
+                   Components.ObservationComponent
+                   includes UsualIndustry 1..1
+                   includes UsualOccupationDuration 0..1
+                   SubjectOfInformationCode from https://vsac.nlm.nih.gov/valueset/2.16.840.1.113883.1.11.19579/expansion (required)
 
 Element:           UsualIndustry
 Parent:            CodedObservationComponent
@@ -83,8 +78,8 @@ For example, a person who has spent 30 years as a secretary in various industrie
 Element:           UsualOccupationDuration
 Parent:            QuantitativeObservationComponent
 Description:       "The total time spent on an activity, inclusive of all time intervals, whether continuous or interrupted."
-                   DataValue = UCUM#a
                    Code = LNC#74163-7 "Usual occupation duration"
+                   DataValue[Quantity].Units = UCUM#a
 
 Entry:             PastOrPresentJob
 Parent:            CodedSocialHistoryObservation
@@ -92,34 +87,24 @@ Description:       "Related data elements for a current or previous job, as repo
 A person can have more than one job at the same time and multiple jobs over time, so the data related to each job must remain in the record in perpetuity. Each job should be recorded in a separate instance of PastOrPresentJob.
 A person's job can be a social determinant of their health and information about a person's job can support patient care, population health, and public health. In patient care, knowledge of a person's past or present job(s) can impact recognition, diagnosis, management, and treatment of injuries and illnesses. These data also can be used for clinical decision support and to prompt discussion of preventive care measures. For example, a record of jobs that require prolonged time in the sun might prompt a health care provider to inquire if the person wears protective clothing or sunscreen while working.
 At a minimum, it is important to have a record of a person's current job(s); i.e., the job(s) in which a person is engaged at the time that he or she presents to a health care provider, regardless of duration, and to retain that information over time. In the event a person recently stopped working (e.g. retired without another job, became unemployed or disabled and unable to work), the most recent job(s) is used instead of the current job(s)."
-Property:          DataValue 0..0
-Property:          DataAbsentReason 0..0
 Property:          SubjectOfInformationCode 0..1
 Property:          Employer 0..1
-Property:          RelevantTime 1..1
-                   SubjectOfInformationCode from https://vsac.nlm.nih.gov/valueset/2.16.840.1.113883.1.11.19579/expansion (required)
                    Code = LNC#11341-5 "History of Occupation"
-                   Components
-                   includes Occupation 0..1
-                   Components
-                   includes PastOrPresentIndustry 0..1
-                   Components
-                   includes WorkClassification 0..1
-                   Components
-                   includes SupervisoryLevel 0..1
-                   Components
-                   includes JobDuty 0..*
-                   Components
-                   includes OccupationalHazard 0..*
-                   Components
-                   includes WorkSchedule 0..1
-                   Components
-                   includes WeeklyWorkDays 0..1
-                   Components
-                   includes DailyWorkHours 0..1
-                   Components
-                   includes IsCurrentJob 0..1
+                   DataValue 0..0
+                   RelevantTime 1..1
                    RelevantTime only TimePeriod
+                   Components.ObservationComponent
+                   includes Occupation 0..1
+                   includes PastOrPresentIndustry 0..1
+                   includes WorkClassification 0..1
+                   includes SupervisoryLevel 0..1
+                   includes JobDuty 0..*
+                   includes OccupationalHazard 0..*
+                   includes WorkSchedule 0..1
+                   includes WeeklyWorkDays 0..1
+                   includes DailyWorkHours 0..1
+                   includes IsCurrentJob 0..1
+                   SubjectOfInformationCode from https://vsac.nlm.nih.gov/valueset/2.16.840.1.113883.1.11.19579/expansion (required)
 
 Element:           Occupation
 Parent:            CodedObservationComponent
@@ -134,8 +119,8 @@ Value:             EmployerPerson or Organization
 Element:           EmployerPerson
 Parent:            RelatedPerson
 Description:       "A related person who is an employer"
-Property:          RelationshipToPatient 1..1
-                   RelationshipToPatient = V2#E
+                   RelationshipToPatient 1..1
+                   RelationshipToPatient[CodeableConcept] = V2#E
 
 Element:           PastOrPresentIndustry
 Parent:            CodedObservationComponent
@@ -158,16 +143,16 @@ Description:       "A coded indicator of responsibilities for directing work and
 Element:           JobDuty
 Parent:            ObservationComponent
 Description:       "A regular action performed by a person at a job, as reported by the person. For example, a Job Duty could be 'carry construction supplies' for a job with the Occupation 'construction laborer.'"
-Property:          ReferenceRange 0..0
                    Code = LNC#63761-1 "What were your main activities or duties for this job [NHANES]"
                    DataValue only string
+                   ReferenceRange 0..0
 
 Element:           OccupationalHazard
 Parent:            ObservationComponent
 Description:       "A hazard that is specific to a person's work or work environment at one job and with which the person might come in contact, as reported by the person. A hazard is a source of potential harm to a person’s physical or mental health. Hazards can be biological, physical, psychological, chemical, or radiological in nature."
-Property:          ReferenceRange 0..0
                    Code = LNC#87729-0 "History of Occupational hazard"
                    DataValue only string
+                   ReferenceRange 0..0
 
 Element:           WorkSchedule
 Parent:            CodedObservationComponent
@@ -179,16 +164,16 @@ Element:           WeeklyWorkDays
 Parent:            QuantitativeObservationComponent
 Description:       "The average number of days per week that a person spends performing their duties for work."
                    Code = LNC#74160-3 "Work days per week"
-                   DataValue = UCUM#d
+                   DataValue[Quantity].Units = UCUM#d
 
 Element:           DailyWorkHours
 Parent:            QuantitativeObservationComponent
 Description:       "The average number of hours in a day that a person spends performing their duties for work."
-Property:          ReferenceRange 0..0
                    Code = LNC#87512-0 "Work hours per day"
-                   DataValue = UCUM#h
+                   DataValue[Quantity].Units = UCUM#h
+                   ReferenceRange 0..0
 
 Element:           IsCurrentJob
 Parent:            CodedObservationComponent
 Description:       "A flag indicating if this is the person's current job (at the time the resource was last updated)."
-                   DataValue from http://hl7.org/fhir/us/projectURL/shr/core/vs/YesNoVS (required)
+                   DataValue from YesNoVS (required)

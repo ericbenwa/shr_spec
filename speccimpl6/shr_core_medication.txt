@@ -1,9 +1,23 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore, dme, odh
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 CodeSystem:        SCT = http://snomed.info/sct
+
+Element:           TerminationReason
+Description:       "A code explaining unplanned or premature termination of a plan of treatment, course of medication, or research study."
+Value:             concept
+
+Element:           AdditionalDosageInstruction
+Concept:           MTH#C1644714
+Description:       "Supplemental instructions - e.g. 'with meals'."
+Value:             concept
+
+Element:           DosageMethod
+Concept:           MTH#C1547585
+Description:       "Technique for administering medication."
+Value:             concept
 
 Element:           Dosage
 Concept:           MTH#C0178602
@@ -38,16 +52,6 @@ Element:           DosageInstructionsText
 Description:       "The directions (signetur) on the drug prescription or dispensing record."
 Value:             string
 
-Element:           AdditionalDosageInstruction
-Concept:           MTH#C1644714
-Description:       "Supplemental instructions - e.g. 'with meals'."
-Value:             concept
-
-Element:           DosageMethod
-Concept:           MTH#C1547585
-Description:       "Technique for administering medication."
-Value:             concept
-
 Element:           DosageBodyLocation
 Concept:           MTH#C0229986
 Description:       "The anatomic site at which medical intervention is applied."
@@ -62,7 +66,7 @@ Parent:            ActionPerformed
 Description:       "Abstract class representing medication exposure, independent of whether reported in a medication statement or medication administration. Does not include medication requests (prescriptions)."
 Property:          MedicationCodeOrReference 1..1
 Property:          Dosage 0..1
-Property:          Method 0..0
+                   Method 0..0
 
 Element:           MedicationCodeOrReference
 Description:       "A choice of a medication code or reference."
@@ -76,27 +80,23 @@ Although FHIR supports the asserter (information source) and date asserted, it d
 The treatment of 'not taken' has changed from DSTU2 and STU3 to R4. In R4, status and statusReason are used to indicate medications not taken. For upward compatibility, the 'not taken' attributes are profiled out.
 ReasonCode is a choice of CodeableConcept or ref(Condition) in DSTU2, and limited to one reason (pick one type). In STU3 and R4, there can be multiple reason codes, and multiple reason references, simultaneously."
 Property:          MedicationStatementInformationSource 0..1
-Property:          StatementDateTime 1..1
 Property:          Category 0..1
-Property:          ReasonCode 0..1
-Property:          ReasonReference 0..1
-Property:          Participation 0..0
 Property:          TreatmentIntent 0..*
 Property:          TerminationReason 0..*
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Category from http://hl7.org/fhir/ValueSet/medication-statement-category (preferred)
                    Status from http://hl7.org/fhir/ValueSet/medication-statement-status (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   StatementDateTime 1..1
+                   ReasonCode 0..1
+                   ReasonReference 0..1
                    ReasonReference only Condition
-                   RelatedRequest only MedicationStatementRelatedRequest
-                   TerminationReason from http://hl7.org/fhir/us/projectURL/shr/core/vs/TreatmentTerminationReasonVS (required)
+                   Participation 0..0
+                   RelatedRequest substitute MedicationStatementRelatedRequest
+                   Category from http://hl7.org/fhir/ValueSet/medication-statement-category (preferred)
+                   TerminationReason from TreatmentTerminationReasonVS (required)
 
 Element:           MedicationStatementInformationSource
 Description:       "The informant for this medication statement."
 Value:             Patient or Practitioner or RelatedPerson or Organization
-
-Element:           TerminationReason
-Description:       "A code explaining unplanned or premature termination of a plan of treatment, course of medication, or research study."
-Value:             concept
 
 Entry:             MedicationAdministration
 Parent:            MedicationExposure
@@ -105,13 +105,13 @@ Although FHIR MedicationAdministration supports date of administration, informat
 FHIR DSTU2 lacks a category attribute, which is provided as an extension in that version.
 SHR does not allow the 'not given' attributes from DSTU2 and STU3, since they are dropped in R4. The status element is used to document medications not given."
 Property:          Category 0..1
-Property:          Participation 0..1
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Category from http://hl7.org/fhir/ValueSet/medication-admin-category (preferred)
                    Status from http://hl7.org/fhir/ValueSet/medication-admin-status (required)
-                   Participation only PersonParticipant
-                   Participation
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Participation 0..1
+                   Participation.Participant substitute PersonParticipant
+                   Participation.ParticipationType 0..0
                    RelatedRequest only MedicationRequest
+                   Category from http://hl7.org/fhir/ValueSet/medication-admin-category (preferred)
 
 Element:           PersonParticipant
 Parent:            Participant
@@ -122,6 +122,10 @@ Element:           MedicationDispense
 Parent:            MedicationExposure
 Description:       "Indicates that a medication product has been dispensed for a named person/patient. This includes a description of the medication product (supply) provided and the instructions for administering the medication. The medication dispense is the result of a pharmacy system responding to a medication order."
 
+Element:           SubstitutionReason
+Description:       "Why should (not) substitution be made."
+Value:             concept
+
 Entry:             MedicationRequest
 Parent:            ActionRequested
 Description:       "An order for a medication to be dispensed and instructions for use.
@@ -131,26 +135,26 @@ Intent was added in STU3 and is provided as an extension with required binding."
 Property:          MedicationCodeOrReference 1..1
 Property:          Dosage 0..1
 Property:          MedicationRequester 1..1
-Property:          StatementDateTime 1..1
-Property:          ExpectedPerformerType 0..0
 Property:          NumberOfRefillsAllowed 0..1
 Property:          QuantityPerDispense 0..1
 Property:          SupplyDuration 0..1
 Property:          SubstitutionAllowed 0..1
 Property:          SubstitutionReason 0..1
-Property:          ReasonCode 0..1
-Property:          ReasonReference 0..1
-Property:          CommunicationMethod 0..0
-Property:          Annotation 0..1
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   PriorityCode from http://hl7.org/fhir/ValueSet/medication-request-priority (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   StatementDateTime 1..1
+                   ReasonCode 0..1
+                   ReasonCode[CodeableConcept] from http://hl7.org/fhir/ValueSet/condition-code (example)
+                   ReasonReference 0..1
+                   ReasonReference only Condition
                    Type from http://hl7.org/fhir/ValueSet/medication-admin-category (preferred)
                    RequestIntent from http://hl7.org/fhir/ValueSet/medication-request-intent (required)
                    ExpectedPerformanceTime only TimePeriod
+                   ExpectedPerformerType 0..0
                    Recipient only Organization
+                   PriorityCode from http://hl7.org/fhir/ValueSet/medication-request-priority (required)
+                   Annotation 0..1
+                   CommunicationMethod 0..0
                    SubstitutionReason from http://hl7.org/fhir/ValueSet/v3-SubstanceAdminSubstitutionReason (required)
-                   ReasonCode from http://hl7.org/fhir/ValueSet/condition-code (example)
-                   ReasonReference only Condition
 
 Element:           MedicationRequester
 Description:       "The individual, organization or device that initiated the request and has responsibility for its activation."
@@ -172,10 +176,6 @@ Element:           SubstitutionAllowed
 Description:       "Whether substitution is allowed or not."
 Value:             boolean
 
-Element:           SubstitutionReason
-Description:       "Why should (not) substitution be made."
-Value:             concept
-
 Entry:             MedicationNonadherence
 Parent:            CodedNonLaboratoryObservation
 Description:       "Information on the ability and cooperation of the patient in taking medicine or supplement as recommended or prescribed. This includes correct timing, dosage, and frequency. The SubjectOfInformation can reference a specific medication.
@@ -184,7 +184,7 @@ Modeling note: MedicationAdherence could be attached to MedicationStatement dire
 Property:          Medication 0..*
 Property:          MedicationNonAdherenceReason 0..*
                    Code = MTH#C0746935 "Medication Nonadherence"
-                   DataValue from http://hl7.org/fhir/us/projectURL/shr/core/vs/QualitativeFrequencyVS (required)
+                   DataValue from QualitativeFrequencyVS (required)
 
 Element:           MedicationNonAdherenceReason
 Description:       "Reason that patient did not adhere to a medication regimen."

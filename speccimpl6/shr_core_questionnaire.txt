@@ -1,7 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore
 
 Entry:             Questionnaire
 Parent:            DomainResource
@@ -10,7 +10,6 @@ Property:          Url 0..1
 Property:          VersionString 0..1
 Property:          NameAsText 0..1
 Property:          Title 0..1
-Property:          Status 1..1
 Property:          IsExperimental 0..1
 Property:          SubjectType 0..*
 Property:          LastUpdated 0..1
@@ -26,16 +25,9 @@ Property:          ApprovalDate 0..1
 Property:          EffectiveTimePeriod 0..1
 Property:          Code 0..*
 Property:          QuestionnaireItem 0..*
-                   Status from http://hl7.org/fhir/ValueSet/publication-status (required)
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/publication-status (required)
                    Code from http://hl7.org/fhir/ValueSet/questionnaire-questions (example)
-
-Element:           LastReviewedDate
-Description:       "The most recent date the item was reviewed."
-Value:             date
-
-Element:           ApprovalDate
-Description:       "The date on which the item was officiallly deemed acceptable by the publisher."
-Value:             date
 
 Element:           QuestionnaireItem
 Description:       "Questions and sections within the Questionnaire."
@@ -56,6 +48,14 @@ Property:          PrepopulateValue 0..*
 Property:          QuestionnaireItem 0..*
                    Code from http://hl7.org/fhir/ValueSet/questionnaire-questions (example)
                    Type from http://hl7.org/fhir/ValueSet/item-type (required)
+
+Element:           LastReviewedDate
+Description:       "The most recent date the item was reviewed."
+Value:             date
+
+Element:           ApprovalDate
+Description:       "The date on which the item was officiallly deemed acceptable by the publisher."
+Value:             date
 
 Element:           DetailsLink
 Description:       "The date on which the item was officiallly deemed acceptable by the publisher."
@@ -107,26 +107,26 @@ Element:           AnswerValue
 Description:       "The answer to a question."
 Value:             boolean or decimal or integer or date or dateTime or time or string or uri or Attachment or concept or Quantity or DomainResource
 
+Element:           FocusOfResponse
+Description:       "The subject of the questionnaire response. This could be a patient, organization, practitioner, device, etc. This is who/what the answers apply to, but is not necessarily the source of information."
+Value:             DomainResource
+
 Entry:             QuestionnaireResponse
 Parent:            DomainResource
 Description:       "A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to."
-Property:          Identifier 0..1
 Property:          RelatedRequest 0..*
 Property:          Questionnaire 0..1
-Property:          Status 1..1
 Property:          FocusOfResponse 0..1
 Property:          CareContext 0..1
 Property:          StatementDateTime 0..1
 Property:          QuestionnaireResponseRecorder 0..1
 Property:          PersonInformationSource 0..1
 Property:          QuestionnaireResponseItem 0..*
-                   RelatedRequest only ReferralOrProcedureRequest
-                   Status from http://hl7.org/fhir/ValueSet/questionnaire-answers-status (required)
-                   FocusOfResponse only DomainResource
-
-Element:           FocusOfResponse
-Description:       "The subject of the questionnaire response. This could be a patient, organization, practitioner, device, etc. This is who/what the answers apply to, but is not necessarily the source of information."
-Value:             DomainResource
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/questionnaire-answers-status (required)
+                   Identifier 0..1
+                   RelatedRequest substitute ReferralOrProcedureRequest
+                   FocusOfResponse substitute DomainResource
 
 Element:           QuestionnaireResponseRecorder
 Description:       "The recorder of the information, who received and recorded the answers. For example, the nurse taking a list of medications reported by the patient."

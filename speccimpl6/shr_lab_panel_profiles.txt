@@ -8,44 +8,41 @@ Entry:             CBCWAutoDifferentialPanel
 Parent:            HeadlessLaboratoryPanel
 Description:       "57021-8 CBC W Auto Differential panel - Blood.
 This profile is used to validate the panel, including the codes of the panel members, but not the panel members themselves. The panel members are stand-alone observations that must validate against the appropriate laboratory profile."
-                   SubjectOfRecord only PatientSubjectOfRecord
+                   SubjectOfRecord substitute PatientSubjectOfRecord
                    Code = LNC#57021-8
-                   PanelMembers
+                   PanelMembers.Observation
                    includes CBCWAutoDifferentialPanelCoreElement 0..*
-                   PanelMembers
                    includes CBCWAutoDifferentialPanelNonCoreElement 0..*
 
 Entry:             CBCWAutoDifferentialPanelCoreElement
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Must-support members of the CompleteBloodCountPanelByAutomatedCountPanel"
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CBCWAutoDifferentialPanelCoreElementVS (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Code from CBCWAutoDifferentialPanelCoreElementVS (required)
 
 Entry:             CBCWAutoDifferentialPanelNonCoreElement
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Optional members of the CompleteBloodCountPanelByAutomatedCountPanel"
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CBCWAutoDifferentialPanelNonCoreElementVS (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Code from CBCWAutoDifferentialPanelNonCoreElementVS (required)
 
 Entry:             ComprehensiveMetabolic2000SerumOrPlasmaPanel
 Parent:            HeadlessLaboratoryPanel
 Description:       "24323-8 Comprehensive metabolic 2000 panel - Serum or Plasma.  This profile is used to validate the panel, including the codes of the panel members, but not the panel members themselves. The panel members are stand-alone observations that must validate against the appropriate laboratory profile."
-Property:          SubjectOfRecord 1..1
-                   SubjectOfRecord only PatientSubjectOfRecord
+                   SubjectOfRecord substitute PatientSubjectOfRecord
                    Code = LNC#24323-8
-                   PanelMembers
+                   PanelMembers.Observation
                    includes CMP2000SerumOrPlasmaCoreElement 0..*
-                   PanelMembers
                    includes CMP2000SerumOrPlasmaNonCoreElement 0..*
 
 Entry:             CMP2000SerumOrPlasmaCoreElement
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Must-support members of the CompleteBloodCountPanelByAutomatedCountPanel"
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CMP2000SerumOrPlasmaCoreElementVS (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Code from CMP2000SerumOrPlasmaCoreElementVS (required)
 
 Entry:             CMP2000SerumOrPlasmaNonCoreElement
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Optional members of the CompleteBloodCountPanelByAutomatedCountPanel"
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/projectURL/shr/lab/vs/CMP2000SerumOrPlasmaNonCoreElementVS (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Code from CMP2000SerumOrPlasmaNonCoreElementVS (required)

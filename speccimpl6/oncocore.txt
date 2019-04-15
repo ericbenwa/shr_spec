@@ -1,7 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         oncocore
 Description:       "Oncology data elements that broadly apply to most cancer cases."
-Uses:              shr.core, brca, dme, odh
+Uses:              shr.core, brca
 CodeSystem:        SCT = http://snomed.info/sct
 CodeSystem:        LNC = http://loinc.org
 CodeSystem:        UCUM = http://unitsofmeasure.org
@@ -9,69 +9,67 @@ CodeSystem:        UCUM = http://unitsofmeasure.org
 Entry:             CancerCondition
 Parent:            Condition
 Description:       "The presence of malignant neoplastic disease, in which abnormal cells divide without control and can invade nearby tissues."
-Property:          Severity 0..0
 Property:          MorphologyBehavior 0..1
-                   Code from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerDisorderVS (extensible)
-                   StageInformation only CancerStageGroup
+                   Code from CancerDisorderVS (extensible)
+                   Severity 0..0
+                   StageInformation.StageDetail[Observation] substitute CancerStageGroup
+
+Entry:             CancerHistologicType
+Parent:            SimpleCodedLaboratoryObservation
+Description:       "Classification of the cancer by the type of tissue in which the cancer originates. (Source: NCI)"
+Property:          RelatedCancerCondition 0..1
+                   Code = SCT#371441004 "Histologic type (observable entity)"
+                   DataValue from CancerHistologicTypeVS (required)
+                   Performer substitute PractitionerPerformer
+                   Device 0..0
+
+Entry:             CancerHistologicGrade
+Parent:            CodedLaboratoryObservation
+Description:       "A description of a tumor based on how abnormal the cancer cells and tissue look under a microscope and how quickly the cancer cells are likely to grow and spread. Low-grade cancer cells look more like normal cells and tend to grow and spread more slowly than high-grade cancer cells. (Source: NCI Dictionary of Cancer Terms)"
+Property:          RelatedCancerCondition 0..1
+                   Code = LNC#21858-6 "Grade Cancer"
+                   DataValue from CancerHistologicGradeVS (extensible)
+                   Performer substitute PractitionerPerformer
+                   Device 0..0
+                   Components 0..0
+                   PanelMembers 0..0
 
 Element:           MorphologyBehavior
 Concept:           SCT#246463000 "Behavior of tumor (attribute)"
 Description:       "A description of the morphology and behavioral characteristics of the cancer."
 Value:             concept from MorphologyBehaviorVS (required)
 
-Entry:             CancerHistologicType
-Parent:            SimpleCodedLaboratoryObservation
-Description:       "Classification of the cancer by the type of tissue in which the cancer originates. (Source: NCI)"
-Property:          RelatedCancerCondition 0..1
-Property:          BodyLocation 0..0
-Property:          Device 0..0
-                   Code = SCT#371441004 "Histologic type (observable entity)"
-                   DataValue from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerHistologicTypeVS (required)
-                   Performer only PractitionerPerformer
-
 Element:           RelatedCancerCondition
 Description:       "Cancer condition this information relates to."
 Value:             CancerCondition or Metastases or Tumor
 
-Entry:             CancerHistologicGrade
-Parent:            CodedLaboratoryObservation
-Description:       "A description of a tumor based on how abnormal the cancer cells and tissue look under a microscope and how quickly the cancer cells are likely to grow and spread. Low-grade cancer cells look more like normal cells and tend to grow and spread more slowly than high-grade cancer cells. (Source: NCI Dictionary of Cancer Terms)"
-Property:          RelatedCancerCondition 0..1
-Property:          BodyLocation 0..0
-Property:          Device 0..0
-Property:          PanelMembers 0..0
-Property:          Components 0..0
-                   DataValue from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerHistologicGradeVS (extensible)
-                   Code = LNC#21858-6 "Grade Cancer"
-                   Performer only PractitionerPerformer
+Element:           EvidenceType
+Description:       "The type of evidence considered in making the determination."
+Value:             concept
 
 Entry:             CancerDiseaseStatus
 Parent:            CodedNonLaboratoryObservation
 Description:       "The status of the cancer, in terms of whether it is stable, worsening (progressing), improving (responding), or in remission."
 Property:          RelatedCancerCondition 0..1
 Property:          EvidenceType 0..*
-Property:          BodyLocation 0..0
-Property:          Device 0..0
-Property:          PanelMembers 0..0
-Property:          Components 0..0
+                   SubjectOfRecord substitute PatientSubjectOfRecord
                    Code = LNC#88040-1 "Response to cancer treatment"
-                   DataValue from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerDiseaseStatusVS (required)
-                   Performer only PractitionerPerformer
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   EvidenceType from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerDiseaseStatusEvidenceTypeVS (required)
-
-Element:           EvidenceType
-Description:       "The type of evidence considered in making the determination."
-Value:             concept
+                   DataValue from CancerDiseaseStatusVS (required)
+                   Performer substitute PractitionerPerformer
+                   BodyLocation 0..0
+                   Device 0..0
+                   Components 0..0
+                   PanelMembers 0..0
+                   EvidenceType from CancerDiseaseStatusEvidenceTypeVS (required)
 
 Entry:             Metastases
 Parent:            CancerCondition
 Description:       "Records the history of secondary neoplasms, including location(s) and the date of onset of metastases. The locations are those in LOINC LL#LL61-3."
 Property:          RelatedCancerCondition 0..1
-Property:          BodyLocation 0..0
-Property:          StageInformation 0..0
-                   Code from http://hl7.org/fhir/us/projectURL/oncocore/vs/MetastasesVS (required)
-                   PersonInformationSource only PractitionerInformationSource
+                   Code from MetastasesVS (required)
+                   PersonInformationSource substitute PractitionerInformationSource
+                   BodyLocation 0..0
+                   StageInformation 0..0
 
 Element:           PractitionerInformationSource
 Parent:            PersonInformationSource
@@ -83,10 +81,10 @@ Parent:            BodyStructure
 Concept:           SCT#395557000 "Tumor finding (finding)"
 Description:       "The presence of an abnormal mass of tissue (neoplasm) that results when cells divide more than they should or do not die when they should. Tumors may be benign (not cancer), or malignant (cancer). (source: NCI Dictionary)."
 Property:          RelatedCancerCondition 0..1
-Property:          Severity 0..0
-Property:          StageInformation 0..0
 Property:          IsPrimaryTumor 0..1
-                   Code from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerHistologicTypeVS (required)
+                   Code from CancerHistologicTypeVS (required)
+                   Severity 0..0
+                   StageInformation 0..0
 
 Element:           IsPrimaryTumor
 Description:       "Whether the tumor is the original or first tumor in the body, for a particular cancer."
@@ -95,19 +93,15 @@ Value:             concept from YesNoUnknownVS (required)
 Entry:             TumorDimensions
 Parent:            CodedLaboratoryObservation
 Description:       "The size of a given tumor along different dimensions."
-Property:          DataValue 0..0
 Property:          RelatedTumor 1..1
-Property:          PanelMembers 0..0
                    Code = SCT#263605001 "Tumor size (observable entity)"
-                   Components
-                   Components
+                   DataValue 0..0
+                   Components.ObservationComponent 1..1
                    includes TumorLongestDimension 0..1
-                   Components
                    includes TumorDimension2 0..1
-                   Components
                    includes TumorDimension3 0..1
-                   Components
                    includes SizeOfGrossTumorBed 0..1
+                   PanelMembers 0..0
 
 Element:           RelatedTumor
 Description:       "The tumor that is being characterized."
@@ -117,47 +111,47 @@ Element:           TumorLongestDimension
 Parent:            QuantitativeObservationComponent
 Description:       "The longest dimension of the tumor."
                    Code = LNC#33728-7 "Size.maximum dimension in Tumor"
-                   DataValue = UCUM#mm
+                   DataValue[Quantity].Units = UCUM#mm
 
 Element:           TumorDimension2
 Parent:            QuantitativeObservationComponent
 Concept:           SCT#372300005 "Tumor size, dimension 2 (observable entity)"
 Description:       "The second longest dimension of the tumor, generally measured perpendicularly to the tumor's longest dimension."
                    Code = SCT#372300005 "Tumor size, dimension 2 (observable entity)"
-                   DataValue = UCUM#mm
+                   DataValue[Quantity].Units = UCUM#mm
 
 Element:           TumorDimension3
 Parent:            QuantitativeObservationComponent
 Concept:           SCT#372301009 "Tumor size, dimension 3 (observable entity)"
 Description:       "The third longest dimension of the tumor, generally measured perpendicularly to the tumor's two longest perpendicular dimensions."
                    Code = SCT#372301009 "Tumor size, dimension 3 (observable entity)"
-                   DataValue = UCUM#mm
+                   DataValue[Quantity].Units = UCUM#mm
 
 Element:           SizeOfGrossTumorBed
 Parent:            QuantitativeObservationComponent
 Description:       "The largest dimension of the gross tumor bed/fibrotic area."
                    Code = TBD#TBD
-                   DataValue = UCUM#mm
+                   DataValue[Quantity].Units = UCUM#mm
 
 Entry:             TumorInvolvementAtSurgicalMargin
 Parent:            CodedLaboratoryObservation
 Description:       "The edge or border of the tissue removed in cancer surgery. The margin is described as negative or clean when the pathologist finds no cancer cells at the edge of the tissue, suggesting that all of the cancer has been removed. The margin is described as positive or involved when the pathologist finds cancer cells at the edge of the tissue, suggesting that all of the cancer has not been removed."
-Property:          PanelMembers 0..0
-Property:          Components 0..0
                    Code = SCT#371488000 "Status of margin involvement by tumor (observable entity)"
-                   DataValue from http://hl7.org/fhir/us/projectURL/oncocore/vs/SurgicalMarginInvolvementVS (required)
+                   DataValue from SurgicalMarginInvolvementVS (required)
+                   Components 0..0
+                   PanelMembers 0..0
 
 Entry:             CancerRelatedSurgicalProcedure
 Parent:            SurgicalProcedure
 Description:       "A surgical action addressing a cancer condition, independent of action context."
-Property:          ReasonReference 0..1
-Property:          ReasonCode 0..1
+                   ReasonCode 0..1
+                   ReasonCode[CodeableConcept] from CancerDisorderVS (required)
+                   ReasonReference 0..1
                    ReasonReference only CancerCondition
-                   ReasonCode from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerDisorderVS (required)
 
 Entry:             CancerRelatedRadiationProcedure
 Parent:            RadiationProcedure
-Property:          ReasonReference 0..1
-Property:          ReasonCode 0..1
+                   ReasonCode 0..1
+                   ReasonCode[CodeableConcept] from CancerDisorderVS (required)
+                   ReasonReference 0..1
                    ReasonReference only CancerCondition
-                   ReasonCode from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerDisorderVS (required)

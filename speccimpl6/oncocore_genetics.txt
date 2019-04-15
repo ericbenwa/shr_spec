@@ -1,110 +1,108 @@
 Grammar:           DataElement 6.0
 Namespace:         oncocore
 Description:       "Oncology data elements that broadly apply to most cancer cases."
-Uses:              shr.core, brca, dme, odh
+Uses:              shr.core, brca
 CodeSystem:        LNC = http://loinc.org
 CodeSystem:        OBSCAT = http://hl7.org/fhir/observation-category
+
+Entry:             TumorMarkerObservation
+Parent:            LaboratoryObservation
+Concept:           LNC#21924-6 "Tumor marker Cancer"
+Description:       "A substance found in tissue or blood or other body fluids that may be a sign of cancer or certain benign (noncancer) conditions. Most tumor markers are made by both normal cells and cancer cells, but they are made in larger amounts by cancer cells. A tumor marker may help to diagnose cancer, plan treatment, or find out how well treatment is working or if cancer has come back. Examples of tumor markers include CA-125 (in ovarian cancer), CA 15-3 (in breast cancer), CEA (in colon cancer), and PSA (in prostate cancer). (Source: NCI Dictionary of Cancer Terms).  Tumor markers differ from genetic markers in that they are measured at the levels of the protein and substance post-RNA protein synthesis."
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Code from TumorMarkerVS (extensible)
+                   Device 0..0
 
 Element:           GenomicsReport
 Parent:            DiagnosticReport
 Concept:           LNC#81247-9 "Master HL7 genetic variant reporting panel"
 Description:       "Genetic analysis summary report"
-Property:          Category 1..1
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Category = OBSCAT#GE
-                   Observation only GeneticRegionAnalysis
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Category 1..1
+                   Category[CodeableConcept] = OBSCAT#GE
+                   Observation substitute GeneticRegionAnalysis
 
 Entry:             CancerGenomicsReport
 Parent:            GenomicsReport
 Description:       "Cancer genetic analysis summary report"
                    Code = LNC#81247-9 "Master HL7 genetic variant reporting panel"
-                   GeneticRegionAnalysis only CancerGeneticRegionAnalysis
+                   Observation substitute CancerGeneticRegionAnalysis
 
 Entry:             GeneticRegionAnalysis
 Parent:            LaboratoryObservation
 Description:       "Results of analyzing a specified genetic region to detect the presence of genetic alterations or defects that may predispose to the future development of a disease or disorder."
-Property:          ReferenceRange 0..0
-Property:          BodyLocation 0..0
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Method from http://hl7.org/fhir/us/projectURL/oncocore/vs/GeneticTestMethodVS (extensible)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
                    Code = LNC#53041-0 "DNA region of interest panel"
-                   DataValue from http://hl7.org/fhir/us/projectURL/shr/core/vs/PositiveNegativeVS (required)
-                   Components
+                   DataValue from PositiveNegativeVS (required)
+                   Method from GeneticTestMethodVS (extensible)
+                   ReferenceRange 0..0
+                   Components.ObservationComponent
                    includes GeneName 0..*
-                   Components
                    includes DNARegionDescription 0..1
-                   Components
                    includes MutationTestedFor 0..*
-                   PanelMembers
+                   PanelMembers.Observation
                    includes GeneticVariantFound 0..*
 
 Element:           GeneName
 Parent:            CodedObservationComponent
 Description:       "HUGO Gene Nomenclature Committee (HGNC) identifier for a gene. (source: LOINC)"
-Property:          DataAbsentReason 0..0
                    Code = LNC#48018-6 "Gene studied [ID]"
                    DataValue from http://www.genenames.org (preferred)
+                   DataAbsentReason 0..0
 
 Element:           DNARegionDescription
 Parent:            ObservationComponent
 Description:       "a narrative description of the range(s) of DNA sequences examined in this sequencing study."
-Property:          ReferenceRange 0..0
-Property:          DataAbsentReason 0..0
                    Code = LNC#81293-3 "Description of ranges of DNA sequences examined"
                    DataValue only string
+                   DataAbsentReason 0..0
+                   ReferenceRange 0..0
 
 Element:           MutationTestedFor
 Parent:            CodedObservationComponent
 Description:       "For targeted mutation analysis, the mutations that the study is designed to detect. The mutation tested for is reported as using the HGVS sequence variant nomenclature."
-Property:          DataAbsentReason 0..0
                    Code = LNC#36908-2 "Gene mutations tested for in Blood or Tissue by Molecular genetics method Nominal."
                    DataValue from http://varnomen.hgvs.org (extensible)
+                   DataAbsentReason 0..0
 
 Entry:             CancerGeneticRegionAnalysis
 Parent:            GeneticRegionAnalysis
 Description:       "Results of analyzing a specified genetic region for cancer-related genetic variants."
-                   Code = LNC#53041-0 "DNA region of interest panel"
-                   Components only CancerGeneName
+                   Components.ObservationComponent substitute CancerGeneName
 
 Element:           CancerGeneName
 Parent:            GeneName
 Description:       "The gene name, using HUGO Gene Nomenclature Committee (HGNC) identifier. (source: LOINC)"
-                   Code = LNC#48018-6 "Gene studied [ID]"
-                   DataValue from http://hl7.org/fhir/us/projectURL/oncocore/vs/CancerGeneVS (extensible)
+                   DataValue from CancerGeneVS (extensible)
 
 Entry:             GeneticVariantFound
 Parent:            LaboratoryObservation
 Description:       "An alteration in the most common DNA nucleotide sequence. The term variant can be used to describe an alteration that may be benign, pathogenic, or of unknown significance. The term variant is increasingly being used in place of the term mutation. (source: NCI)"
-Property:          DataValue 0..0
-Property:          DataAbsentReason 0..0
-Property:          ReferenceRange 0..0
-Property:          BodyLocation 0..0
-Property:          PanelMembers 0..0
-                   SubjectOfRecord only PatientSubjectOfRecord
+                   SubjectOfRecord substitute PatientSubjectOfRecord
                    Code = LNC#69548-6 "Genetic variant assessment"
-                   Components
+                   DataValue 0..0
+                   DataAbsentReason 0..0
+                   ReferenceRange 0..0
+                   Components.ObservationComponent
                    includes GenomicSourceClass 0..1
-                   Components
                    includes DNAChangeTranscriptcHGVS 0..1
-                   Components
                    includes ComplexVariantCode 0..1
-                   Components
                    includes ComplexVariantHGVSName 0..1
-                   Components
                    includes DNAChangeType 0..1
+                   PanelMembers 0..0
 
 Element:           GenomicSourceClass
 Parent:            CodedObservationComponent
 Description:       "The genomic class of the specimen being analyzed: Germline for inherited genome, somatic for cancer genome, and prenatal for fetal genome. (source: LOINC)"
                    Code = LNC#48002-0 "Genomic source class [Type]"
-                   DataValue from http://hl7.org/fhir/us/projectURL/oncocore/vs/GenomicSourceClassVS (required)
+                   DataValue from GenomicSourceClassVS (required)
 
 Element:           DNAChangeTranscriptcHGVS
 Parent:            ObservationComponent
 Description:       "Human Genome Variation Society (HGVS) nomenclature for a single DNA marker. The use of the nomenclature must be extended to describe non-variations (aka. wild types) see samples for wild type examples. (source: LOINC)"
-Property:          ReferenceRange 0..0
                    Code = LNC#48004-6 "DNA change (c.HGVS)"
                    DataValue only string
+                   ReferenceRange 0..0
 
 Element:           ComplexVariantCode
 Parent:            CodedObservationComponent
@@ -122,12 +120,3 @@ Element:           DNAChangeType
 Parent:            CodedObservationComponent
 Description:       "Codified type for associated DNA Marker. DNA Marker's use the HGVS notation which implies the DNA Marker Type, but the concurrent use of this code will allow a standard and explicit type for technical and display convenience."
                    Code = LNC#48005-3 "DNA change type"
-
-Entry:             TumorMarkerObservation
-Parent:            LaboratoryObservation
-Concept:           LNC#21924-6 "Tumor marker Cancer"
-Description:       "A substance found in tissue or blood or other body fluids that may be a sign of cancer or certain benign (noncancer) conditions. Most tumor markers are made by both normal cells and cancer cells, but they are made in larger amounts by cancer cells. A tumor marker may help to diagnose cancer, plan treatment, or find out how well treatment is working or if cancer has come back. Examples of tumor markers include CA-125 (in ovarian cancer), CA 15-3 (in breast cancer), CEA (in colon cancer), and PSA (in prostate cancer). (Source: NCI Dictionary of Cancer Terms).  Tumor markers differ from genetic markers in that they are measured at the levels of the protein and substance post-RNA protein synthesis."
-Property:          BodyLocation 0..0
-Property:          Device 0..0
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/projectURL/oncocore/vs/TumorMarkerVS (extensible)

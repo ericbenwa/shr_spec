@@ -1,7 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore, dme, odh
 CodeSystem:        SCT = http://snomed.info/sct
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 CodeSystem:        OBSCAT = http://hl7.org/fhir/observation-category
@@ -16,17 +16,33 @@ Property:          BodyLocation 0..*
 Property:          PartOf 0..1
 Property:          Category 0..1
 Property:          Annotation 0..*
-Property:          Method 0..0
 Property:          TreatmentIntent 0..*
 Property:          Location 0..1
 Property:          Outcome 0..1
 Property:          MaterialUsed 0..*
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code (extensible)
-                   PartOf only Procedure
-                   Participation only Organization
-                   Participation only ProcedureParticipant
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Participation.OnBehalfOf only Organization
+                   Participation.Participant substitute ProcedureParticipant
+                   Method 0..0
                    RelatedRequest only ProcedureRequest
+                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code (extensible)
+                   PartOf substitute Procedure
+
+Entry:             SurgicalProcedure
+Parent:            Procedure
+                   Method from SurgicalMethodVS (required)
+                   Code from SurgicalProcedureVS (extensible)
+                   BodyLocation substitute SurgicalBodyLocation
+
+Entry:             RadiationProcedure
+Parent:            Procedure
+Description:       "A radiation oncology procedure. If the treatment is part of a larger course of treatment, the PartOf attribute should indicate that."
+Property:          RadiationDosePerFraction 0..1
+Property:          RadiationFractionsDelivered 0..1
+Property:          TotalRadiationDoseDelivered 0..1
+Property:          TerminationReason 0..*
+                   Code from RadiationProcedureVS (required)
+                   TerminationReason from TreatmentTerminationReasonVS (required)
 
 Element:           ProcedureParticipant
 Parent:            Participant
@@ -46,20 +62,19 @@ Entry:             ProcedureRequest
 Parent:            ActionRequested
 Description:       "A request for a procedure to be performed. May be a proposal or an order."
 Property:          ProcedureRequester 0..1
-Property:          Type 1..1
 Property:          BodyLocation 0..*
 Property:          PartOf 0..1
 Property:          Category 0..1
-Property:          Annotation 0..*
-Property:          ReasonCode 0..1
-Property:          ReasonReference 0..1
 Property:          Method 0..1
 Property:          Location 0..1
 Property:          ExpectedPerformer 0..1
-                   SubjectOfRecord only ReferralSubjectOfRecord
-                   Type from http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code (extensible)
-                   PartOf only Procedure
+                   SubjectOfRecord substitute ReferralSubjectOfRecord
+                   ReasonCode 0..1
+                   ReasonReference 0..1
+                   Type 1..1
+                   Type[CodeableConcept] from http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code (extensible)
                    RequestIntent from http://hl7.org/fhir/ValueSet/request-intent (required)
+                   PartOf substitute Procedure
 
 Element:           ExpectedPerformer
 Description:       "A choice of Person (in any role) or organization as recipient of a request. Needed for mapping to FHIR."
@@ -87,16 +102,9 @@ Entry:             LaboratoryProcedure
 Parent:            Procedure
 Concept:           MTH#C0456984
 Description:       "A procedure performed on a collected specimen such as a blood panel or a biopsy."
-Property:          Code 1..1
 Property:          Specimen 0..1
                    Code from http://hl7.org/fhir/ValueSet/observation-codes (required)
                    Category = OBSCAT#laboratory
-
-Entry:             SurgicalProcedure
-Parent:            Procedure
-                   Code from http://hl7.org/fhir/us/projectURL/shr/core/vs/SurgicalProcedureVS (extensible)
-                   BodyLocation only SurgicalBodyLocation
-                   Method from http://hl7.org/fhir/us/projectURL/shr/core/vs/SurgicalMethodVS (required)
 
 Element:           SurgicalBodyLocation
 Parent:            BodyLocation
@@ -107,16 +115,6 @@ Element:           SurgicalBodyLocationRole
 Parent:            BodyLocation
 Description:       "Describes the role played by the body site in the surgery."
 Value:             concept from SurgicalBodyLocationRoleVS (extensible)
-
-Entry:             RadiationProcedure
-Parent:            Procedure
-Description:       "A radiation oncology procedure. If the treatment is part of a larger course of treatment, the PartOf attribute should indicate that."
-Property:          RadiationDosePerFraction 0..1
-Property:          RadiationFractionsDelivered 0..1
-Property:          TotalRadiationDoseDelivered 0..1
-Property:          TerminationReason 0..*
-                   Code from http://hl7.org/fhir/us/projectURL/shr/core/vs/RadiationProcedureVS (required)
-                   TerminationReason from http://hl7.org/fhir/us/projectURL/shr/core/vs/TreatmentTerminationReasonVS (required)
 
 Element:           RadiationDosePerFraction
 Concept:           TBD#TBD
@@ -138,4 +136,4 @@ Value:             Quantity
 Entry:             DiagnosticImaging
 Parent:            ImagingProcedure
 Description:       "Diagnostic imaging procedure performed."
-                   Code from http://hl7.org/fhir/us/projectURL/shr/core/vs/DiagnosticImagingVS (required)
+                   Code from DiagnosticImagingVS (required)

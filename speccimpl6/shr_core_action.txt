@@ -1,34 +1,28 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+
+Element:           Method
+Description:       "The technique used to carry out an action, for example, the specific imaging technical or assessment vehicle."
+Value:             concept
 
 Abstract:          ActionStatement
 Parent:            ClinicalStatement
 Description:       "Abstract class representing any type of action or event."
 Property:          ReasonCode 0..*
 Property:          ReasonReference 0..*
-Property:          SubjectOfRecord 1..1
-
-Element:           ReasonCode
-Concept:           MTH#C0566251
-Description:       "The justification, as a code.
-Reason is a string or CodeableConcept in DSTU2 but in later versions only a CodeableConcept, so we are not going to support a string."
-Value:             concept
-
-Element:           ReasonReference
-Description:       "The justification, as reference to a condition or observation."
-Value:             Condition or Observation
+                   SubjectOfRecord 1..1
 
 Abstract:          ActionPerformed
 Parent:            ActionStatement
 Description:       "Abstract class representing an event occurrence or performance of any type of action."
 Property:          OccurrenceTimeOrPeriod 1..1
 Property:          Participation 0..*
-Property:          Status 1..1
 Property:          Method 0..1
 Property:          RelatedRequest 0..1
+                   Status 1..1
 
 Element:           Participation
 Description:       "Record of someone or something involvement in an activity or event."
@@ -36,6 +30,20 @@ Property:          Participant 0..1
 Property:          ParticipationType 0..1
 Property:          ParticipationPeriod 0..1
 Property:          OnBehalfOf 0..1
+
+Element:           RelatedRequest
+Description:       "The proposal, order, or plan that is partly or wholly fulfilled by the performance of this act."
+Value:             MedicationRequest or ProcedureRequest or ReferralRequest
+
+Element:           ReasonReference
+Description:       "The justification, as reference to a condition or observation."
+Value:             Condition or Observation
+
+Element:           ReasonCode
+Concept:           MTH#C0566251
+Description:       "The justification, as a code.
+Reason is a string or CodeableConcept in DSTU2 but in later versions only a CodeableConcept, so we are not going to support a string."
+Value:             concept
 
 Element:           ParticipationType
 Concept:           MTH#C1553854
@@ -46,14 +54,6 @@ Element:           ParticipationPeriod
 Description:       "The point in time or span of time the participant is involved."
 Value:             TimePeriod
 
-Element:           Method
-Description:       "The technique used to carry out an action, for example, the specific imaging technical or assessment vehicle."
-Value:             concept
-
-Element:           RelatedRequest
-Description:       "The proposal, order, or plan that is partly or wholly fulfilled by the performance of this act."
-Value:             MedicationRequest or ProcedureRequest or ReferralRequest
-
 Element:           Outcome
 Description:       "The result of performing an action or behavior, for example, an adverse reaction or new finding."
 Value:             concept from http://hl7.org/fhir/ValueSet/procedure-outcome (example)
@@ -63,13 +63,13 @@ Parent:            ActionStatement
 Description:       "Abstract class representing a request for any type of action to be performed."
 Property:          Type 0..1
 Property:          RequestIntent 1..1
-Property:          Status 1..1
 Property:          ExpectedPerformanceTime 0..1
 Property:          ExpectedPerformerType 0..1
 Property:          Recipient 0..1
 Property:          PriorityCode 0..1
 Property:          Annotation 0..*
 Property:          CommunicationMethod 0..1
+                   Status 1..1
 
 Element:           RequestIntent
 Description:       "Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain."

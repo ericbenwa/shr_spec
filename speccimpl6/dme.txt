@@ -4,28 +4,28 @@ Description:       "Classes pertaining to ordering durable medical devices."
 Uses:              shr.core, brca, oncocore
 CodeSystem:        PUB = http://hl7.org/fhir/publication-status
 
+Element:           DTR-QuestionnaireItem
+Parent:            QuestionnaireItem
+Description:       "Includes extensions"
+Property:          CalculatedValue 1..1
+
 Entry:             DTR-Questionnaire
 Parent:            Questionnaire
 Description:       "Document templates and rules."
-Property:          IsExperimental 0..0
-Property:          ContactDetail 1..*
-Property:          LastUpdated 1..1
-Property:          QuestionnaireItem 1..*
 Property:          PayerLibrary 1..*
                    Status = PUB#active
-                   QuestionnaireItem
-                   QuestionnaireItem only DTR-QuestionnaireItem
+                   IsExperimental 0..0
+                   LastUpdated 1..1
+                   ContactDetail 1..*
+                   QuestionnaireItem 1..*
+                   QuestionnaireItem substitute DTR-QuestionnaireItem
+                   QuestionnaireItem.Question 1..1
 
 Element:           PayerLibrary
 Description:       "Computable rules and queries to determine if a patient meets requirements for desired service."
 Value:             Library
 
 Entry:             Library
-
-Element:           DTR-QuestionnaireItem
-Parent:            QuestionnaireItem
-Description:       "Includes extensions"
-Property:          CalculatedValue 1..1
 
 Element:           CalculatedValue
 Description:       "output value"

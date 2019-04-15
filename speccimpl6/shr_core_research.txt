@@ -8,9 +8,7 @@ Entry:             ResearchStudy
 Parent:            Entity
 Description:       "A clinical trial or similar research study. Reference: list of FDA data elements describing a research study: prsinfo.clinicaltrials.gov/definitions.html"
 Property:          Title 1..1
-Property:          Identifier 1..1
 Property:          CommentOrDescription 0..1
-Property:          PartOf 0..1
 Property:          Enrollment 0..*
 Property:          EffectiveTimePeriod 0..1
 Property:          Sponsor 0..1
@@ -21,9 +19,10 @@ Property:          Location 0..*
 Property:          TerminationReason 0..1
 Property:          Annotation 0..*
 Property:          StudyArm 0..*
-Property:          Status 1..1
-                   PartOf only ResearchStudy
-                   Status from http://hl7.org/fhir/ValueSet/research-study-status (required)
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/research-study-status (required)
+                   Identifier 1..1
+                   PartOf[DomainResource] substitute ResearchStudy
 
 Element:           Enrollment
 Concept:           MTH#C4041024
@@ -43,16 +42,16 @@ Description:       "Arm refers to pre-specified group or subgroup of participant
 Property:          Title 1..1
 Property:          Type 0..1
 Property:          CommentOrDescription 0..1
-                   Type from http://hl7.org/fhir/us/projectURL/shr/core/vs/StudyArmTypeVS (required)
+                   Type from StudyArmTypeVS (required)
 
 Entry:             ResearchSubject
 Parent:            Role
 Description:       "Record of a subject's enrollment and participation in a research study."
-Property:          Identifier 0..1
 Property:          Patient 1..1
 Property:          ResearchStudy 1..1
-Property:          Status 1..1
 Property:          ParticipationPeriod 1..1
 Property:          TerminationReason 0..1
-                   Status from http://hl7.org/fhir/ValueSet/research-subject-status (required)
-                   TerminationReason from http://hl7.org/fhir/us/projectURL/shr/core/vs/ResearchSubjectTerminationReasonVS (required)
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/research-subject-status (required)
+                   Identifier 0..1
+                   TerminationReason from ResearchSubjectTerminationReasonVS (required)

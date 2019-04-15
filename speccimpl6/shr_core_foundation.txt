@@ -1,7 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 
 Abstract:          Resource
@@ -9,6 +9,85 @@ Description:       "Parent class for any item in clinical or administrative heal
 Property:          Metadata 0..1
 Property:          Language 0..1
 Property:          ImplicitRules 0..1
+
+Abstract:          DomainResource
+Parent:            Resource
+Description:       "Parent class for any item in clinical or administrative health-related system. A DomainResource can belong to a single person's health record, or represent an entity that surfaces in multiple records, such as organizations, providers, payments, decision support artifacts, etc."
+Property:          Narrative 0..1
+Property:          Status 0..1
+Property:          Identifier 0..*
+
+Element:           Status
+Description:       "A state that relates to the workflow or interpretation of this resource. Certain status values can modify the meaning of the resource, for example, entered-in-error. When a boolean value is used, Status of true indicates the record is active, false means inactive."
+Value:             concept
+
+Abstract:          ClinicalStatement
+Parent:            DomainResource
+Description:       "This abstract class provides properties and behaviors common to entries in a medical record. Patient and Encounter are ubiquitous in clinical statements. This class also allows for common representation of simple data provenance elements asserter, recorder, and creation date."
+Property:          SubjectOfRecord 0..1
+Property:          CareContext 0..1
+Property:          StatementDateTime 0..1
+
+Entry:             Composition
+Parent:            DomainResource
+Description:       "A composition represents a set of Entries sharing common provenance, a document such as an extract from a patient record, a knowledge artifact, or a catalog definition."
+Property:          Type 1..1
+Property:          Section 0..*
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/composition-status (required)
+                   Identifier 0..1
+                   Type from http://hl7.org/fhir/ValueSet/doc-typecodes (preferred)
+
+Element:           Section
+Description:       "Represents a section containing entries in a composition."
+Property:          DomainResource 0..*
+Property:          Section 0..*
+
+Element:           SubjectOfRecord
+Description:       "The subject of a clinical statement, often called the Patient or the Subject. The SubjectOfRecord typically identifies the clinical record in which this statement is contained. If the statement should be in John Doe's patient record, then John Doe is the subject of record. When there is no patient, the SubjectOfRecord can also be a location, group, or other entity that statement pertains to. For example, observations concerning a hospital ward would have a Location as the SubjectOfRecord.
+
+Note that the word 'Subject' is used here in the sense of a person or entity subjected to observations or actions, not subject as in a conceptual topic, like heart disease."
+Value:             Patient or Practitioner or Group or Device or Specimen or Location or Medication or ResearchSubject
+
+Element:           Participant
+Concept:           MTH#C1550369
+Description:       "An entity (usually a Practitioner, Patient, or Organization but potentially a device or other entity) that participates in a healthcare task or activity."
+Value:             Patient or Practitioner or RelatedPerson or Organization or Device or Group or Location
+
+Element:           DocumentStatus
+Description:       "The status of the underlying document."
+Value:             concept
+
+Element:           SecurityLabel
+Concept:           MTH#C3858779 "security classification"
+Description:       "A code that connects the entry to a security policy. Security labels can be updated when the resource changes, or whenever the security sub-system chooses to."
+Value:             concept
+
+Entry:             DocumentReference
+Parent:            DomainResource
+Description:       "A reference to a document, used to describe a document that is made available to a healthcare system. A document is some sequence of bytes that is identifiable, establishes its own context (e.g., what subject, author, etc. can be displayed to the user), and has defined update management. The DocumentReference resource can be used with any document format that has a recognized mime type and that conforms to this definition."
+Property:          MasterIdentifier 0..1
+Property:          DocumentStatus 0..1
+Property:          Type 1..1
+Property:          Category 0..1
+Property:          SubjectOfRecord 0..1
+Property:          CreationDateTime 0..1
+Property:          StatementDateTime 1..1
+Property:          DocumentAuthor 0..*
+Property:          Authenticator 0..1
+Property:          ManagingOrganization 0..1
+Property:          DocumentReferenced 1..*
+Property:          RelatedDocument 0..*
+Property:          CommentOrDescription 0..1
+Property:          SecurityLabel 0..*
+Property:          ClinicalContext 0..1
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/document-reference-status (required)
+                   DocumentStatus from http://hl7.org/fhir/ValueSet/composition-status (required)
+                   Type from http://hl7.org/fhir/ValueSet/c80-doc-typecodes (required)
+                   Category from http://hl7.org/fhir/ValueSet/c80-doc-classcodes (required)
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   SecurityLabel from http://hl7.org/fhir/ValueSet/security-labels (extensible)
 
 Element:           Language
 Concept:           MTH#C0023008
@@ -18,13 +97,6 @@ Value:             concept
 Element:           ImplicitRules
 Description:       "A set of rules under which this content was created"
 Value:             uri
-
-Abstract:          DomainResource
-Parent:            Resource
-Description:       "Parent class for any item in clinical or administrative health-related system. A DomainResource can belong to a single person's health record, or represent an entity that surfaces in multiple records, such as organizations, providers, payments, decision support artifacts, etc."
-Property:          Narrative 0..1
-Property:          Status 0..1
-Property:          Identifier 0..*
 
 Element:           Narrative
 Description:       "A human-readable narrative, potentially including images, that contains a summary of the resource, and may be used to represent the content of the resource to a human."
@@ -38,10 +110,6 @@ Value:             xhtml
 Element:           NarrativeQualifier
 Description:       "Additional information on how the narrative was generated, and the scope of information contained."
 Value:             concept from http://hl7.org/fhir/ValueSet/narrative-status (required)
-
-Element:           Status
-Description:       "A state that relates to the workflow or interpretation of this resource. Certain status values can modify the meaning of the resource, for example, entered-in-error. When a boolean value is used, Status of true indicates the record is active, false means inactive."
-Value:             concept
 
 Element:           Metadata
 Description:       "Elements that belong to all information items."
@@ -63,53 +131,15 @@ Element:           Profile
 Description:       "The name of the FHIR profile this resource claims to conform to."
 Value:             uri
 
-Element:           SecurityLabel
-Concept:           MTH#C3858779 "security classification"
-Description:       "A code that connects the entry to a security policy. Security labels can be updated when the resource changes, or whenever the security sub-system chooses to."
-Value:             concept
-
 Element:           Tag
 Concept:           MTH#C4280044 "Metatags"
 Description:       "A code used to relate entries to categories or workflows. Applications are not required to consider the tags when interpreting the meaning of an entry."
 Value:             concept
 
-Abstract:          ClinicalStatement
-Parent:            DomainResource
-Description:       "This abstract class provides properties and behaviors common to entries in a medical record. Patient and Encounter are ubiquitous in clinical statements. This class also allows for common representation of simple data provenance elements asserter, recorder, and creation date."
-Property:          SubjectOfRecord 0..1
-Property:          CareContext 0..1
-Property:          StatementDateTime 0..1
-
-Element:           SubjectOfRecord
-Description:       "The subject of a clinical statement, often called the Patient or the Subject. The SubjectOfRecord typically identifies the clinical record in which this statement is contained. If the statement should be in John Doe's patient record, then John Doe is the subject of record. When there is no patient, the SubjectOfRecord can also be a location, group, or other entity that statement pertains to. For example, observations concerning a hospital ward would have a Location as the SubjectOfRecord.
-
-Note that the word 'Subject' is used here in the sense of a person or entity subjected to observations or actions, not subject as in a conceptual topic, like heart disease."
-Value:             Patient or Practitioner or Group or Device or Specimen or Location or Medication or ResearchSubject
-
 Element:           StatementDateTime
 Concept:           MTH#C3669169
 Description:       "The point in time when the statement was created."
 Value:             dateTime
-
-Element:           Participant
-Concept:           MTH#C1550369
-Description:       "An entity (usually a Practitioner, Patient, or Organization but potentially a device or other entity) that participates in a healthcare task or activity."
-Value:             Patient or Practitioner or RelatedPerson or Organization or Device or Group or Location
-
-Entry:             Composition
-Parent:            DomainResource
-Description:       "A composition represents a set of Entries sharing common provenance, a document such as an extract from a patient record, a knowledge artifact, or a catalog definition."
-Property:          Identifier 0..1
-Property:          Status 1..1
-Property:          Type 1..1
-Property:          Section 0..*
-                   Status from http://hl7.org/fhir/ValueSet/composition-status (required)
-                   Type from http://hl7.org/fhir/ValueSet/doc-typecodes (preferred)
-
-Element:           Section
-Description:       "Represents a section containing entries in a composition."
-Property:          DomainResource 0..*
-Property:          Section 0..*
 
 Entry:             ValueSet
 Parent:            DomainResource
@@ -118,7 +148,6 @@ Property:          Url 0..1
 Property:          VersionString 0..1
 Property:          NameAsText 0..1
 Property:          Title 0..1
-Property:          Status 1..1
 Property:          IsExperimental 0..1
 Property:          SubjectType 0..*
 Property:          LastUpdated 0..1
@@ -133,7 +162,8 @@ Property:          Copyright 0..1
 Property:          IsExtensible 0..1
 Property:          ContentLogicalDefinition 0..1
 Property:          ValueSetExpansion 0..1
-                   Status from http://hl7.org/fhir/ValueSet/publication-status (required)
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/publication-status (required)
 
 Element:           IsExperimental
 Description:       "A Boolean value to indicate that the item is for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage."
@@ -249,7 +279,7 @@ Property:          CreationDateTime 1..1
 Property:          TotalCount 0..1
 Property:          Offset 0..1
 Property:          ExpansionParameter 0..*
-Property:          Expansionconcept 0..*
+Property:          ExpansionCoding 0..*
 
 Element:           TotalCount
 Description:       "Total number of items."
@@ -274,7 +304,7 @@ Description:       "The codes that are contained in the value set expansion."
 Property:          Inactive 0..1
 Property:          NonSelectable 0..1
 Property:          Designation 0..*
-Property:          Expansionconcept 0..*
+Property:          ExpansionCoding 0..*
 
 Element:           Inactive
 Description:       "A flag that indicates whether the item is inactive."
@@ -283,32 +313,6 @@ Value:             boolean
 Element:           NonSelectable
 Description:       "A flag that indicates whether the use cannot select this item."
 Value:             boolean
-
-Entry:             DocumentReference
-Parent:            DomainResource
-Description:       "A reference to a document, used to describe a document that is made available to a healthcare system. A document is some sequence of bytes that is identifiable, establishes its own context (e.g., what subject, author, etc. can be displayed to the user), and has defined update management. The DocumentReference resource can be used with any document format that has a recognized mime type and that conforms to this definition."
-Property:          MasterIdentifier 0..1
-Property:          Status 1..1
-Property:          DocumentStatus 0..1
-Property:          Type 1..1
-Property:          Category 0..1
-Property:          SubjectOfRecord 0..1
-Property:          CreationDateTime 0..1
-Property:          StatementDateTime 1..1
-Property:          DocumentAuthor 0..*
-Property:          Authenticator 0..1
-Property:          ManagingOrganization 0..1
-Property:          DocumentReferenced 1..*
-Property:          RelatedDocument 0..*
-Property:          CommentOrDescription 0..1
-Property:          SecurityLabel 0..*
-Property:          ClinicalContext 0..1
-                   Status from http://hl7.org/fhir/ValueSet/document-reference-status (required)
-                   DocumentStatus from http://hl7.org/fhir/ValueSet/composition-status (required)
-                   Type from http://hl7.org/fhir/ValueSet/c80-doc-typecodes (required)
-                   Category from http://hl7.org/fhir/ValueSet/c80-doc-classcodes (required)
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   SecurityLabel from http://hl7.org/fhir/ValueSet/security-labels (extensible)
 
 Element:           PatientSubjectOfRecord
 Parent:            ObservationSubjectOfRecord
@@ -323,10 +327,6 @@ Element:           DocumentAuthor
 Description:       "The author of the document."
 Value:             Practitioner or Organization or Device or Patient or RelatedPerson
 
-Element:           DocumentStatus
-Description:       "The status of the underlying document."
-Value:             concept
-
 Element:           Authenticator
 Description:       "Who authenticated the document"
 Value:             Practitioner or Organization
@@ -334,20 +334,21 @@ Value:             Practitioner or Organization
 Element:           DocumentReferenced
 Description:       "The document referenced."
 Property:          Attachment 1..1
+Property:          Attachment 1..1
 Property:          Type 0..1
                    Attachment
                    Attachment
                    Type from http://hl7.org/fhir/ValueSet/formatcodes (extensible)
+
+Element:           Relationship
+Description:       "A description of the association between two items."
+Value:             concept
 
 Element:           RelatedDocument
 Description:       "Documents related to this one."
 Property:          Relationship 1..1
 Property:          DocumentReference 1..1
                    Relationship from http://hl7.org/fhir/ValueSet/document-relationship-type (required)
-
-Element:           Relationship
-Description:       "A description of the association between two items."
-Value:             concept
 
 Element:           ClinicalContext
 Description:       "Clinical context of document"
@@ -366,7 +367,7 @@ Value:             concept from http://hl7.org/fhir/ValueSet/v3-ActCode (example
 
 Element:           FacilityType
 Description:       "Kind of facility where patient was seen"
-Value:             concept from http://hl7.org/fhir/ValueSet/c80-facilityconcepts (example)
+Value:             concept from http://hl7.org/fhir/ValueSet/c80-facilitycodes (example)
 
 Element:           ContemporaneousPatientInformation
 Description:       "he Patient Information as known when the document was published. May be a reference to a version specific, or contained."

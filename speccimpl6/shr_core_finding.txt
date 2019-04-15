@@ -1,11 +1,154 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 CodeSystem:        OBSCAT = http://hl7.org/fhir/observation-category
 CodeSystem:        LNC = http://loinc.org
 CodeSystem:        SCT = http://snomed.info/sct
+
+Abstract:          SituationStatement
+Parent:            ClinicalStatement
+Description:       "An assertion, determination, opinion, evaluation, result, observation, or measurement made by a person or device."
+Property:          Code 1..1
+
+Element:           ClinicalStatus
+Description:       "A flag indicating whether the condition is active or inactive, recurring, in remission, or resolved (as of the last update of the Condition)."
+Value:             concept
+
+Element:           Severity
+Concept:           MTH#C0392364
+Description:       "Degree of harshness or extent of a symptom, disorder, or condition."
+Value:             concept
+
+Entry:             Condition
+Parent:            SituationStatement
+Description:       "A condition that is or may be present in a subject. 'Condition' is interpreted broadly and could be a disorder, abnormality, problem, injury, complaint, functionality, illness, disease, ailment, sickness, affliction, upset, difficulty, disorder, symptom, worry, or trouble.
+The Observation-based class, ConditionAbsent, should be used to describe conditions that are not present or negative findings.
+SHR Condition uses the SHR BodyLocation structure that includes not only a code, but optional laterality, direction, clock direction, and distance. If included, the distance is measured from the location specified by the code, laterality, and direction."
+Property:          PersonInformationSource 0..1
+Property:          Category 1..1
+Property:          BodyLocation 0..*
+Property:          ClinicalStatus 1..1
+Property:          Severity 0..1
+Property:          StageInformation 0..1
+Property:          Onset 0..1
+Property:          Abatement 0..1
+Property:          Evidence 0..1
+Property:          DateOfDiagnosis 0..1
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/condition-ver-status (required)
+                   SubjectOfRecord 1..1
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-problem (extensible)
+                   Category from ConditionCategoryVS (required)
+                   ClinicalStatus from http://hl7.org/fhir/ValueSet/condition-clinical (required)
+                   Severity from http://hl7.org/fhir/ValueSet/condition-severity (required)
+
+Element:           StageInformation
+Concept:           MTH#C0699749
+Description:       "The relative advancement in the course of a disease. The StageCode is the summary stage or stage group. StageDetail optionally contains the full staging information."
+Property:          StageSummary 0..1
+Property:          StageDetail 0..1
+
+Element:           StageDetail
+Description:       "The full staging information"
+Value:             Observation
+
+Element:           Evidence
+Description:       "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition."
+Property:          Manifestation 0..*
+Property:          DomainResource 0..*
+
+Element:           Manifestation
+Description:       "Clinical symptoms/signs."
+Value:             concept from http://hl7.org/fhir/ValueSet/clinical-findings (example)
+
+Entry:             Observation
+Parent:            SituationStatement
+Description:       "Represents the result of evaluations (measurements, tests, or questions) that have been performed.
+Observation has a value representing the result (answer), or an DataAbsentReason indicating why the value is not present. Things observed about the subject can include social and behavioral factors, subjective and objective observations, and assessments.
+For an Observation, the Code describes the aspect or property of the subject being observed or measured. The Code is the 'question code' that pairs to the 'answer' contained in the Value."
+Property:          DataValue 0..1
+Property:          DataAbsentReason 0..1
+Property:          Method 0..1
+Property:          RelevantTime 0..1
+Property:          Category 0..1
+Property:          Performer 0..*
+Property:          BodyLocation 0..1
+Property:          CommentOrDescription 0..1
+Property:          Interpretation 0..1
+Property:          Device 0..1
+Property:          ReferenceRange 0..1
+Property:          Components 0..1
+Property:          PanelMembers 0..1
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/observation-status (required)
+                   SubjectOfRecord 1..1
+                   SubjectOfRecord substitute ObservationSubjectOfRecord
+                   CareContext only Encounter
+                   Category from http://hl7.org/fhir/ValueSet/observation-category (extensible)
+
+Entry:             LaboratoryObservation
+Parent:            Observation
+Description:       "A coded finding based on a specimen, usually collected from a patient (but possibly from a location)."
+Property:          Specimen 0..1
+                   Identifier
+                   includes AccessionIdentifier 0..1
+                   includes FillerOrderNumber 0..1
+                   includes PlacerOrderNumber 0..1
+                   Code from http://hl7.org/fhir/ValueSet/observation-codes (extensible)
+                   Category 1..1
+                   Category[CodeableConcept] = OBSCAT#laboratory
+                   Performer
+                   includes ResponsibleObserver 0..1
+                   includes PerformingLaboratory 0..1
+                   includes PerformingOrganizationMedicalDirector 0..1
+                   BodyLocation 0..0
+
+Element:           DataValue
+Description:       "The value or result of a test, evaluation, or judgment, for example, a systolic blood pressure, or if a condition or body structure is present or absent."
+Value:             concept or Quantity or string or Range or Ratio or time or dateTime or TimePeriod
+
+Entry:             CodedLaboratoryObservation
+Parent:            LaboratoryObservation
+Description:       "A coded result from a laboratory test."
+                   DataValue only concept
+                   ReferenceRange 0..0
+
+Entry:             SimpleCodedLaboratoryObservation
+Parent:            CodedLaboratoryObservation
+Description:       "A coded result from a laboratory test without further panel members or components."
+                   Components 0..0
+                   PanelMembers 0..0
+
+Entry:             NonLaboratoryObservation
+Parent:            Observation
+Description:       "An observation not based on a specimen."
+
+Entry:             CodedNonLaboratoryObservation
+Parent:            NonLaboratoryObservation
+Description:       "The result of evaluations (measurements, tests, or questions) whose answer is expressed as a code."
+                   DataValue only concept
+                   ReferenceRange 0..0
+
+Element:           PanelMembers
+Description:       "PanelMembers represent the elements of a group of a related but independent evaluations.
+
+Examples are the measurements that compose a complete blood count (CBC), or the elements of a pathology report. Each member is an independent evaluation, but the grouping reflects a composite lab order, shared specimen, or a single report author. Typically the Category and ReasonCode are not given for individual findings that are part of the panel, but rather given at the level of the panel itself."
+Property:          Observation 0..*
+
+Entry:             ComponentOnlyNonLaboratoryObservation
+Parent:            NonLaboratoryObservation
+Description:       "An observation with components, but without a result value or panel members."
+                   DataValue 0..0
+                   DataAbsentReason 0..0
+                   ReferenceRange 0..0
+                   PanelMembers 0..0
+
+Element:           Components
+Description:       "Sub-observations that are part of this observation. A sub-observation contributs to the parent observation and are always treated a part of a single observation (they are not separable). However, the reference range for the primary observation value is not inherited by the component values and is required when appropriate for each component observation."
+Property:          ObservationComponent 0..*
 
 Abstract:          ObservationComponent
 Description:       "A sub-observation contributing to the parent observation, expressed as separate code value pairs that share the same attributes. Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations. Component observations share the same attributes in the Observation resource as the primary observation and are always treated a part of a single observation (they are not separable). However, the reference range for the primary observation value is not inherited by the component values and is required when appropriate for each component observation."
@@ -15,9 +158,98 @@ Property:          DataAbsentReason 0..1
 Property:          ReferenceRange 0..1
 Property:          Interpretation 0..1
 
-Element:           DataValue
-Description:       "The value or result of a test, evaluation, or judgment, for example, a systolic blood pressure, or if a condition or body structure is present or absent."
-Value:             concept or Quantity or string or Range or Ratio or time or dateTime or TimePeriod
+Abstract:          CodedObservationComponent
+Parent:            ObservationComponent
+Description:       "A non-independent finding whose result is a concept code."
+                   DataValue only concept
+                   ReferenceRange 0..0
+
+Abstract:          QuantitativeObservationComponent
+Parent:            ObservationComponent
+Description:       "A non-independent finding whose result is a quantity."
+                   DataValue only Quantity
+
+Element:           Interpretation
+Concept:           MTH#C0420833
+Description:       "A clinical interpretation of a finding (applies to both assertions and observation)."
+Value:             concept from http://hl7.org/fhir/ValueSet/observation-interpretation (extensible)
+
+Entry:             SimpleLaboratoryObservation
+Parent:            LaboratoryObservation
+Description:       "A result from a laboratory test without panel members or components."
+                   Components 0..0
+                   PanelMembers 0..0
+
+Element:           SocialHistoryObservation
+Parent:            NonLaboratoryObservation
+Description:       "A simplified observation for social histories."
+                   SubjectOfRecord substitute PatientSubjectOfRecord
+                   DataAbsentReason 0..0
+                   Method 0..0
+                   Category = OBSCAT#social-history "Social History"
+                   BodyLocation 0..0
+                   Device 0..0
+                   ReferenceRange 0..0
+                   PanelMembers 0..0
+
+Element:           CodedSocialHistoryObservation
+Parent:            SocialHistoryObservation
+Description:       "The result of social history questions, whose answer is expressed as a code."
+                   DataValue only concept
+
+Element:           RelevantTime
+Description:       "The time or time period that the statement addresses.
+The clinically relevant time is not necessarily when the information is gathered or when a test is carried out, but for example, when a specimen was collected, or the time period referred to by the question. Use a TimePeriod for a measurement or specimen collection continued over a significant period of time (e.g. 24 hour Urine Sodium)."
+Value:             dateTime or TimePeriod
+
+Element:           PersonInformationSource
+Description:       "The person who provided the information, not necessarily the patient."
+Value:             Patient or Practitioner or RelatedPerson
+
+Entry:             BodyStructure
+Parent:            Condition
+Description:       "A body structure such as wound or tumor, observed to be present in a patient. The body structure is a condition that persists over time. The Code represents the body structure itself (the morphology), while the BodyLocation is the location of that structure. This corresponds to FHIR R4, where the BodyStructure resource has morphology (corresponding to Code) and a location. For example, the Code could be blunt force injury (SCT 3821009) and location left knee."
+Property:          ReferenceRange 0..0
+                   Code from BodyStructureVS (extensible)
+
+Entry:             DiagnosticReport
+Parent:            SituationStatement
+Property:          RelatedRequest 0..*
+Property:          Category 0..1
+Property:          RelevantTime 0..1
+Property:          Participation 0..1
+Property:          Participation 0..1
+Property:          Participation 0..1
+Property:          Participation 0..1
+Property:          Specimen 0..*
+Property:          Observation 0..*
+Property:          Media 0..*
+Property:          Conclusion 0..1
+Property:          DiagnosisCode 0..*
+Property:          OriginalReport 0..*
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/diagnostic-report-status (required)
+                   SubjectOfRecord substitute ObservationSubjectOfRecord
+                   StatementDateTime 1..1
+                   Code from http://hl7.org/fhir/ValueSet/report-codes (preferred)
+                   RelatedRequest substitute MedicationStatementRelatedRequest
+                   Participation
+                   Participation substitute DiagnosticReportParticipant
+                   Participation
+                   Participation
+                   Participation
+
+Entry:             SimpleCodedNonLaboratoryObservation
+Parent:            CodedNonLaboratoryObservation
+Description:       "An observation whose result is a code, and also having no components or panel members"
+                   Components 0..0
+                   PanelMembers 0..0
+
+Entry:             SimpleNonLaboratoryObservation
+Parent:            NonLaboratoryObservation
+Description:       "An observation having no components or panel members"
+                   Components 0..0
+                   PanelMembers 0..0
 
 Element:           DataAbsentReason
 Description:       "Reason that a value associated with a test or other finding is missing."
@@ -41,144 +273,32 @@ Element:           ApplicableAgeRange
 Description:       "The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so."
 Value:             Range
 
-Abstract:          CodedObservationComponent
-Parent:            ObservationComponent
-Description:       "A non-independent finding whose result is a concept code."
-Property:          ReferenceRange 0..0
-                   DataValue only CodeableConcept
-
-Abstract:          QuantitativeObservationComponent
-Parent:            ObservationComponent
-Description:       "A non-independent finding whose result is a quantity."
-                   DataValue only Quantity
-
-Abstract:          SituationStatement
-Parent:            ClinicalStatement
-Description:       "An assertion, determination, opinion, evaluation, result, observation, or measurement made by a person or device."
-Property:          Code 1..1
-
-Entry:             Observation
-Parent:            SituationStatement
-Description:       "Represents the result of evaluations (measurements, tests, or questions) that have been performed.
-Observation has a value representing the result (answer), or an DataAbsentReason indicating why the value is not present. Things observed about the subject can include social and behavioral factors, subjective and objective observations, and assessments.
-For an Observation, the Code describes the aspect or property of the subject being observed or measured. The Code is the 'question code' that pairs to the 'answer' contained in the Value."
-Property:          DataValue 0..1
-Property:          DataAbsentReason 0..1
-Property:          Method 0..1
-Property:          RelevantTime 0..1
-Property:          Status 1..1
-Property:          Category 0..1
-Property:          Performer 0..*
-Property:          BodyLocation 0..1
-Property:          CommentOrDescription 0..1
-Property:          Interpretation 0..1
-Property:          Device 0..1
-Property:          ReferenceRange 0..1
-Property:          Components 0..1
-Property:          PanelMembers 0..1
-Property:          SubjectOfRecord 1..1
-                   Status from http://hl7.org/fhir/ValueSet/observation-status (required)
-                   Category from http://hl7.org/fhir/ValueSet/observation-category (extensible)
-                   SubjectOfRecord only ObservationSubjectOfRecord
-                   CareContext only Encounter
-
 Element:           ObservationSubjectOfRecord
 Parent:            SubjectOfRecord
 Description:       "A choice of Patient, Group, Device, or Location. These are the potential subjects for an Observation."
 Value:             Patient or Group or Device or Location
 
-Element:           RelevantTime
-Description:       "The time or time period that the statement addresses.
-The clinically relevant time is not necessarily when the information is gathered or when a test is carried out, but for example, when a specimen was collected, or the time period referred to by the question. Use a TimePeriod for a measurement or specimen collection continued over a significant period of time (e.g. 24 hour Urine Sodium)."
-Value:             dateTime or TimePeriod
-
 Element:           Performer
 Description:       "The actor that carried out the observation or action."
 Value:             Practitioner or Organization or Patient or RelatedPerson
-
-Element:           Interpretation
-Concept:           MTH#C0420833
-Description:       "A clinical interpretation of a finding (applies to both assertions and observation)."
-Value:             concept from http://hl7.org/fhir/ValueSet/observation-interpretation (extensible)
-
-Element:           PanelMembers
-Description:       "PanelMembers represent the elements of a group of a related but independent evaluations.
-
-Examples are the measurements that compose a complete blood count (CBC), or the elements of a pathology report. Each member is an independent evaluation, but the grouping reflects a composite lab order, shared specimen, or a single report author. Typically the Category and ReasonCode are not given for individual findings that are part of the panel, but rather given at the level of the panel itself."
-Property:          Observation 0..*
-
-Element:           Components
-Description:       "Sub-observations that are part of this observation. A sub-observation contributs to the parent observation and are always treated a part of a single observation (they are not separable). However, the reference range for the primary observation value is not inherited by the component values and is required when appropriate for each component observation."
-Property:          ObservationComponent 0..*
-
-Entry:             NonLaboratoryObservation
-Parent:            Observation
-Description:       "An observation not based on a specimen."
-
-Entry:             SimpleNonLaboratoryObservation
-Parent:            NonLaboratoryObservation
-Description:       "An observation having no components or panel members"
-Property:          Components 0..0
-Property:          PanelMembers 0..0
-
-Entry:             CodedNonLaboratoryObservation
-Parent:            NonLaboratoryObservation
-Description:       "The result of evaluations (measurements, tests, or questions) whose answer is expressed as a code."
-Property:          ReferenceRange 0..0
-                   DataValue only CodeableConcept
 
 Entry:             QuantitativeNonLaboratoryObservation
 Parent:            NonLaboratoryObservation
 Description:       "The result of evaluations (measurements, tests, or questions) whose answer is expressed as a code."
                    DataValue only Quantity
-                   Interpretation from http://hl7.org/fhir/us/projectURL/shr/core/vs/QuantitativeResultInterpretationVS (extensible)
-
-Entry:             SimpleCodedNonLaboratoryObservation
-Parent:            CodedNonLaboratoryObservation
-Description:       "An observation whose result is a code, and also having no components or panel members"
-Property:          Components 0..0
-Property:          PanelMembers 0..0
-
-Entry:             ComponentOnlyNonLaboratoryObservation
-Parent:            NonLaboratoryObservation
-Description:       "An observation with components, but without a result value or panel members."
-Property:          DataValue 0..0
-Property:          DataAbsentReason 0..0
-Property:          PanelMembers 0..0
-Property:          ReferenceRange 0..0
-
-Entry:             LaboratoryObservation
-Parent:            Observation
-Description:       "A coded finding based on a specimen, usually collected from a patient (but possibly from a location)."
-Property:          Category 1..1
-Property:          Specimen 0..1
-Property:          BodyLocation 0..0
-                   Code from http://hl7.org/fhir/ValueSet/observation-codes (extensible)
-                   Category = OBSCAT#laboratory
-                   Identifier
-                   includes AccessionIdentifier 0..1
-                   Identifier
-                   includes FillerOrderNumber 0..1
-                   Identifier
-                   includes PlacerOrderNumber 0..1
-                   Performer
-                   includes ResponsibleObserver 0..1
-                   Performer
-                   includes PerformingLaboratory 0..1
-                   Performer
-                   includes PerformingOrganizationMedicalDirector 0..1
+                   Interpretation from QuantitativeResultInterpretationVS (extensible)
 
 Element:           PlacerOrderNumber
 Parent:            Identifier
 Description:       "Identifier assigned by the requester of the lab."
-Property:          Type 1..1
-                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#PLAC
+                   Type 1..1
+                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#PLAC
 
 Element:           FillerOrderNumber
 Parent:            Identifier
 Description:       "Identifier assigned by the lab carrying out the test."
-Property:          Type 1..1
-                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#FILL
+                   Type 1..1
+                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#FILL
 
 Element:           ResponsibleObserver
 Parent:            Performer
@@ -200,130 +320,52 @@ Parent:            Performer
 Description:       "The practitioner that carried out the observation or action."
 Value:             Practitioner
 
-Entry:             CodedLaboratoryObservation
-Parent:            LaboratoryObservation
-Description:       "A coded result from a laboratory test."
-Property:          ReferenceRange 0..0
-                   DataValue only CodeableConcept
-
-Entry:             SimpleLaboratoryObservation
-Parent:            LaboratoryObservation
-Description:       "A result from a laboratory test without panel members or components."
-Property:          Components 0..0
-Property:          PanelMembers 0..0
-
-Entry:             SimpleCodedLaboratoryObservation
-Parent:            CodedLaboratoryObservation
-Description:       "A coded result from a laboratory test without further panel members or components."
-Property:          Components 0..0
-Property:          PanelMembers 0..0
-
 Entry:             QuantitativeLaboratoryObservation
 Parent:            LaboratoryObservation
 Description:       "A quantiative result from a laboratory test."
                    DataValue only Quantity
-                   Interpretation from http://hl7.org/fhir/us/projectURL/shr/core/vs/QuantitativeResultInterpretationVS (extensible)
+                   Interpretation from QuantitativeResultInterpretationVS (extensible)
 
 Entry:             SimpleQuantitativeLaboratoryObservation
 Parent:            QuantitativeLaboratoryObservation
 Description:       "An observation whose result is a quantity, with no components or panel members"
-Property:          Components 0..0
-Property:          PanelMembers 0..0
+                   Components 0..0
+                   PanelMembers 0..0
 
 Entry:             LaboratoryPanel
 Parent:            LaboratoryObservation
 Description:       "A set of independent but related observations that are often presented together to facilitate interpretation, such as a lipid panel."
-Property:          Components 0..0
-Property:          BodyLocation 0..0
-Property:          Device 0..0
+                   Device 0..0
+                   Components 0..0
 
 Entry:             HeadlessLaboratoryPanel
 Parent:            LaboratoryPanel
 Description:       "A panel that does not have an overall value that summarizes the entire panel."
-Property:          DataValue 0..0
-Property:          DataAbsentReason 0..0
-Property:          ReferenceRange 0..0
+                   DataValue 0..0
+                   DataAbsentReason 0..0
+                   ReferenceRange 0..0
 
 Entry:             Panel
 Parent:            Observation
 Description:       "A set of independent but related observations that are often presented together to facilitate interpretation, such as a lipid panel."
-Property:          Components 0..0
-Property:          BodyLocation 0..0
-Property:          Device 0..0
+                   BodyLocation 0..0
+                   Device 0..0
+                   Components 0..0
 
 Entry:             HeadlessPanel
 Parent:            Panel
 Description:       "A panel that does not have an overall value that summarizes the entire panel."
-Property:          DataValue 0..0
-Property:          DataAbsentReason 0..0
-Property:          ReferenceRange 0..0
-
-Element:           SocialHistoryObservation
-Parent:            NonLaboratoryObservation
-Description:       "A simplified observation for social histories."
-Property:          SubjectOfRecord 1..1
-Property:          Method 0..0
-Property:          BodyLocation 0..0
-Property:          ReferenceRange 0..0
-Property:          PanelMembers 0..0
-Property:          Device 0..0
-Property:          DataAbsentReason 0..0
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Category = OBSCAT#social-history "Social History"
-
-Element:           CodedSocialHistoryObservation
-Parent:            SocialHistoryObservation
-Description:       "The result of social history questions, whose answer is expressed as a code."
-                   DataValue only CodeableConcept
-
-Entry:             Condition
-Parent:            SituationStatement
-Description:       "A condition that is or may be present in a subject. 'Condition' is interpreted broadly and could be a disorder, abnormality, problem, injury, complaint, functionality, illness, disease, ailment, sickness, affliction, upset, difficulty, disorder, symptom, worry, or trouble.
-The Observation-based class, ConditionAbsent, should be used to describe conditions that are not present or negative findings.
-SHR Condition uses the SHR BodyLocation structure that includes not only a code, but optional laterality, direction, clock direction, and distance. If included, the distance is measured from the location specified by the code, laterality, and direction."
-Property:          PersonInformationSource 0..1
-Property:          SubjectOfRecord 1..1
-Property:          Category 1..1
-Property:          BodyLocation 0..*
-Property:          Status 1..1
-Property:          ClinicalStatus 1..1
-Property:          Severity 0..1
-Property:          StageInformation 0..1
-Property:          Onset 0..1
-Property:          Abatement 0..1
-Property:          Evidence 0..1
-Property:          DateOfDiagnosis 0..1
-                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-problem (extensible)
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Category from http://hl7.org/fhir/us/projectURL/shr/core/vs/ConditionCategoryVS (required)
-                   Status from http://hl7.org/fhir/ValueSet/condition-ver-status (required)
-                   ClinicalStatus from http://hl7.org/fhir/ValueSet/condition-clinical (required)
-                   Severity from http://hl7.org/fhir/ValueSet/condition-severity (required)
+                   DataValue 0..0
+                   DataAbsentReason 0..0
+                   ReferenceRange 0..0
 
 Element:           DateOfDiagnosis
 Description:       "The date the disease was first clinically recognized with sufficient certainty, regardless of whether it was fully characterized at that time."
 Value:             date
 
-Element:           PersonInformationSource
-Description:       "The person who provided the information, not necessarily the patient."
-Value:             Patient or Practitioner or RelatedPerson
-
-Element:           Evidence
-Description:       "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition."
-Property:          Manifestation 0..*
-Property:          DomainResource 0..*
-
-Element:           Manifestation
-Description:       "Clinical symptoms/signs."
-Value:             concept from http://hl7.org/fhir/ValueSet/clinical-findings (example)
-
 Element:           ConditionCause
 Description:       "The cause of the condition. This includes such causes as disease vectors and endogenous states (e.g., macular degeneration due to diabetes), substances, medications, micro-organisms, and forces associated with the occurrence of a Condition from temporal or causative perspectives"
 Value:             concept or Entity or SituationStatement
-
-Element:           ClinicalStatus
-Description:       "A flag indicating whether the condition is active or inactive, recurring, in remission, or resolved (as of the last update of the Condition)."
-Value:             concept
 
 Element:           WhenClinicallyRecognized
 Description:       "The time at which a condition or condition was first identified in a healthcare context."
@@ -334,29 +376,14 @@ Concept:           LNC#89251-3 "Condition present on admission"
 Description:       "If the problem or condition existed before the current episode of care."
 Value:             concept from YesNoUnknownVS (required)
 
-Element:           Severity
-Concept:           MTH#C0392364
-Description:       "Degree of harshness or extent of a symptom, disorder, or condition."
-Value:             concept
-
 Element:           Criticality
 Concept:           MTH#C3858539 "Criticality"
 Description:       "The potential clinical harm associated with a condition. When the worst case result is assessed to have a life-threatening or organ system threatening potential, it is considered to be of high criticality."
 Value:             concept from http://hl7.org/fhir/ValueSet/allergy-intolerance-criticality (required)
 
-Element:           StageInformation
-Concept:           MTH#C0699749
-Description:       "The relative advancement in the course of a disease. The StageCode is the summary stage or stage group. StageDetail optionally contains the full staging information."
-Property:          StageSummary 0..1
-Property:          StageDetail 0..1
-
 Element:           StageSummary
 Description:       "A code representing the current stage of a disease."
 Value:             concept
-
-Element:           StageDetail
-Description:       "The full staging information"
-Value:             Observation
 
 Element:           AlleviatingFactor
 Concept:           LNC#55258-8
@@ -381,47 +408,14 @@ Value:             dateTime or Age or boolean or TimePeriod or Range or string
 Entry:             ComorbidCondition
 Parent:            Condition
 Description:       "A comorbidity refers to one or more diseases or conditions that occur along with another condition in the same person at the same time. Conditions considered comorbidities are often long-term or chronic conditions. Comorbidities are defined relative to an index disease and may be categorical, rather than described in full detail. The comorbid condition class provides comorbidity codes corresponding to the Adult Cormorbidity Evaluation-27. If the grade (1-3) is reported, it shall be reported in the stage summary field."
-                   Code from http://hl7.org/fhir/us/projectURL/shr/core/vs/ComorbidConditionCodeVS (extensible)
+                   Code from ComorbidConditionCodeVS (extensible)
                    Category = SCT#398192003 "Co-morbid conditions (finding)"
-
-Entry:             BodyStructure
-Parent:            Condition
-Description:       "A body structure such as wound or tumor, observed to be present in a patient. The body structure is a condition that persists over time. The Code represents the body structure itself (the morphology), while the BodyLocation is the location of that structure. This corresponds to FHIR R4, where the BodyStructure resource has morphology (corresponding to Code) and a location. For example, the Code could be blunt force injury (SCT 3821009) and location left knee."
-Property:          ReferenceRange 0..0
-                   Code from http://hl7.org/fhir/us/projectURL/shr/core/vs/BodyStructureVS (extensible)
 
 Entry:             CongenitalAbnormality
 Parent:            Condition
 Concept:           MTH#C0000768 "Congenital Abnormality"
 Description:       "Any abnormality, genetic, anatomical, biochemical, evident at birth or during the neonatal period. Includes malformations, deformations, and chromosomal abnormalities."
-                   Code from http://hl7.org/fhir/us/projectURL/shr/core/vs/CongenitalAbnormalitiesVS (extensible)
-
-Entry:             DiagnosticReport
-Parent:            SituationStatement
-Property:          RelatedRequest 0..*
-Property:          Status 1..1
-Property:          Category 0..1
-Property:          SubjectOfRecord 0..1
-Property:          Code 1..1
-Property:          CareContext 0..1
-Property:          RelevantTime 0..1
-Property:          StatementDateTime 1..1
-Property:          Participation 0..1
-Property:          Specimen 0..*
-Property:          Observation 0..*
-Property:          Media 0..*
-Property:          Conclusion 0..1
-Property:          DiagnosisCode 0..*
-Property:          OriginalReport 0..*
-                   RelatedRequest only MedicationStatementRelatedRequest
-                   Status from http://hl7.org/fhir/ValueSet/diagnostic-report-status (required)
-                   SubjectOfRecord only ObservationSubjectOfRecord
-                   Code from http://hl7.org/fhir/ValueSet/report-codes (preferred)
-                   Participation
-                   Participation only DiagnosticReportParticipant
-                   Participation
-                   Participation
-                   Participation
+                   Code from CongenitalAbnormalitiesVS (extensible)
 
 Element:           DiagnosticReportParticipant
 Parent:            Participant
@@ -443,7 +437,5 @@ Value:             Attachment
 Entry:             ClinicalNote
 Parent:            DocumentReference
 Description:       "An entry concerning a patient where the result is a narrative text."
-Property:          Type 1..1
-Property:          Category 1..1
-                   Type from http://hl7.org/fhir/ValueSet/c80-doc-typecodes (required)
-                   Category from http://fhir.org/guides/argonaut-clinicalnotes/ValueSet/documentreference-category (required)
+                   Category 1..1
+                   Category[CodeableConcept] from http://fhir.org/guides/argonaut-clinicalnotes/ValueSet/documentreference-category (required)

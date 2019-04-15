@@ -7,18 +7,18 @@ CodeSystem:        LNC = http://loinc.org
 Entry:             FamilyMember
 Parent:            RelatedPerson
 Description:       "A related person that is a family member of the patient. This includes biological and non-biological family, as well as extended family."
-Property:          RelationshipToPatient 1..1
+                   RelationshipToPatient 1..1
 
 Entry:             FamilyMemberHistory
 Parent:            ClinicalStatement
 Concept:           LNC#54114-4 "Family member health history [USSG-FHT] Family member"
 Description:       "The health history of a patient's family member."
-Property:          SubjectOfRecord 1..1
 Property:          FamilyMember 1..1
-Property:          Status 1..1
 Property:          FamilyMemberCondition 0..*
-                   SubjectOfRecord only PatientSubjectOfRecord
-                   Status from http://hl7.org/fhir/ValueSet/history-status (required)
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/history-status (required)
+                   SubjectOfRecord 1..1
+                   SubjectOfRecord substitute PatientSubjectOfRecord
 
 Element:           FamilyMemberCondition
 Concept:           LNC#8670-2 "History of family member diseases"

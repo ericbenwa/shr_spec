@@ -10,17 +10,16 @@ Concept:           SCT#473010000 "Hypersensitivity condition (disorder)"
 Description:       "A finding related to the presence of an individual's risk or sensitivity to a substance or class of substances. Per US Core specification, the result includes SNOMED codes representing 'No known allergy'. In AllergyIntolerance, the reactions are included in-line, rather than referencing to conditions (in contrast to AdverseEvent)."
 Property:          PersonInformationSource 0..1
 Property:          AllergyRecorder 0..1
-Property:          SubjectOfRecord 1..1
-Property:          Status 1..1
 Property:          ClinicalStatus 0..1
-Property:          Code 1..1
 Property:          SubstanceCategory 0..1
 Property:          Onset 0..1
 Property:          Type 0..1
 Property:          Criticality 0..1
 Property:          MostRecentOccurrenceTime 0..1
 Property:          AllergyIntoleranceReaction 0..*
-                   SubjectOfRecord only PatientSubjectOfRecord
+                   Status 1..1
+                   SubjectOfRecord 1..1
+                   SubjectOfRecord substitute PatientSubjectOfRecord
                    ClinicalStatus from http://hl7.org/fhir/ValueSet/allergy-clinical-status (required)
                    Type from http://hl7.org/fhir/ValueSet/allergy-intolerance-type (required)
 

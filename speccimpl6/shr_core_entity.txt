@@ -1,17 +1,13 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 CodeSystem:        LNC = http://loinc.org
 
 Abstract:          EntityOrRole
 Parent:            DomainResource
 Description:       "Abstract parent class for both Entity and Role."
-
-Abstract:          Role
-Parent:            EntityOrRole
-Description:       "Capacity in which an actor is involved in an activity. For instance, 'attending physician'. Note that attributes of the actor (an entity) that remain constant regardless of the role the actor plays should be part of the entity and not the role. For instance, a person may be a practitioner and a patient. In both cases their date of birth will be the same and thus such information should not be part of the role."
 
 Abstract:          Entity
 Parent:            EntityOrRole
@@ -22,6 +18,68 @@ Element:           PartOf
 Description:       "The larger entity that the asserted item is a portion of. For example, an organization part of a larger organization, or an encounter with a hospitalist might be part of a larger hospitalization encounter."
 Value:             DomainResource
 
+Entry:             Specimen
+Parent:            Entity
+Description:       "A specimen is a substance, physical object, or collection of objects, that the laboratory considers a single discrete, uniquely identified unit that is the subject of one or more steps in the laboratory workflow. A specimen may include multiple physical pieces as long as they are considered a single unit within the laboratory workflow. A specimen results from one to many specimen collection procedures, and may be contained in multiple specimen containers. Specimen may have one or more processing activities."
+Property:          AccessionIdentifier 0..1
+Property:          Type 1..1
+Property:          CollectionSource 0..1
+Property:          CollectionTime 0..1
+Property:          CollectionMethod 0..1
+Property:          CollectionSite 0..1
+Property:          AmountOrSize 0..1
+Property:          ReceivedTime 0..1
+Property:          SpecimenContainer 0..*
+Property:          SpecimenTreatment 0..*
+Property:          HandlingRisk 0..*
+Property:          SpecialHandling 0..*
+                   Status from http://hl7.org/fhir/ValueSet/specimen-status (required)
+                   PartOf[DomainResource] substitute Specimen
+                   Type from http://hl7.org/fhir/ValueSet/v2-0487 (required)
+
+Element:           CollectionSite
+Description:       "The body site where specimen was collected"
+Value:             BodyLocation
+
+Element:           CollectionMethod
+Description:       "How the specimen was obtained."
+Value:             concept
+
+Abstract:          Role
+Parent:            EntityOrRole
+Description:       "Capacity in which an actor is involved in an activity. For instance, 'attending physician'. Note that attributes of the actor (an entity) that remain constant regardless of the role the actor plays should be part of the entity and not the role. For instance, a person may be a practitioner and a patient. In both cases their date of birth will be the same and thus such information should not be part of the role."
+
+Element:           Person
+Concept:           MTH#C0027361
+Description:       "A person relevant to the health or social situation of the subject (including the subject him- or herself)."
+Property:          HumanName 1..*
+Property:          DateOfBirth 0..1
+Property:          AdministrativeGender 1..1
+Property:          Address 0..*
+Property:          PhotographicImage 0..*
+Property:          ContactPoint 0..*
+Property:          Communication 0..*
+Property:          MaritalStatus 0..1
+Property:          MultipleBirth 0..1
+Property:          BirthSex 0..1
+Property:          Race 0..1
+Property:          Ethnicity 0..1
+Property:          Deceased 0..1
+
+Entry:             RelatedPerson
+Parent:            Role
+Description:       "A person in a role defined in relationship to a patient"
+Property:          Person 0..1
+Property:          RelationshipToPatient 0..1
+Property:          EffectiveTimePeriod 0..1
+                   Status from ActiveOrInactiveVS (required)
+                   Person
+
+Element:           RelationshipToPatient
+Concept:           MTH#C0015608
+Description:       "The relationship to the person of record."
+Value:             concept from http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype (required)
+
 Entry:             Patient
 Parent:            Role
 Concept:           MTH#C1299487
@@ -29,10 +87,9 @@ Description:       "A person in the role of a patient. Sometimes, the patient is
 
 SHR follows Argonaut and makes the value set binding on marital status required. SHR also adds optional extensions on communication ability to more fully characterize language skills.
 MaritalStatus has a required binding in Argonaut, but an extensible binding in US-Core. To be feasible under both DSTU2 Argonaut and STU3 US-Core, the required binding strength is adopted."
-Property:          Identifier 1..*
 Property:          Person 1..1
-Property:          Status 0..1
-                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+                   Status from ActiveOrInactiveVS (required)
+                   Identifier 1..*
 
 Element:           AccessTime
 Description:       "Point in time when data was accessed."
@@ -44,15 +101,12 @@ Concept:           MTH#C2220264
 Description:       "A person who practices a healing art.
 HumanName is limited to one required value by US-Core. Gender is required by US-Core. US-Core required an identifier, either a NPI (preferred) or tax id."
 Property:          Person 1..1
-Property:          Status 0..1
-Property:          Identifier 1..*
 Property:          Qualification 0..*
-                   Person
-                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
-                   Identifier
+                   Status from ActiveOrInactiveVS (required)
+                   Identifier 1..*
                    includes NationalProviderIdentifier 0..1
-                   Identifier
                    includes TaxIdentificationNumber 0..1
+                   Person
 
 Element:           Affiliation
 Concept:           MTH#C0932026
@@ -62,14 +116,14 @@ Value:             Organization
 Element:           NationalProviderIdentifier
 Parent:            Identifier
 Description:       "NPI: a unique 10 digit number to allow US healthcare providers to identify themselves in a standard way throughout the healthcare industry."
-Property:          Type 1..1
-                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#PRN
+                   Type 1..1
+                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#PRN
 
 Element:           TaxIdentificationNumber
 Parent:            Identifier
 Description:       "Tax identification number for the practitioner."
-Property:          Type 1..1
-                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#TAX
+                   Type 1..1
+                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#TAX
 
 Element:           Qualification
 Concept:           MTH#C0037778
@@ -80,33 +134,17 @@ Property:          EffectiveTimePeriod 0..1
 Property:          Issuer 0..1
                    Type from http://hl7.org/fhir/ValueSet/v2-2.7-0360 (example)
 
-Entry:             RelatedPerson
-Parent:            Role
-Description:       "A person in a role defined in relationship to a patient"
-Property:          Person 0..1
-Property:          Status 0..1
-Property:          RelationshipToPatient 0..1
-Property:          EffectiveTimePeriod 0..1
-                   Person
-                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
-
-Element:           RelationshipToPatient
-Concept:           MTH#C0015608
-Description:       "The relationship to the person of record."
-Value:             concept from http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype (required)
-
 Entry:             Group
 Parent:            Entity
 Concept:           MTH#C0441833
 Description:       "A set of entities (personnel, material, or places) to be considered together. May be a pool of like-type resources, a team, or combination of personnel, material and places."
-Property:          Status 0..1
 Property:          Type 1..1
 Property:          Title 0..1
 Property:          Actual 1..1
 Property:          GroupCharacteristic 0..*
 Property:          MemberParticipation 0..*
 Property:          Count 0..1
-                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
+                   Status from ActiveOrInactiveVS (required)
                    Type from http://hl7.org/fhir/ValueSet/group-type (required)
 
 Element:           Actual
@@ -145,11 +183,14 @@ Element:           InactiveFlag
 Description:       "Indicates if the member is inactive in the context of the group."
 Value:             boolean
 
+Element:           Mode
+Description:       "Indicates whether a resource instance represents a specific item or a class of items."
+Value:             concept
+
 Entry:             Location
 Parent:            Entity
 Concept:           MTH#C1547538
 Description:       "Services and space and equipment provided for a particular purpose; a building or place that provides a particular service or is used for a particular industry. Could be a clinical site, community site, or a mobile facility."
-Property:          Status 0..1
 Property:          OperationalStatus 0..1
 Property:          LocationName 1..1
 Property:          Alias 0..*
@@ -163,9 +204,9 @@ Property:          Geoposition 0..1
 Property:          MobileFacility 0..1
 Property:          ManagingOrganization 1..1
                    Status from http://hl7.org/fhir/ValueSet/location-status (required)
+                   PartOf[DomainResource] substitute Location
                    Mode from http://hl7.org/fhir/ValueSet/location-mode (required)
                    Type from http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType (extensible)
-                   PartOf only Location
 
 Element:           OperationalStatus
 Description:       "The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance."
@@ -174,10 +215,6 @@ Value:             concept from http://terminology.hl7.org/ValueSet/v (preferred
 Element:           Alias
 Description:       "A list of alternate names the subject is or was known as."
 Value:             string
-
-Element:           Mode
-Description:       "Indicates whether a resource instance represents a specific item or a class of items."
-Value:             concept
 
 Element:           LocationName
 Concept:           MTH#C3261404
@@ -204,13 +241,12 @@ Concept:           MTH#C0439861
 Description:       "Any matter of defined composition that has discrete existence, whose origin may be biological, mineral or chemical."
 Property:          Type 1..1
 Property:          Category 0..*
-Property:          Status 0..1
 Property:          CommentOrDescription 0..1
 Property:          Ingredient 0..*
-Property:          PartOf 0..0
+                   Status from http://hl7.org/fhir/ValueSet/substance-status (required)
+                   PartOf 0..0
                    Type from http://hl7.org/fhir/ValueSet/substance-code (example)
                    Category from http://hl7.org/fhir/ValueSet/substance-category (extensible)
-                   Status from http://hl7.org/fhir/ValueSet/substance-status (required)
 
 Element:           Ingredient
 Concept:           MTH#C3176062
@@ -231,6 +267,10 @@ Element:           IngredientAmount
 Description:       "The amount of an ingredient in a mixture, as a ratio. For example, 250 mg per tablet is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet."
 Value:             Ratio
 
+Element:           Package
+Description:       "The kind of container the medication comes in."
+Value:             concept
+
 Entry:             Medication
 Parent:            Entity
 Concept:           MTH#C0013227
@@ -247,15 +287,15 @@ Property:          Manufacturer 0..1
 Property:          LotNumber 0..1
 Property:          ExpirationDate 0..1
 Property:          Package 0..1
-Property:          PartOf 0..0
                    Status from http://hl7.org/fhir/ValueSet/medication-status (required)
+                   PartOf 0..0
                    Type from http://hl7.org/fhir/us/core/ValueSet/us-core-medication-codes (extensible)
                    Package from http://hl7.org/fhir/ValueSet/medication-package-form (example)
 
 Element:           DoseForm
 Concept:           MTH#C0013058
 Description:       "The form in which active and/or inert ingredient(s) are physically presented."
-Value:             concept from http://hl7.org/fhir/ValueSet/medication-form-concepts (required)
+Value:             concept from http://hl7.org/fhir/ValueSet/medication-form-codes (required)
 
 Element:           Brand
 Description:       "If the product is branded, and if so, the brand name of a product."
@@ -287,27 +327,6 @@ Value:             string
 Element:           ExpirationDate
 Description:       "When the item (medication, device, etc.) will expire."
 Value:             dateTime
-
-Element:           Package
-Description:       "The kind of container the medication comes in."
-Value:             concept
-
-Element:           Person
-Concept:           MTH#C0027361
-Description:       "A person relevant to the health or social situation of the subject (including the subject him- or herself)."
-Property:          HumanName 1..*
-Property:          DateOfBirth 0..1
-Property:          AdministrativeGender 1..1
-Property:          Address 0..*
-Property:          PhotographicImage 0..*
-Property:          ContactPoint 0..*
-Property:          Communication 0..*
-Property:          MaritalStatus 0..1
-Property:          MultipleBirth 0..1
-Property:          BirthSex 0..1
-Property:          Race 0..1
-Property:          Ethnicity 0..1
-Property:          Deceased 0..1
 
 Element:           PlaceOfBirth
 Concept:           MTH#C0032040
@@ -468,15 +487,14 @@ Description:       "A social or legal structure formed by human beings.
 
 Organization type is restricted to 0..1 in FHIR DSTU2, similarly restricted here."
 Property:          OrganizationName 1..1
-Property:          Identifier 1..*
 Property:          Type 0..1
 Property:          Address 1..*
 Property:          ContactPoint 1..*
-Property:          Status 1..1
-Property:          PartOf 0..1
+                   Status 1..1
+                   Status[CodeableConcept] from ActiveOrInactiveVS (required)
+                   Identifier 1..*
+                   PartOf[DomainResource] substitute Organization
                    Type from http://hl7.org/fhir/ValueSet/organization-type (example)
-                   Status from http://hl7.org/fhir/us/projectURL/shr/core/vs/ActiveOrInactiveVS (required)
-                   PartOf only Organization
 
 Element:           OrganizationName
 Description:       "The name of the organization."
@@ -517,26 +535,6 @@ Element:           Url
 Description:       "A unique URL on which the device may be contacted directly."
 Value:             uri
 
-Entry:             Specimen
-Parent:            Entity
-Description:       "A specimen is a substance, physical object, or collection of objects, that the laboratory considers a single discrete, uniquely identified unit that is the subject of one or more steps in the laboratory workflow. A specimen may include multiple physical pieces as long as they are considered a single unit within the laboratory workflow. A specimen results from one to many specimen collection procedures, and may be contained in multiple specimen containers. Specimen may have one or more processing activities."
-Property:          AccessionIdentifier 0..1
-Property:          Status 0..1
-Property:          Type 1..1
-Property:          CollectionSource 0..1
-Property:          CollectionTime 0..1
-Property:          CollectionMethod 0..1
-Property:          CollectionSite 0..1
-Property:          AmountOrSize 0..1
-Property:          ReceivedTime 0..1
-Property:          SpecimenContainer 0..*
-Property:          SpecimenTreatment 0..*
-Property:          HandlingRisk 0..*
-Property:          SpecialHandling 0..*
-                   Status from http://hl7.org/fhir/ValueSet/specimen-status (required)
-                   Type from http://hl7.org/fhir/ValueSet/v2-0487 (required)
-                   PartOf only Specimen
-
 Element:           CollectionSource
 Description:       "The person or thing the sample was obtained from."
 Value:             Patient or Group or Device or Substance
@@ -545,19 +543,11 @@ Element:           CollectionTime
 Description:       "When the sample was obtained, as a specific time or time period."
 Value:             dateTime or TimePeriod
 
-Element:           CollectionMethod
-Description:       "How the specimen was obtained."
-Value:             concept
-
-Element:           CollectionSite
-Description:       "The body site where specimen was collected"
-Value:             BodyLocation
-
 Element:           AccessionIdentifier
 Parent:            Identifier
 Description:       "Identifier assigned by the lab"
-Property:          Type 1..1
-                   Type = http://terminology.hl7.org/CodeSystem/v2-0203#ACSN
+                   Type 1..1
+                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#ACSN
 
 Element:           HandlingRisk
 Description:       "Cautions on the handling of this specimen."
@@ -623,7 +613,7 @@ Property:          Attachment 1..1
 Property:          Annotation 0..*
                    RelatedRequest only ProcedureRequest
                    Type from http://hl7.org/fhir/ValueSet/digital-media-type (required)
-                   SubjectOfRecord only MediaSubjectOfRecord
+                   SubjectOfRecord substitute MediaSubjectOfRecord
                    ReasonCode from http://hl7.org/fhir/ValueSet/procedure-reason (example)
 
 Element:           MediaSubjectOfRecord

@@ -4,11 +4,14 @@ Description:       "The SHR Core domain contains definitions for a variety of ge
 Uses:              brca, oncocore, dme, odh, shr.base
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 
+Element:           Seriousness
+Concept:           MTH#C2985911
+Description:       "A coded value specifying the level of injury suffered by the subject for whom the event is reported, using the CTCAE coding system."
+Value:             concept
+
 Element:           AdverseEvent
 Parent:            ClinicalStatement
 Description:       "A record of an untoward or unexpected event in a patient under treatment, and which does not necessarily have to have a causal relationship with that treatment. Adverse events may capture either a workflow breach that may or may not result in harm, but must be documented for quality improvement purposes, or an adverse finding whether or not it can be traceable to an actual workflow breach."
-Property:          Identifier 0..1
-Property:          SubjectOfRecord 1..1
 Property:          OccurrenceTime 1..1
 Property:          Type 0..1
 Property:          Seriousness 1..1
@@ -19,9 +22,11 @@ Property:          AdverseEventCondition 0..*
 Property:          CausalAttribution 0..*
 Property:          ActionTaken 0..*
 Property:          AssociatedStudy 0..1
-                   SubjectOfRecord only AdverseEventSubjectOfRecord
-                   Type from http://hl7.org/fhir/us/projectURL/shr/core/vs/MedDRAVS (required)
-                   Seriousness from http://hl7.org/fhir/us/projectURL/shr/core/vs/SeriousnessVS (required)
+                   Identifier 0..1
+                   SubjectOfRecord 1..1
+                   SubjectOfRecord substitute AdverseEventSubjectOfRecord
+                   Type from MedDRAVS (required)
+                   Seriousness from SeriousnessVS (required)
                    Outcome from http://hl7.org/fhir/ValueSet/adverse-event-outcome (required)
 
 Element:           AdverseEventSubjectOfRecord
@@ -32,11 +37,6 @@ Value:             Patient or ResearchSubject or Medication or Device
 Element:           AdverseEventRecorder
 Description:       "A choice of Patient or Practitioner as recorder."
 Value:             Patient or Practitioner or RelatedPerson
-
-Element:           Seriousness
-Concept:           MTH#C2985911
-Description:       "A coded value specifying the level of injury suffered by the subject for whom the event is reported, using the CTCAE coding system."
-Value:             concept
 
 Element:           AdverseEventCondition
 Concept:           MTH#C1280464
@@ -53,7 +53,7 @@ Property:          RouteIntoBody 0..1
 
 Element:           PossibleCause
 Description:       "The possible cause of the adverse event."
-Value:             concept from http://hl7.org/fhir/ValueSet/substance-concept (preferred) or Substance or Medication or MedicationAdministration or MedicationStatement or Device
+Value:             concept from http://hl7.org/fhir/ValueSet/substance-code (preferred) or Substance or Medication or MedicationAdministration or MedicationStatement or Device
 
 Element:           CauseCategory
 Description:       "Whether the adverse event is attributed to a treatment, course of the disease, unrelated to either, or unknown."
@@ -75,8 +75,8 @@ Value:             ResearchStudy
 Entry:             AdverseDrugReaction
 Parent:            AdverseEvent
 Description:       "A noxious and unintended response to a medicinal product. To be considered an ADR, a causal relationship must be at least suspected by the medical practitioner. The principal difference between an adverse drug reaction (ADR) an adverse event (AE) and is that a causal relationship is suspected for the ADR, but is not required for the AE. Adverse drug reactions are therefore a subset of adverse event reports."
-Property:          CausalAttribution 1..*
-                   CausalAttribution only PossibleDrugCause
+                   CausalAttribution 1..*
+                   CausalAttribution.PossibleCause substitute PossibleDrugCause
 
 Element:           PossibleDrugCause
 Parent:            PossibleCause

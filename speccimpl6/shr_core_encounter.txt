@@ -1,12 +1,15 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
+Uses:              brca, oncocore
+
+Element:           CareContext
+Description:       "The encounter or episode of care"
+Value:             Encounter or EpisodeOfCare
 
 Abstract:          EncounterOrEpisode
 Parent:            DomainResource
 Description:       "Abstract element representing a group of services delivered to a patient."
-Property:          Status 1..1
 Property:          StatusHistory 0..*
 Property:          TimePeriod 0..1
 Property:          EncounterDiagnosis 0..*
@@ -14,11 +17,8 @@ Property:          SubjectOfRecord 1..1
 Property:          Type 0..*
 Property:          Organization 0..1
 Property:          ReferralRequest 0..*
-                   SubjectOfRecord only PatientSubjectOfRecord
-
-Element:           CareContext
-Description:       "The encounter or episode of care"
-Value:             Encounter or EpisodeOfCare
+                   Status 1..1
+                   SubjectOfRecord substitute PatientSubjectOfRecord
 
 Entry:             Encounter
 Parent:            EncounterOrEpisode
@@ -28,6 +28,7 @@ Property:          ClassHistory 0..*
 Property:          PriorityCode 0..1
 Property:          EpisodeOfCare 0..*
 Property:          Participation 0..*
+Property:          Participation 0..*
 Property:          Appointment 0..1
 Property:          Duration 0..1
 Property:          ReasonCode 0..*
@@ -35,10 +36,10 @@ Property:          EncounterLocation 0..*
 Property:          PartOf 0..1
                    Type from http://hl7.org/fhir/ValueSet/v3-ActEncounterCode (extensible)
                    PriorityCode from http://hl7.org/fhir/ValueSet/v3-ActPriority (example)
-                   Participation only EncounterParticipant
-                   Participation.ParticipationType from http://hl7.org/fhir/ValueSet/encounter-participant-type (extensible)
+                   Participation substitute EncounterParticipant
+                   Participation from http://hl7.org/fhir/ValueSet/encounter-participant-type (extensible)
                    ReasonCode from http://hl7.org/fhir/ValueSet/encounter-reason (preferred)
-                   PartOf only Encounter
+                   PartOf substitute Encounter
 
 Element:           EncounterParticipant
 Parent:            Participant
@@ -83,12 +84,16 @@ Parent:            EncounterOrEpisode
 Description:       "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time."
 Property:          CareManager 0..1
                    Status from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
-                   StatusHistory.Status from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
+                   StatusHistory.Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
                    Type from http://hl7.org/fhir/ValueSet/episodeofcare-type (example)
 
 Element:           CareManager
 Description:       "Care manager/care co-ordinator for the patient"
 Value:             Practitioner
+
+Element:           Replaces
+Description:       "Request(s) replaced by this request"
+Value:             ActionRequested
 
 Entry:             ReferralRequest
 Parent:            ActionRequested
@@ -96,16 +101,15 @@ Description:       "Used to record and send details about a request for referral
 Property:          ReferralRequester 0..1
 Property:          Replaces 0..*
 Property:          ReferralRecipient 0..*
-Property:          ReasonCode 0..1
-Property:          Status 1..1
 Property:          ServiceType 0..*
 Property:          CommentOrDescription 0..1
 Property:          RelatedInformation 0..*
-                   SubjectOfRecord only ReferralSubjectOfRecord
-                   Replaces only ReferralRequest
-                   RequestIntent from http://hl7.org/fhir/ValueSet/request-intent (required)
+                   SubjectOfRecord substitute ReferralSubjectOfRecord
+                   ReasonCode 0..1
                    Type from http://hl7.org/fhir/ValueSet/referral-type (example)
+                   RequestIntent from http://hl7.org/fhir/ValueSet/request-intent (required)
                    PriorityCode from http://hl7.org/fhir/ValueSet/request-priority (required)
+                   Replaces substitute ReferralRequest
 
 Element:           ReferralRequester
 Description:       "The person or organization originating this referral"
@@ -119,10 +123,6 @@ Element:           ServiceType
 Description:       "A service requested or to be performed during this appointment"
 Value:             concept from http://hl7.org/fhir/ValueSet/service-type (example)
 
-Element:           Replaces
-Description:       "Request(s) replaced by this request"
-Value:             ActionRequested
-
 Element:           RelatedInformation
 Description:       "Additional information to support referral or transfer of care request"
 Value:             DomainResource
@@ -130,7 +130,6 @@ Value:             DomainResource
 Entry:             Appointment
 Parent:            DomainResource
 Description:       "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time."
-Property:          Status 1..1
 Property:          ServiceCategory 0..1
 Property:          ServiceType 0..*
 Property:          Specialty 0..*
@@ -146,7 +145,8 @@ Property:          AppointmentParticipation 1..*
 Property:          TimePeriod 0..1
 Property:          ExpectedPerformanceTime 0..*
 Property:          StatementDateTime 0..1
-                   Status from http://hl7.org/fhir/ValueSet/appointmentstatus (required)
+                   Status 1..1
+                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/appointmentstatus (required)
                    Type from http://hl7.org/fhir/ValueSet/v2-0276 (preferred)
 
 Element:           ServiceCategory
@@ -155,11 +155,15 @@ Value:             concept from http://hl7.org/fhir/ValueSet/service-category (e
 
 Element:           Specialty
 Description:       "The specialty of a practitioner who (should, will, or did) perform a service."
-Value:             concept from http://hl7.org/fhir/ValueSet/c80-practice-concepts (preferred)
+Value:             concept from http://hl7.org/fhir/ValueSet/c80-practice-codes (preferred)
 
 Element:           Indication
 Description:       "Conditions or situations where the procedure is recommended. In the Performed context, the actual indication should be reported."
 Value:             Condition or Procedure
+
+Element:           Need
+Description:       "A code expressing the degree or type of need for the person or item."
+Value:             concept
 
 Element:           AppointmentParticipation
 Description:       "Participants involved in appointment"
@@ -168,7 +172,7 @@ Property:          Participant 0..1
 Property:          Need 0..1
 Property:          Status 1..1
                    ParticipationType from http://hl7.org/fhir/ValueSet/encounter-participant-type (required)
-                   Participant only AppointmentParticipant
+                   Participant substitute AppointmentParticipant
                    Need from http://hl7.org/fhir/ValueSet/participantrequired (required)
                    Status from http://hl7.org/fhir/ValueSet/participationstatus (required)
 
@@ -176,7 +180,3 @@ Element:           AppointmentParticipant
 Parent:            Participant
 Description:       "A choice of Person (in any role) or Organization, Device or Location as participants."
 Value:             Patient or Practitioner or RelatedPerson or Device or Location
-
-Element:           Need
-Description:       "A code expressing the degree or type of need for the person or item."
-Value:             concept
