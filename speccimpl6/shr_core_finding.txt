@@ -1,11 +1,8 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
-CodeSystem:        OBSCAT = http://hl7.org/fhir/observation-category
 CodeSystem:        LNC = http://loinc.org
-CodeSystem:        SCT = http://snomed.info/sct
 
 Abstract:          SituationStatement
 Parent:            ClinicalStatement
@@ -37,13 +34,8 @@ Property:          Abatement 0..1
 Property:          Evidence 0..1
 Property:          DateOfDiagnosis 0..1
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/condition-ver-status (required)
                    SubjectOfRecord 1..1
                    SubjectOfRecord substitute PatientSubjectOfRecord
-                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-problem (extensible)
-                   Category from ConditionCategoryVS (required)
-                   ClinicalStatus from http://hl7.org/fhir/ValueSet/condition-clinical (required)
-                   Severity from http://hl7.org/fhir/ValueSet/condition-severity (required)
 
 Element:           StageInformation
 Concept:           MTH#C0699749
@@ -62,7 +54,7 @@ Property:          DomainResource 0..*
 
 Element:           Manifestation
 Description:       "Clinical symptoms/signs."
-Value:             concept from http://hl7.org/fhir/ValueSet/clinical-findings (example)
+Value:             concept
 
 Entry:             Observation
 Parent:            SituationStatement
@@ -83,11 +75,9 @@ Property:          ReferenceRange 0..1
 Property:          Components 0..1
 Property:          PanelMembers 0..1
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/observation-status (required)
                    SubjectOfRecord 1..1
                    SubjectOfRecord substitute ObservationSubjectOfRecord
                    CareContext only Encounter
-                   Category from http://hl7.org/fhir/ValueSet/observation-category (extensible)
 
 Entry:             LaboratoryObservation
 Parent:            Observation
@@ -97,9 +87,7 @@ Property:          Specimen 0..1
                    includes AccessionIdentifier 0..1
                    includes FillerOrderNumber 0..1
                    includes PlacerOrderNumber 0..1
-                   Code from http://hl7.org/fhir/ValueSet/observation-codes (extensible)
                    Category 1..1
-                   Category[CodeableConcept] = OBSCAT#laboratory
                    Performer
                    includes ResponsibleObserver 0..1
                    includes PerformingLaboratory 0..1
@@ -172,7 +160,7 @@ Description:       "A non-independent finding whose result is a quantity."
 Element:           Interpretation
 Concept:           MTH#C0420833
 Description:       "A clinical interpretation of a finding (applies to both assertions and observation)."
-Value:             concept from http://hl7.org/fhir/ValueSet/observation-interpretation (extensible)
+Value:             concept
 
 Entry:             SimpleLaboratoryObservation
 Parent:            LaboratoryObservation
@@ -186,7 +174,6 @@ Description:       "A simplified observation for social histories."
                    SubjectOfRecord substitute PatientSubjectOfRecord
                    DataAbsentReason 0..0
                    Method 0..0
-                   Category = OBSCAT#social-history "Social History"
                    BodyLocation 0..0
                    Device 0..0
                    ReferenceRange 0..0
@@ -210,7 +197,6 @@ Entry:             BodyStructure
 Parent:            Condition
 Description:       "A body structure such as wound or tumor, observed to be present in a patient. The body structure is a condition that persists over time. The Code represents the body structure itself (the morphology), while the BodyLocation is the location of that structure. This corresponds to FHIR R4, where the BodyStructure resource has morphology (corresponding to Code) and a location. For example, the Code could be blunt force injury (SCT 3821009) and location left knee."
 Property:          ReferenceRange 0..0
-                   Code from BodyStructureVS (extensible)
 
 Entry:             DiagnosticReport
 Parent:            SituationStatement
@@ -228,16 +214,14 @@ Property:          Conclusion 0..1
 Property:          DiagnosisCode 0..*
 Property:          OriginalReport 0..*
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/diagnostic-report-status (required)
                    SubjectOfRecord substitute ObservationSubjectOfRecord
                    StatementDateTime 1..1
-                   Code from http://hl7.org/fhir/ValueSet/report-codes (preferred)
                    RelatedRequest substitute MedicationStatementRelatedRequest
-                   Participation
-                   Participation substitute DiagnosticReportParticipant
-                   Participation
-                   Participation
-                   Participation
+                   Participation.Participant
+                   Participation.Participant substitute DiagnosticReportParticipant
+                   Participation.Participant
+                   Participation.Participant
+                   Participation.Participant
 
 Entry:             SimpleCodedNonLaboratoryObservation
 Parent:            CodedNonLaboratoryObservation
@@ -253,7 +237,7 @@ Description:       "An observation having no components or panel members"
 
 Element:           DataAbsentReason
 Description:       "Reason that a value associated with a test or other finding is missing."
-Value:             concept from http://hl7.org/fhir/ValueSet/data-absent-reason (extensible)
+Value:             concept
 
 Element:           ReferenceRange
 Concept:           MTH#C0883335
@@ -262,12 +246,11 @@ Property:          Range 0..1
 Property:          Type 0..1
 Property:          ApplicableSubpopulation 0..1
 Property:          ApplicableAgeRange 0..1
-                   Type from http://hl7.org/fhir/ValueSet/referencerange-meaning (extensible)
 
 Element:           ApplicableSubpopulation
 Concept:           MTH#C0039309 "Target Population"
 Description:       "Codes to indicate the target population this reference range applies to. For example, a reference range may be based on the normal population or a particular sex or race."
-Value:             concept from http://hl7.org/fhir/ValueSet/referencerange-appliesto (extensible)
+Value:             concept
 
 Element:           ApplicableAgeRange
 Description:       "The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so."
@@ -286,19 +269,16 @@ Entry:             QuantitativeNonLaboratoryObservation
 Parent:            NonLaboratoryObservation
 Description:       "The result of evaluations (measurements, tests, or questions) whose answer is expressed as a code."
                    DataValue only Quantity
-                   Interpretation from QuantitativeResultInterpretationVS (extensible)
 
 Element:           PlacerOrderNumber
 Parent:            Identifier
 Description:       "Identifier assigned by the requester of the lab."
                    Type 1..1
-                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#PLAC
 
 Element:           FillerOrderNumber
 Parent:            Identifier
 Description:       "Identifier assigned by the lab carrying out the test."
                    Type 1..1
-                   Type[CodeableConcept] = http://terminology.hl7.org/CodeSystem/v2-0203#FILL
 
 Element:           ResponsibleObserver
 Parent:            Performer
@@ -324,7 +304,6 @@ Entry:             QuantitativeLaboratoryObservation
 Parent:            LaboratoryObservation
 Description:       "A quantiative result from a laboratory test."
                    DataValue only Quantity
-                   Interpretation from QuantitativeResultInterpretationVS (extensible)
 
 Entry:             SimpleQuantitativeLaboratoryObservation
 Parent:            QuantitativeLaboratoryObservation
@@ -374,12 +353,12 @@ Value:             date
 Element:           PresentOnAdmission
 Concept:           LNC#89251-3 "Condition present on admission"
 Description:       "If the problem or condition existed before the current episode of care."
-Value:             concept from YesNoUnknownVS (required)
+Value:             concept
 
 Element:           Criticality
 Concept:           MTH#C3858539 "Criticality"
 Description:       "The potential clinical harm associated with a condition. When the worst case result is assessed to have a life-threatening or organ system threatening potential, it is considered to be of high criticality."
-Value:             concept from http://hl7.org/fhir/ValueSet/allergy-intolerance-criticality (required)
+Value:             concept
 
 Element:           StageSummary
 Description:       "A code representing the current stage of a disease."
@@ -408,14 +387,11 @@ Value:             dateTime or Age or boolean or TimePeriod or Range or string
 Entry:             ComorbidCondition
 Parent:            Condition
 Description:       "A comorbidity refers to one or more diseases or conditions that occur along with another condition in the same person at the same time. Conditions considered comorbidities are often long-term or chronic conditions. Comorbidities are defined relative to an index disease and may be categorical, rather than described in full detail. The comorbid condition class provides comorbidity codes corresponding to the Adult Cormorbidity Evaluation-27. If the grade (1-3) is reported, it shall be reported in the stage summary field."
-                   Code from ComorbidConditionCodeVS (extensible)
-                   Category = SCT#398192003 "Co-morbid conditions (finding)"
 
 Entry:             CongenitalAbnormality
 Parent:            Condition
 Concept:           MTH#C0000768 "Congenital Abnormality"
 Description:       "Any abnormality, genetic, anatomical, biochemical, evident at birth or during the neonatal period. Includes malformations, deformations, and chromosomal abnormalities."
-                   Code from CongenitalAbnormalitiesVS (extensible)
 
 Element:           DiagnosticReportParticipant
 Parent:            Participant
@@ -438,4 +414,3 @@ Entry:             ClinicalNote
 Parent:            DocumentReference
 Description:       "An entry concerning a patient where the result is a narrative text."
                    Category 1..1
-                   Category[CodeableConcept] from http://fhir.org/guides/argonaut-clinicalnotes/ValueSet/documentreference-category (required)

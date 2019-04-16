@@ -1,8 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         dme
 Description:       "Classes pertaining to ordering durable medical devices."
-Uses:              shr.core, brca, oncocore
-CodeSystem:        PUB = http://hl7.org/fhir/publication-status
+Uses:              shr.core
 
 Element:           DTR-QuestionnaireItem
 Parent:            QuestionnaireItem
@@ -13,7 +12,6 @@ Entry:             DTR-Questionnaire
 Parent:            Questionnaire
 Description:       "Document templates and rules."
 Property:          PayerLibrary 1..*
-                   Status = PUB#active
                    IsExperimental 0..0
                    LastUpdated 1..1
                    ContactDetail 1..*

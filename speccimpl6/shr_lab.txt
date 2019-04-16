@@ -1,7 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.lab
 Description:       "Profiles of common laboratory tests."
-Uses:              shr.core, brca, oncocore, dme, odh, shr.base, shr.fhx, shr.financial
+Uses:              shr.core
 
 Entry:             ProfileVariation
 Description:       "New resource that describes the acceptable variations on a given profile. Allowed variations are fixed values and value set bindings. The variations themselves are given in a CSV file."
@@ -33,4 +33,4 @@ Value:             string
 
 Element:           ConstraintType
 Description:       "Indicates how the data in the spreadsheet should be applied."
-Value:             concept from ConstraintTypeVS (required)
+Value:             concept

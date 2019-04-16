@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 
 Element:           Method
@@ -48,7 +47,7 @@ Value:             concept
 Element:           ParticipationType
 Concept:           MTH#C1553854
 Description:       "The role played by the participant engaged in the action, for example, as the attending physician, surgical assistant, etc."
-Value:             concept from http://hl7.org/fhir/ValueSet/performer-role (example)
+Value:             concept
 
 Element:           ParticipationPeriod
 Description:       "The point in time or span of time the participant is involved."
@@ -56,7 +55,7 @@ Value:             TimePeriod
 
 Element:           Outcome
 Description:       "The result of performing an action or behavior, for example, an adverse reaction or new finding."
-Value:             concept from http://hl7.org/fhir/ValueSet/procedure-outcome (example)
+Value:             concept
 
 Abstract:          ActionRequested
 Parent:            ActionStatement
@@ -73,7 +72,7 @@ Property:          CommunicationMethod 0..1
 
 Element:           RequestIntent
 Description:       "Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain."
-Value:             concept from http://hl7.org/fhir/ValueSet/request-intent (preferred)
+Value:             concept
 
 Element:           ExpectedPerformanceTime
 Description:       "When an action should be done. If the action is a series or recurs (e.g. daily blood sugar testing in the morning) then a Timing can be used to describe the periodicity."

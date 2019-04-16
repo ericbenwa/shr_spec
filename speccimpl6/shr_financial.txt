@@ -1,6 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.financial
-Uses:              shr.core, brca, oncocore, dme, odh, shr.base, shr.fhx
+Uses:              shr.core
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 
 Element:           CoverageType
@@ -17,8 +17,6 @@ Property:          SubscriberId 0..1
 Property:          Beneficiary 0..1
 Property:          PolicyHolder 0..1
 Property:          EffectiveTimePeriod 0..1
-                   Status from http://hl7.org/fhir/ValueSet/fm-status (required)
-                   CoverageType from http://hl7.org/fhir/ValueSet/coverage-type (preferred)
 
 Element:           Subscriber
 Description:       "The party who has signed-up for or 'owns' the contractual relationship to the policy or to whom the benefit of the policy for services rendered to them or their family is due."

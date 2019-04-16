@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 CodeSystem:        SCT = http://snomed.info/sct
 
@@ -31,9 +30,6 @@ Property:          RouteIntoBody 0..1
 Property:          DosageMethod 0..1
 Property:          DosageBodyLocation 0..1
 Property:          MaximumDosePerTimePeriod 0..1
-                   AdditionalDosageInstruction from http://hl7.org/fhir/ValueSet/additional-instruction-codes (required)
-                   RouteIntoBody from http://hl7.org/fhir/ValueSet/route-codes (required)
-                   DosageMethod from http://hl7.org/fhir/ValueSet/administration-method-codes (required)
 
 Element:           DoseAmount
 Description:       "The amount of medication taken per dose, as a quantity or range. Relative dose (e.g., per kg body weight or surface area) are indicated by specifying appropriate units (e.g., mg/kg or mg/m2 etc)."
@@ -55,7 +51,7 @@ Value:             string
 Element:           DosageBodyLocation
 Concept:           MTH#C0229986
 Description:       "The anatomic site at which medical intervention is applied."
-Value:             concept from BodyLocationVS (preferred)
+Value:             concept
 
 Element:           MaximumDosePerTimePeriod
 Description:       "The maximum amount of a medication to be taken in a given period of time (e.g., no more than x in any 24-hour period)"
@@ -83,7 +79,6 @@ Property:          MedicationStatementInformationSource 0..1
 Property:          Category 0..1
 Property:          TreatmentIntent 0..*
 Property:          TerminationReason 0..*
-                   Status from http://hl7.org/fhir/ValueSet/medication-statement-status (required)
                    SubjectOfRecord substitute PatientSubjectOfRecord
                    StatementDateTime 1..1
                    ReasonCode 0..1
@@ -91,8 +86,6 @@ Property:          TerminationReason 0..*
                    ReasonReference only Condition
                    Participation 0..0
                    RelatedRequest substitute MedicationStatementRelatedRequest
-                   Category from http://hl7.org/fhir/ValueSet/medication-statement-category (preferred)
-                   TerminationReason from TreatmentTerminationReasonVS (required)
 
 Element:           MedicationStatementInformationSource
 Description:       "The informant for this medication statement."
@@ -105,13 +98,11 @@ Although FHIR MedicationAdministration supports date of administration, informat
 FHIR DSTU2 lacks a category attribute, which is provided as an extension in that version.
 SHR does not allow the 'not given' attributes from DSTU2 and STU3, since they are dropped in R4. The status element is used to document medications not given."
 Property:          Category 0..1
-                   Status from http://hl7.org/fhir/ValueSet/medication-admin-status (required)
                    SubjectOfRecord substitute PatientSubjectOfRecord
                    Participation 0..1
                    Participation.Participant substitute PersonParticipant
                    Participation.ParticipationType 0..0
                    RelatedRequest only MedicationRequest
-                   Category from http://hl7.org/fhir/ValueSet/medication-admin-category (preferred)
 
 Element:           PersonParticipant
 Parent:            Participant
@@ -143,18 +134,13 @@ Property:          SubstitutionReason 0..1
                    SubjectOfRecord substitute PatientSubjectOfRecord
                    StatementDateTime 1..1
                    ReasonCode 0..1
-                   ReasonCode[CodeableConcept] from http://hl7.org/fhir/ValueSet/condition-code (example)
                    ReasonReference 0..1
                    ReasonReference only Condition
-                   Type from http://hl7.org/fhir/ValueSet/medication-admin-category (preferred)
-                   RequestIntent from http://hl7.org/fhir/ValueSet/medication-request-intent (required)
                    ExpectedPerformanceTime only TimePeriod
                    ExpectedPerformerType 0..0
                    Recipient only Organization
-                   PriorityCode from http://hl7.org/fhir/ValueSet/medication-request-priority (required)
                    Annotation 0..1
                    CommunicationMethod 0..0
-                   SubstitutionReason from http://hl7.org/fhir/ValueSet/v3-SubstanceAdminSubstitutionReason (required)
 
 Element:           MedicationRequester
 Description:       "The individual, organization or device that initiated the request and has responsibility for its activation."
@@ -183,9 +169,7 @@ Description:       "Information on the ability and cooperation of the patient in
 Modeling note: MedicationAdherence could be attached to MedicationStatement directly as an extension, but modeling as an observation avoids creating an extension and allows this observation to be made at any time, independent of any specific medication."
 Property:          Medication 0..*
 Property:          MedicationNonAdherenceReason 0..*
-                   Code = MTH#C0746935 "Medication Nonadherence"
-                   DataValue from QualitativeFrequencyVS (required)
 
 Element:           MedicationNonAdherenceReason
 Description:       "Reason that patient did not adhere to a medication regimen."
-Value:             concept from MedicationNonAdherenceReasonVS (required)
+Value:             concept

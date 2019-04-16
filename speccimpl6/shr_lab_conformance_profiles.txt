@@ -1,587 +1,394 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.lab
 Description:       "Profiles of common laboratory tests."
-Uses:              shr.core, brca, oncocore, dme, odh, shr.base, shr.fhx, shr.financial
-CodeSystem:        UCUM = http://unitsofmeasure.org
+Uses:              shr.core
 
 Entry:             QuantitativeLabObs-percent
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units percent"
-                   Code from QuantitativeLaboratoryCodes-percent (required)
-                   DataValue[Quantity].Units = UCUM#%
 
 Entry:             QuantitativeLabObs-thousand-per-uL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units thousand-per-uL"
-                   Code from QuantitativeLaboratoryCodes-thousand-per-uL (required)
-                   DataValue[Quantity].Units = UCUM#10*3/uL
 
 Entry:             QuantitativeLabObs-million-per-uL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units million-per-uL"
-                   Code from QuantitativeLaboratoryCodes-million-per-uL (required)
-                   DataValue[Quantity].Units = UCUM#10*6/L
 
 Entry:             QuantitativeLabObs-Cel
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units Cel"
-                   Code from QuantitativeLaboratoryCodes-Cel (required)
-                   DataValue[Quantity].Units = UCUM#Cel
 
 Entry:             QuantitativeLabObs-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units L"
-                   Code from QuantitativeLaboratoryCodes-L (required)
-                   DataValue[Quantity].Units = UCUM#L
 
 Entry:             QuantitativeLabObs-L-per-min
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units L-per-min"
-                   Code from QuantitativeLaboratoryCodes-L-per-min (required)
-                   DataValue[Quantity].Units = UCUM#L/min
 
 Entry:             QuantitativeLabObs-U-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units U-per-L"
-                   Code from QuantitativeLaboratoryCodes-U-per-L (required)
-                   DataValue[Quantity].Units = UCUM#U/L
 
 Entry:             QuantitativeLabObs-U-per-dL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units U-per-dL"
-                   Code from QuantitativeLaboratoryCodes-U-per-dL (required)
-                   DataValue[Quantity].Units = UCUM#U/dL
 
 Entry:             QuantitativeLabObs-U-per-g
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units U-per-g"
-                   Code from QuantitativeLaboratoryCodes-U-per-g (required)
-                   DataValue[Quantity].Units = UCUM#U/g
 
 Entry:             QuantitativeLabObs-U-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units U-per-mL"
-                   Code from QuantitativeLaboratoryCodes-U-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#U/mL
 
 Entry:             QuantitativeLabObs-APLU
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units APLU"
-                   Code from QuantitativeLaboratoryCodes-APLU (required)
-                   DataValue[Quantity].Units = UCUM#[APL'U]
 
 Entry:             QuantitativeLabObs-IU-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units IU-per-L"
-                   Code from QuantitativeLaboratoryCodes-IU-per-L (required)
-                   DataValue[Quantity].Units = UCUM#[IU]/L
 
 Entry:             QuantitativeLabObs-IU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units IU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-IU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#[IU]/mL
 
 Entry:             QuantitativeLabObs-MPLU
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units MPLU"
-                   Code from QuantitativeLaboratoryCodes-MPLU (required)
-                   DataValue[Quantity].Units = UCUM#[MPL'U]
 
 Entry:             QuantitativeLabObs-arbU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units arbU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-arbU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#[arb'U]/mL
 
 Entry:             QuantitativeLabObs-lb-av
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units lb-av"
-                   Code from QuantitativeLaboratoryCodes-lb-av (required)
-                   DataValue[Quantity].Units = UCUM#[lb-av]
 
 Entry:             QuantitativeLabObs-pH
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units pH"
-                   Code from QuantitativeLaboratoryCodes-pH (required)
-                   DataValue[Quantity].Units = UCUM#[pH]
 
 Entry:             QuantitativeLabObs-age
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units age"
-                   Code from QuantitativeLaboratoryCodes-age (required)
-                   DataValue[Quantity].Units = UCUM#a
 
 Entry:             QuantitativeLabObs-duration
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units duration"
-                   Code from QuantitativeLaboratoryCodes-duration (required)
-                   DataValue[Quantity].Units = UCUM#TBD
 
 Entry:             QuantitativeLabObs-fL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units fL"
-                   Code from QuantitativeLaboratoryCodes-fL (required)
-                   DataValue[Quantity].Units = UCUM#fL
 
 Entry:             QuantitativeLabObs-g
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units g"
-                   Code from QuantitativeLaboratoryCodes-g (required)
-                   DataValue[Quantity].Units = UCUM#g
 
 Entry:             QuantitativeLabObs-g-per-day
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units g-per-day"
-                   Code from QuantitativeLaboratoryCodes-g-per-day (required)
-                   DataValue[Quantity].Units = UCUM#g/(24.h)
 
 Entry:             QuantitativeLabObs-g-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units g-per-L"
-                   Code from QuantitativeLaboratoryCodes-g-per-L (required)
-                   DataValue[Quantity].Units from Equivalence-g-per-L-VS (required)
 
 Entry:             QuantitativeLabObs-g-per-dL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units g-per-dL"
-                   Code from QuantitativeLaboratoryCodes-g-per-dL (required)
-                   DataValue[Quantity].Units = UCUM#g/dL
 
 Entry:             QuantitativeLabObs-h
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units h"
-                   Code from QuantitativeLaboratoryCodes-h (required)
-                   DataValue[Quantity].Units = UCUM#h
 
 Entry:             QuantitativeLabObs-kIU-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units kIU-per-L"
-                   Code from QuantitativeLaboratoryCodes-kIU-per-L (required)
-                   DataValue[Quantity].Units = UCUM#k[IU]/L
 
 Entry:             QuantitativeLabObs-kIU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units kIU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-kIU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#k[IU]/ml
 
 Entry:             QuantitativeLabObs-kg
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units kg"
-                   Code from QuantitativeLaboratoryCodes-kg (required)
-                   DataValue[Quantity].Units = UCUM#kg
 
 Entry:             QuantitativeLabObs-m2
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units m2"
-                   Code from QuantitativeLaboratoryCodes-m2 (required)
-                   DataValue[Quantity].Units = UCUM#m2
 
 Entry:             QuantitativeLabObs-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mL"
-                   Code from QuantitativeLaboratoryCodes-mL (required)
-                   DataValue[Quantity].Units = UCUM#mL
 
 Entry:             QuantitativeLabObs-mL-per-min
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mL-per-min"
-                   Code from QuantitativeLaboratoryCodes-mL-per-min (required)
-                   DataValue[Quantity].Units = UCUM#mL/min
 
 Entry:             QuantitativeLabObs-mU-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mU-per-L"
-                   Code from QuantitativeLaboratoryCodes-mU-per-L (required)
-                   DataValue[Quantity].Units = UCUM#mU/L
 
 Entry:             QuantitativeLabObs-mU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-mU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#mU/mL
 
 Entry:             QuantitativeLabObs-mIU-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mIU-per-L"
-                   Code from QuantitativeLaboratoryCodes-mIU-per-L (required)
-                   DataValue[Quantity].Units = UCUM#m[IU]/L
 
 Entry:             QuantitativeLabObs-mIU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mIU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-mIU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#m[IU]/mL
 
 Entry:             QuantitativeLabObs-mg
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mg"
-                   Code from QuantitativeLaboratoryCodes-mg (required)
-                   DataValue[Quantity].Units = UCUM#mg
 
 Entry:             QuantitativeLabObs-mg-per-day
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mg-per-day"
-                   Code from QuantitativeLaboratoryCodes-mg-per-day (required)
-                   DataValue[Quantity].Units = UCUM#mg/(24.h)
 
 Entry:             QuantitativeLabObs-mg-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mg-per-L"
-                   Code from QuantitativeLaboratoryCodes-mg-per-L (required)
-                   DataValue[Quantity].Units = UCUM#mg/L
 
 Entry:             QuantitativeLabObs-mg-per-dL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mg-per-dL"
-                   Code from QuantitativeLaboratoryCodes-mg-per-dL (required)
-                   DataValue[Quantity].Units = UCUM#mg/dL
 
 Entry:             QuantitativeLabObs-mg-per-g
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mg-per-g"
-                   Code from QuantitativeLaboratoryCodes-mg-per-g (required)
-                   DataValue[Quantity].Units = UCUM#mg/g
 
 Entry:             QuantitativeLabObs-min
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units min"
-                   Code from QuantitativeLaboratoryCodes-min (required)
-                   DataValue[Quantity].Units = UCUM#min
 
 Entry:             QuantitativeLabObs-mm-per-h
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mm-per-h"
-                   Code from QuantitativeLaboratoryCodes-mm-per-h (required)
-                   DataValue[Quantity].Units = UCUM#mm/h
 
 Entry:             QuantitativeLabObs-mm3
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mm3"
-                   Code from QuantitativeLaboratoryCodes-mm3 (required)
-                   DataValue[Quantity].Units = UCUM#mm3
 
 Entry:             QuantitativeLabObs-mm-Hg
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mm-Hg"
-                   Code from QuantitativeLaboratoryCodes-mm-Hg (required)
-                   DataValue[Quantity].Units = UCUM#mm[Hg]
 
 Entry:             QuantitativeLabObs-mmol-per-day
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mmol-per-day"
-                   Code from QuantitativeLaboratoryCodes-mmol-per-day (required)
-                   DataValue[Quantity].Units = UCUM#mmol/(24.h)
 
 Entry:             QuantitativeLabObs-nmol-per-day
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units nmol-per-day"
-                   Code from QuantitativeLaboratoryCodes-nmol-per-day (required)
-                   DataValue[Quantity].Units = UCUM#nmol/(24.h)
 
 Entry:             QuantitativeLabObs-mmol-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mmol-per-L"
-                   Code from QuantitativeLaboratoryCodes-mmol-per-L (required)
-                   DataValue[Quantity].Units = UCUM#mmol/L
 
 Entry:             QuantitativeLabObs-mol-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mol-per-L"
-                   Code from QuantitativeLaboratoryCodes-mol-per-L (required)
-                   DataValue[Quantity].Units = UCUM#mol/L
 
 Entry:             QuantitativeLabObs-mosm-per-kg
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units mosm-per-kg"
-                   Code from QuantitativeLaboratoryCodes-mosm-per-kg (required)
-                   DataValue[Quantity].Units = UCUM#mosm/kg
 
 Entry:             QuantitativeLabObs-ng-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ng-per-L"
-                   Code from QuantitativeLaboratoryCodes-ng-per-L (required)
-                   DataValue[Quantity].Units = UCUM#ng/L
 
 Entry:             QuantitativeLabObs-ng-per-dL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ng-per-dL"
-                   Code from QuantitativeLaboratoryCodes-ng-per-dL (required)
-                   DataValue[Quantity].Units = UCUM#ng/dL
 
 Entry:             QuantitativeLabObs-ng-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ng-per-mL"
-                   Code from QuantitativeLaboratoryCodes-ng-per-mL (required)
-                   DataValue[Quantity].Units from Equivalence-ng-per-mL-VS (required)
 
 Entry:             QuantitativeLabObs-ng-per-mL-per-h
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ng-per-mL-per-h"
-                   Code from QuantitativeLaboratoryCodes-ng-per-mL-per-h (required)
-                   DataValue[Quantity].Units = UCUM#ng/mL/h
 
 Entry:             QuantitativeLabObs-nmol-per-min-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units nmol-per-min-per-mL"
-                   Code from QuantitativeLaboratoryCodes-nmol-per-min-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#nmoL/min/mL
 
 Entry:             QuantitativeLabObs-nmol-per-h-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units nmol-per-h-per-mL"
-                   Code from QuantitativeLaboratoryCodes-nmol-per-h-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#nmoL/h/mL
 
 Entry:             QuantitativeLabObs-nmol-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units nmol-per-L"
-                   Code from QuantitativeLaboratoryCodes-nmol-per-L (required)
-                   DataValue[Quantity].Units = UCUM#nmol/L
 
 Entry:             QuantitativeLabObs-nmol-per-mmol
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units nmol-per-mmol"
-                   Code from QuantitativeLaboratoryCodes-nmol-per-mmol (required)
-                   DataValue[Quantity].Units = UCUM#nmol/mmol
 
 Entry:             QuantitativeLabObs-pg
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units pg"
-                   Code from QuantitativeLaboratoryCodes-pg (required)
-                   DataValue[Quantity].Units = UCUM#pg
 
 Entry:             QuantitativeLabObs-pg-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units pg-per-L"
-                   Code from QuantitativeLaboratoryCodes-pg-per-L (required)
-                   DataValue[Quantity].Units = UCUM#pg/L
 
 Entry:             QuantitativeLabObs-pg-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units pg-per-mL"
-                   Code from QuantitativeLaboratoryCodes-pg-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#pg/mL
 
 Entry:             QuantitativeLabObs-s
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units s"
-                   Code from QuantitativeLaboratoryCodes-s (required)
-                   DataValue[Quantity].Units = UCUM#s
 
 Entry:             QuantitativeLabObs-uIU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units uIU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-uIU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#u[IU]/mL
 
 Entry:             QuantitativeLabObs-ug-per-day
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ug-per-day"
-                   Code from QuantitativeLaboratoryCodes-ug-per-day (required)
-                   DataValue[Quantity].Units = UCUM#ug/(24.h)
 
 Entry:             QuantitativeLabObs-ug-per-dL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ug-per-dL"
-                   Code from QuantitativeLaboratoryCodes-ug-per-dL (required)
-                   DataValue[Quantity].Units = UCUM#ug/dL
 
 Entry:             QuantitativeLabObs-ug-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ug-per-mL"
-                   Code from QuantitativeLaboratoryCodes-ug-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#ug/mL
 
 Entry:             QuantitativeLabObs-um-per-s
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units um-per-s"
-                   Code from QuantitativeLaboratoryCodes-um-per-s (required)
-                   DataValue[Quantity].Units = UCUM#um/s
 
 Entry:             QuantitativeLabObs-umol-per-day
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units umol-per-day"
-                   Code from QuantitativeLaboratoryCodes-umol-per-day (required)
-                   DataValue[Quantity].Units = UCUM#umol/(24.h)
 
 Entry:             QuantitativeLabObs-umol-per-L
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units umol-per-L"
-                   Code from QuantitativeLaboratoryCodes-umol-per-L (required)
-                   DataValue[Quantity].Units from Equivalence-umol-per-L-VS (required)
 
 Entry:             QuantitativeLabObs-wk
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units wk"
-                   Code from QuantitativeLaboratoryCodes-wk (required)
-                   DataValue[Quantity].Units = UCUM#wk
 
 Entry:             QuantitativeLabObs-count
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units count"
-                   Code from QuantitativeLaboratoryCodes-count (required)
-                   DataValue[Quantity].Units = UCUM#{#}
 
 Entry:             QuantitativeLabObs-count-per-HPF
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units count-per-HPF"
-                   Code from QuantitativeLaboratoryCodes-count-per-HPF (required)
-                   DataValue[Quantity].Units = UCUM#{#}/[HPF]
 
 Entry:             QuantitativeLabObs-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units copies-per-mL"
-                   Code from QuantitativeLaboratoryCodes-copies-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#/mL
 
 Entry:             QuantitativeLabObs-copies-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units copies-per-mL"
-                   Code from QuantitativeLaboratoryCodes-copies-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#{copies}/mL
 
 Entry:             QuantitativeLabObs-per-uL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units per-uL"
-                   Code from QuantitativeLaboratoryCodes-per-uL (required)
-                   DataValue[Quantity].Units = UCUM#/uL
 
 Entry:             QuantitativeLabObs-count-per-uL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units count-per-uL"
-                   Code from QuantitativeLaboratoryCodes-count-per-uL (required)
-                   DataValue[Quantity].Units = UCUM#{#}/uL
 
 Entry:             QuantitativeLabObs-GPLU
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units GPLU"
-                   Code from QuantitativeLaboratoryCodes-GPLU (required)
-                   DataValue[Quantity].Units = UCUM#[GPL'U]
 
 Entry:             QuantitativeLabObs-EhrlichU-per-dL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units per-dL"
-                   Code from QuantitativeLaboratoryCodes-EhrlichU-per-dL (required)
-                   DataValue[Quantity].Units = UCUM#[Ehrlich'U]/dL
 
 Entry:             QuantitativeLabObs-INR
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units INR"
-                   Code from QuantitativeLaboratoryCodes-INR (required)
-                   DataValue[Quantity].Units = UCUM#{INR}
 
 Entry:             QuantitativeLabObs-MPSU
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units MPSU"
-                   Code from QuantitativeLaboratoryCodes-MPSU (required)
-                   DataValue[Quantity].Units = UCUM#[MPS'U]
 
 Entry:             QuantitativeLabObs-per-min
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units {#} per-min"
-                   Code from QuantitativeLaboratoryCodes-per-min (required)
-                   DataValue[Quantity].Units = UCUM#/min
 
 Entry:             QuantitativeLabObs-units-per-volume
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units units-per-volume"
-                   Code from QuantitativeLaboratoryCodes-units-per-volume (required)
-                   DataValue[Quantity].Units = UCUM#[U]/mL
 
 Entry:             QuantitativeLabObs-logIU-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units logIU-per-mL"
-                   Code from QuantitativeLaboratoryCodes-logIU-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#{log-IU}/mL
 
 Entry:             QuantitativeLabObs-log-copies-per-mL
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units log-copies-per-mL"
-                   Code from QuantitativeLaboratoryCodes-log-copies-per-mL (required)
-                   DataValue[Quantity].Units = UCUM#{log-copies}/mL
 
 Entry:             QuantitativeLabObs-risk
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units risk"
-                   Code from QuantitativeLaboratoryCodes-risk (required)
-                   DataValue[Quantity].Units = UCUM#{risk}
 
 Entry:             QuantitativeLabObs-MoM
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units MoM"
-                   Code from QuantitativeLaboratoryCodes-MoM (required)
-                   DataValue[Quantity].Units = UCUM#{M.o.M}
 
 Entry:             QuantitativeLabObs-OD-units
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units OD-units"
-                   Code from QuantitativeLaboratoryCodes-OD-units (required)
-                   DataValue[Quantity].Units = UCUM#{OD-units}
 
 Entry:             QuantitativeLabObs-ratio
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units ratio"
-                   Code from QuantitativeLaboratoryCodes-ratio (required)
-                   DataValue[Quantity].Units = UCUM#{Ratio}
 
 Entry:             QuantitativeLabObs-titer
 Parent:            SimpleQuantitativeLaboratoryObservation
 Description:       "Profile to validate labs that report results with units titer"
-                   Code from QuantitativeLaboratoryCodes-titer (required)
-                   DataValue[Quantity].Units = UCUM#{titer}
 
 Entry:             SimpleLaboratoryObservation-time
 Parent:            SimpleLaboratoryObservation
 Description:       "Labs whose results is expressed as a time during the day, with no date specified"
-                   Code from TimeLaboratoryCodes-clock-time (required)
                    DataValue only time
 
 Entry:             SimpleLaboratoryObservation-dateTime
 Parent:            SimpleLaboratoryObservation
 Description:       "Labs whose result is expressed as a dateTime"
-                   Code from DateTimeLaboratoryCodes-date (required)
                    DataValue only dateTime
 
 Entry:             CodedLabObsWithDetectedNotDetected
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as detected or not detected."
-                   Code from CodedLabsWithDetectedNotDetectedResultVS (required)
-                   DataValue from DetectedNotDetectedVS (required)
 
 Entry:             CodedLabObsWithNormalAbnormalResult
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as normal or abnormal."
-                   Code from CodedLabsWithNormalAbnormalResultVS (required)
-                   DataValue from NormalAbnormalVS (required)
 
 Entry:             CodedLabObsWithPositiveNegativeResult
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as positive or negative."
-                   Code from CodedLabsWithPositiveNegativeResultVS (required)
-                   DataValue from PositiveNegativeVS (required)
 
 Entry:             CodedLabObsWithGradedPositiveNegativeResult
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as strong positive, positive, weakly positive, or negative."
-                   Code from CodedLabsWithGradedPositiveNegativeResultVS (required)
-                   DataValue from GradedPositiveNegativeVS (required)
 
 Entry:             CodedLabObsWithGradedQuantityResult
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as none, rare, few, moderate number, or numerous."
-                   Code from CodedLabsWithGradedQuantityResultVS (required)
-                   DataValue from GradedQuantityVS (required)
 
 Entry:             CodedLabObsWithReactiveNonreactiveResult
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as reactive or nonreactive."
-                   Code from CodedLabsWithReactiveNonreactiveResultVS (required)
-                   DataValue from ReactiveNonreactiveVS (required)
 
 Entry:             CodedLabObsWithRASTResult
 Parent:            SimpleCodedLaboratoryObservation
 Description:       "Profile to validate labs that report results as RAST scores 0-6."
-                   Code from CodedLabsWithRASTResultVS (required)
-                   DataValue from RASTScoreVS (required)

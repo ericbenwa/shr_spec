@@ -1,9 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         oncocore
 Description:       "Oncology data elements that broadly apply to most cancer cases."
-Uses:              shr.core, brca
-CodeSystem:        LNC = http://loinc.org
-CodeSystem:        SCT = http://snomed.info/sct
+Uses:              shr.core
 
 Abstract:          CancerStageGroup
 Parent:            CodedNonLaboratoryObservation
@@ -19,16 +17,11 @@ Property:          RelatedCancerCondition 0..1
 Element:           CancerStagingSystem
 Parent:            Method
 Description:       "Method of Staging (attribute) -  SCT#260713006"
-                   Value only concept
-                   Value from CancerStagingSystemVS (extensible)
 
 Entry:             TNMClinicalStageGroup
 Parent:            CancerStageGroup
 Description:       "A panel of TNM staging classifications, based on information obtained prior to neoadjuvant treatment and surgery, e.g. based on evidence such as physical examination, imaging, and/or biopsy.
 This class is/conforms to CancerStageGroup and can be used where a reference to CancerStageGroup appears."
-                   Code = LNC#21908-9 "Stage group.clinical Cancer"
-                   DataValue from StageGroupVS (extensible)
-                   CancerStagingSystem from TNMTumorStagingSystemVS (extensible)
                    PanelMembers.Observation
                    includes TNMClinicalPrimaryTumorClassification 0..1
                    includes TNMClinicalRegionalNodesClassification 0..1
@@ -38,9 +31,6 @@ Entry:             TNMPathologicStageGroup
 Parent:            CancerStageGroup
 Description:       "A panel of staging information that is based on examination of tissue samples removed during surgery, in addition to physical examination and imaging and potentially, other prognostic factors.
 This class is/conforms to CancerStageGroup and can be used where a reference to CancerStageGroup appears."
-                   Code = LNC#21902-2 "Stage group.pathology Cancer"
-                   DataValue from StageGroupVS (extensible)
-                   CancerStagingSystem from TNMTumorStagingSystemVS (extensible)
                    PanelMembers.Observation
                    includes TNMPathologicPrimaryTumorClassification 0..1
                    includes TNMPathologicRegionalNodesClassification 0..1
@@ -59,49 +49,31 @@ Property:          CancerStageTiming 1..1
 
 Element:           CancerStageTiming
 Description:       "Indicates when staging was done, in terms of treatment landmarks."
-Value:             concept from CancerStageTimingVS (extensible)
+Value:             concept
 
 Entry:             TNMClinicalPrimaryTumorClassification
 Parent:            CancerStageClassification
 Description:       "Classification of the primary tumor, based on its size and extent, assessed prior to surgery, based on evidence such as physical examination, imaging, and/or biopsy."
-                   Code = LNC#21905-5 "Primary tumor.clinical [Class] Cancer"
-                   DataValue from TNMPrimaryTumorClassificationVS (required)
-                   CancerStageTiming = SCT#385349001 "Clinical stage (observable entity)"
 
 Entry:             TNMClinicalRegionalNodesClassification
 Parent:            CancerStageClassification
 Description:       "Classification of the presence or absence of metastases in regional lymph nodes, assessed using tests that are done before surgery. These include physical exams, imaging tests, laboratory tests (such as blood tests), and biopsies. (adapted from NCI Dictionary of Cancer Terms)"
-                   Code = LNC#21906-3 "Regional lymph nodes.clinical [Class] Cancer"
-                   DataValue from http://loinc.org/vs/LL238-7 (required)
-                   CancerStageTiming = SCT#385349001 "Clinical stage (observable entity)"
 
 Entry:             TNMClinicalDistantMetastasesClassification
 Parent:            CancerStageClassification
 Description:       "Classification of the presence or absense of metastases in remote anatomical locations, assessed using tests that are done before surgery. These include physical exams, imaging tests, laboratory tests (such as blood tests), and biopsies. (adapted from NCI Dictionary of Cancer Terms)"
-                   Code = LNC#21907-1 "Distant metastases.clinical [Class] Cancer"
-                   DataValue from http://loinc.org/vs/LL239-5 (required)
-                   CancerStageTiming = SCT#385349001 "Clinical stage (observable entity)"
 
 Entry:             TNMPathologicPrimaryTumorClassification
 Parent:            CancerStageClassification
 Description:       "Classification of the primary tumor, based on its size and extent, assessed through pathologic analysis of a tumor specimen."
-                   Code = LNC#21899-0 "Primary tumor.pathology Cancer"
-                   DataValue from http://loinc.org/vs/LL232-0 (required)
-                   CancerStageTiming = SCT#405978005 "Pathologic stage (observable entity)"
 
 Entry:             TNMPathologicRegionalNodesClassification
 Parent:            CancerStageClassification
 Description:       "Classification of the presence or absence of metastases in regional lymph nodes, assessed through pathologic analysis of a specimen."
-                   Code = LNC#21900-6 "Regional lymph nodes.pathology [Class] Cancer"
-                   DataValue from http://loinc.org/vs/LL3136-0 (required)
-                   CancerStageTiming = SCT#405978005 "Pathologic stage (observable entity)"
 
 Entry:             TNMPathologicDistantMetastasesClassification
 Parent:            CancerStageClassification
 Description:       "Classification of the presence or absense of metastases in remote anatomical locations, assessed through pathologic analysis of a specimen."
-                   Code = LNC#21901-4 "Distant metastases.pathology [Class] Cancer"
-                   DataValue from http://loinc.org/vs/LL3137-8 (required)
-                   CancerStageTiming = SCT#405978005 "Pathologic stage (observable entity)"
 
 Element:           CancerStageSuffix
 Description:       "A suffix used in conjuction with certain cancer stage categories, usually qualifying how the category value was determined."

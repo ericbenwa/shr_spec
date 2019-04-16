@@ -2,7 +2,6 @@ Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
-CodeSystem:        UCUM = http://unitsofmeasure.org
 CodeSystem:        LNC = http://loinc.org
 CodeSystem:        SCT = http://snomed.info/sct
 
@@ -16,9 +15,13 @@ Property:          Laterality 0..1
 Property:          AnatomicalDirection 0..1
 Property:          RelationToLandmark 0..*
 
+Element:           CodeableConcept
+Description:       "A set of codes drawn from different coding systems, representing the same concept."
+Property:          DisplayText 0..1
+
 Element:           LocationCode
 Description:       "Code for the body location, optionally pre-coordinating laterality or direction."
-Value:             concept from BodyLocationVS (preferred)
+Value:             concept
 
 Element:           Quantity
 Description:       "A quantity with units, whose value may be bounded from above or below, as defined in FHIR"
@@ -26,9 +29,17 @@ Property:          Number 0..1
 Property:          Comparator 0..1
 Property:          Units 0..1
 
+Element:           Coding
+Concept:           MTH#C0805701
+Description:       "Coding of a concept, drawn from a controlled vocabulary. Includes the vocabulary and version, if applicable. May include a display text, and a descriptor expressing the intended interpretation of the code."
+Property:          CodeValue 0..1
+Property:          CodeSystem 0..1
+Property:          CodeSystemVersion 0..1
+Property:          DisplayText 0..1
+
 Element:           Units
 Description:       "The unit of measure of the quantity."
-Value:             concept from AllUnitsVS (preferred)
+Value:             concept
 
 Element:           Type
 Concept:           MTH#C0332307
@@ -57,7 +68,7 @@ Value:             decimal
 
 Element:           Comparator
 Description:       "A code indicated if the value represents an upper or lower bound"
-Value:             concept from http://hl7.org/fhir/ValueSet/quantity-comparator (required)
+Value:             concept
 
 Element:           SimpleQuantity
 Parent:            Quantity
@@ -67,38 +78,25 @@ Description:       "A quantity where the comparator is not used, as defined in F
 Element:           IntegerQuantity
 Parent:            Quantity
 Description:       "A Quantity that is an integer."
-                   Units = UCUM#1
 
 Element:           Age
 Parent:            Quantity
 Concept:           MTH#C0001779
 Description:       "How long someone has been alive, or something has existed."
-                   Units from http://hl7.org/fhir/ValueSet/units-of-time (required)
 
 Element:           Distance
 Parent:            Quantity
 Concept:           MTH#C0012751
 Description:       "The measure of space separating two objects or points."
-                   Units from UnitsOfLengthVS (required)
 
 Element:           Duration
 Parent:            SimpleQuantity
 Concept:           MTH#C0449238
 Description:       "The length of time that something continues."
-                   Units from TimeUnitOfMeasureVS (required)
 
 Element:           Money
 Parent:            Quantity
 Description:       "Representation of an amount of currency or monetary value."
-                   Units from CurrencyVS (required)
-
-Element:           Coding
-Concept:           MTH#C0805701
-Description:       "Coding of a concept, drawn from a controlled vocabulary. Includes the vocabulary and version, if applicable. May include a display text, and a descriptor expressing the intended interpretation of the code."
-Property:          CodeValue 0..1
-Property:          CodeSystem 0..1
-Property:          CodeSystemVersion 0..1
-Property:          DisplayText 0..1
 
 Element:           CodeValue
 Description:       "A coded value, or expression, in syntax defined by the system"
@@ -111,10 +109,6 @@ Value:             uri
 Element:           CodeSystemVersion
 Description:       "The version of the vocabulary being used, if applicable."
 Value:             string
-
-Element:           CodeableConcept
-Description:       "A set of codes drawn from different coding systems, representing the same concept."
-Property:          DisplayText 0..1
 
 Element:           Range
 Description:       "An interval defined by a quantitative upper and/or lower bound. One of the two bounds must be specified, and the lower bound must be less than the upper bound. When Quantities are specified, the units of measure must be the same."
@@ -157,8 +151,6 @@ Property:          Type 0..1
 Property:          Purpose 0..1
 Property:          PriorityRank 0..1
 Property:          EffectiveTimePeriod 0..1
-                   Type from http://hl7.org/fhir/ValueSet/contact-point-system (required)
-                   Purpose from http://hl7.org/fhir/ValueSet/contact-point-use (required)
 
 Element:           TelecomNumberOrAddress
 Description:       "A user name or other identifier on a telecommunication network, such as a telephone number (including country code and extension, if necessary), email address, or SkypeID."
@@ -206,7 +198,7 @@ Property:          RecurrenceRange 0..1
 Element:           TimingCode
 Description:       "A code for the timing schedule.
 Some codes such as BID are ubiquitous, but many institutions define their own additional codes. If a code is provided, the code is understood to be a complete statement of whatever is specified in the structured timing data, and either the code or the data may be used to interpret the Timing, with the exception that .repeat.bounds still applies over the code (and is not contained in the code)."
-Value:             concept from http://hl7.org/fhir/ValueSet/timing-abbreviation (extensible)
+Value:             concept
 
 Element:           EventDuration
 Description:       "The length of the recurring event."
@@ -228,7 +220,7 @@ Value:             Duration
 
 Element:           DayOfWeek
 Description:       "A day of the week that the pattern should take place."
-Value:             concept from http://hl7.org/fhir/ValueSet/days-of-week (required)
+Value:             concept
 
 Element:           TimeOfDay
 Description:       "Time of day the event should take place on the designated day(s).
@@ -237,7 +229,7 @@ Value:             time
 
 Element:           DailyLifeEvent
 Description:       "A quotidian landmark, such as rising, mealtime, or bedtime, when an event should take place."
-Value:             concept from http://hl7.org/fhir/ValueSet/event-timing (required)
+Value:             concept
 
 Element:           LifeEventOffset
 Description:       "A time in minutes before or after a given life event, for example, 30 minutes before a meal. Whether this means before or after is carried by the life event code."
@@ -315,8 +307,6 @@ Property:          State 0..1
 Property:          PostalCode 0..1
 Property:          Country 0..1
 Property:          EffectiveTimePeriod 0..1
-                   Purpose from http://hl7.org/fhir/ValueSet/address-use (required)
-                   Type from http://hl7.org/fhir/ValueSet/address-type (required)
 
 Element:           AddressLine
 Description:       "Part of an address that contains the house number, apartment number, street name, street direction, P.O. Box number, delivery hints, and similar address information. (Source: HL7 FHIR)."
@@ -371,7 +361,7 @@ Property:          StatisticType 1..1
 
 Element:           StatisticType
 Description:       "The type of statistic that is represented by the value."
-Value:             concept from StatisticTypeVS (required)
+Value:             concept
 
 Element:           PriorityCode
 Concept:           MTH#C0549179
@@ -382,20 +372,19 @@ Element:           Percentage
 Parent:            SimpleQuantity
 Concept:           MTH#C0439165
 Description:       "A percentage value where 100.0 represents 100%."
-                   Units = UCUM#%
 
 Element:           QualitativeLikelihood
 Description:       "A qualitative (subjective) likelihood."
-Value:             concept from QualitativeLikelihoodVS (required)
+Value:             concept
 
 Element:           QualitativeDateTime
 Description:       "A point in time, described qualitatively."
-Value:             concept from QualitativeDateTimeVS (required)
+Value:             concept
 
 Element:           AgeGroup
 Concept:           MTH#C0027362
 Description:       "Subgroups of populations based on age."
-Value:             concept from AgeGroupVS (required)
+Value:             concept
 
 Element:           GestationalAge
 Parent:            Age
@@ -404,26 +393,24 @@ Description:       "The age of the embryo or fetus. This may be assessed by medi
 
 Element:           GestationalTimePeriod
 Description:       "A time relative to a pregnancy or childbirth event."
-Value:             concept from GestationalTimePeriodVS (required)
+Value:             concept
 
 Element:           SemiquantDuration
 Description:       "The duration of an event, described semi-quantitatively."
-Value:             concept from SemiquantitativeDurationVS (required)
+Value:             concept
 
 Element:           Frequency
 Parent:            Ratio
 Concept:           MTH#C0376249
 Description:       "How many occurrences of an event per unit of time."
-                   Numerator[Quantity].Units = UCUM#1
-                   Denominator[Quantity].Units from http://hl7.org/fhir/ValueSet/units-of-time (required)
 
 Element:           SemiquantFrequency
 Description:       "The frequency of an event, described semi-quantitatively."
-Value:             concept from SemiquantitativeFrequencyVS (required)
+Value:             concept
 
 Element:           QualitativeFrequency
 Description:       "The frequency of an event, described qualitatively."
-Value:             concept from QualitativeFrequencyVS (required)
+Value:             concept
 
 Element:           EffectiveTimePeriod
 Parent:            TimePeriod
@@ -480,7 +467,7 @@ Value:             decimal
 
 Element:           Setting
 Description:       "Description of the place or type of surroundings where something is positioned or where an event takes place."
-Value:             concept from SettingVS (required)
+Value:             concept
 
 Element:           UnitedStatesAddress
 Parent:            Address
@@ -586,7 +573,6 @@ Property:          Signatory 1..1
 Property:          OnBehalfOf 0..1
 Property:          ContentType 1..1
 Property:          BinaryData 1..1
-                   SignatureType from http://hl7.org/fhir/ValueSet/signature-type (extensible)
 
 Element:           Signatory
 Description:       "The party signing."
@@ -595,11 +581,11 @@ Value:             uri or Entity
 Element:           RouteIntoBody
 Concept:           MTH#C0013153
 Description:       "The way a substance enters an organism after contact, particularly, the route of drug administration."
-Value:             concept from http://hl7.org/fhir/ValueSet/route-codes (required)
+Value:             concept
 
 Element:           Laterality
 Description:       "Additional information, such as laterality or direction, that helps define the body location."
-Value:             concept from LateralityVS (extensible)
+Value:             concept
 
 Element:           RelationToLandmark
 Description:       "An anatomical landmark that helps determine a body location."
@@ -610,7 +596,7 @@ Property:          LandmarkToBodyLocationDistance 0..1
 
 Element:           LandmarkType
 Description:       "The type of feature that constitutes the landmark, for example, particularly if the landmark is an acquired body structure or physical object."
-Value:             concept from LandmarkTypeVS (extensible)
+Value:             concept
 
 Element:           LandmarkLocation
 Description:       "The body location of the landmark."
@@ -624,16 +610,15 @@ Value:             ClockDirection or AnatomicalDirection
 
 Element:           ClockDirection
 Description:       "A direction indicated by an angle relative to 12 o'clock."
-Value:             concept from ClockDirectionVS (required)
+Value:             concept
 
 Element:           AnatomicalDirection
 Description:       "A direction based on planes, surfaces, and orientations of the body."
-Value:             concept from AnatomicalDirectionVS (preferred)
+Value:             concept
 
 Element:           LandmarkToBodyLocationDistance
 Description:       "How far the anatomical location of interest is from the given landmark"
 Value:             Quantity
-    Quantity.Units from UnitsOfLengthVS (required)
 
 Element:           Identifier
 Description:       "Business identifier or external id for this resource."
@@ -642,8 +627,6 @@ Property:          Purpose 0..1
 Property:          Type 0..1
 Property:          CodeSystem 0..1
 Property:          EffectiveTimePeriod 0..1
-                   Purpose from http://hl7.org/fhir/ValueSet/identifier-use (required)
-                   Type from http://hl7.org/fhir/ValueSet/identifier-type (extensible)
 
 Element:           IdentifierString
 Description:       "An id for the item expresse as a string."
@@ -672,7 +655,6 @@ Property:          GivenName 0..*
 Property:          FamilyName 0..1
 Property:          Suffix 0..*
                    Purpose 0..1
-                   Purpose[CodeableConcept] from http://hl7.org/fhir/ValueSet/name-use (required)
 
 Element:           Prefix
 Description:       "A string that should precede the item; for example, an honorific before a person's name, or a question number before a question."

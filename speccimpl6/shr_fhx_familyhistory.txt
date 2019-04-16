@@ -1,7 +1,7 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.fhx
 Description:       "Contains elements related to the health history of a patient's family members."
-Uses:              shr.core, brca, oncocore, dme, odh, shr.base
+Uses:              shr.core
 CodeSystem:        LNC = http://loinc.org
 
 Entry:             FamilyMember
@@ -16,7 +16,6 @@ Description:       "The health history of a patient's family member."
 Property:          FamilyMember 1..1
 Property:          FamilyMemberCondition 0..*
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/history-status (required)
                    SubjectOfRecord 1..1
                    SubjectOfRecord substitute PatientSubjectOfRecord
 
@@ -25,9 +24,8 @@ Concept:           LNC#8670-2 "History of family member diseases"
 Property:          Onset 0..1
 Property:          ConditionOutcome 0..1
 Property:          Code 1..1
-                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-problem (extensible)
 
 Element:           ConditionOutcome
 Concept:           TBD#TBD
 Description:       "The lasting effects of a disease, e.g. death, functional impairment."
-Value:             concept from http://hl7.org/fhir/ValueSet/condition-outcome (example)
+Value:             concept

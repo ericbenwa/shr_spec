@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
 CodeSystem:        SCT = http://snomed.info/sct
 
 Entry:             AllergyIntolerance
@@ -20,8 +19,6 @@ Property:          AllergyIntoleranceReaction 0..*
                    Status 1..1
                    SubjectOfRecord 1..1
                    SubjectOfRecord substitute PatientSubjectOfRecord
-                   ClinicalStatus from http://hl7.org/fhir/ValueSet/allergy-clinical-status (required)
-                   Type from http://hl7.org/fhir/ValueSet/allergy-intolerance-type (required)
 
 Element:           AllergyRecorder
 Description:       "A choice of Patient or Practitioner as recorder."
@@ -29,7 +26,7 @@ Value:             Patient or Practitioner
 
 Element:           SubstanceCategory
 Description:       "Categorization of the risk substance as a food, drug, or environmental agent. For difficult-to-classify substances, one can leave this field empty or choose the most typical category."
-Value:             concept from http://hl7.org/fhir/ValueSet/allergy-intolerance-category (required)
+Value:             concept
 
 Element:           MostRecentOccurrenceTime
 Description:       "The time of the last or latest of a series of events."
@@ -43,9 +40,7 @@ Property:          BeginDateTime 0..1
 Property:          Severity 0..1
 Property:          RouteIntoBody 0..1
 Property:          CommentOrDescription 0..1
-                   Manifestation from http://hl7.org/fhir/ValueSet/clinical-findings (example)
-                   Severity from http://hl7.org/fhir/ValueSet/reaction-event-severity (required)
 
 Element:           SubstanceCode
 Description:       "The substance triggering a particular allergy or intolerance reaction event. The substance may be the same as the substance cited in the AllergyIntolerance, but should be a specific substance rather than a class of substances, if known. For example, if the allergy intolerance DataValue substance is 'shellfish' the substance code for the reaction might be 'oyster'."
-Value:             concept from http://hl7.org/fhir/us/core/ValueSet-us-core-substance.html (extensible)
+Value:             concept

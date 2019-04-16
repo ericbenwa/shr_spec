@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore, dme, odh, shr.base
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 
 Element:           Seriousness
@@ -25,9 +24,6 @@ Property:          AssociatedStudy 0..1
                    Identifier 0..1
                    SubjectOfRecord 1..1
                    SubjectOfRecord substitute AdverseEventSubjectOfRecord
-                   Type from MedDRAVS (required)
-                   Seriousness from SeriousnessVS (required)
-                   Outcome from http://hl7.org/fhir/ValueSet/adverse-event-outcome (required)
 
 Element:           AdverseEventSubjectOfRecord
 Parent:            SubjectOfRecord
@@ -57,7 +53,7 @@ Value:             concept from http://hl7.org/fhir/ValueSet/substance-code (pre
 
 Element:           CauseCategory
 Description:       "Whether the adverse event is attributed to a treatment, course of the disease, unrelated to either, or unknown."
-Value:             concept from AttributionCategoryVS (required)
+Value:             concept
 
 Element:           Certainty
 Description:       "The degree of confidence in a conclusion or assertion."

@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore
 
 Entry:             Questionnaire
 Parent:            DomainResource
@@ -26,8 +25,6 @@ Property:          EffectiveTimePeriod 0..1
 Property:          Code 0..*
 Property:          QuestionnaireItem 0..*
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/publication-status (required)
-                   Code from http://hl7.org/fhir/ValueSet/questionnaire-questions (example)
 
 Element:           QuestionnaireItem
 Description:       "Questions and sections within the Questionnaire."
@@ -46,8 +43,6 @@ Property:          AnswerValueSet 0..1
 Property:          AnswerOption 0..*
 Property:          PrepopulateValue 0..*
 Property:          QuestionnaireItem 0..*
-                   Code from http://hl7.org/fhir/ValueSet/questionnaire-questions (example)
-                   Type from http://hl7.org/fhir/ValueSet/item-type (required)
 
 Element:           LastReviewedDate
 Description:       "The most recent date the item was reviewed."
@@ -123,10 +118,9 @@ Property:          QuestionnaireResponseRecorder 0..1
 Property:          PersonInformationSource 0..1
 Property:          QuestionnaireResponseItem 0..*
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/questionnaire-answers-status (required)
                    Identifier 0..1
                    RelatedRequest substitute ReferralOrProcedureRequest
-                   FocusOfResponse substitute DomainResource
+                   FocusOfResponse.DomainResource substitute DomainResource
 
 Element:           QuestionnaireResponseRecorder
 Description:       "The recorder of the information, who received and recorded the answers. For example, the nurse taking a list of medications reported by the patient."

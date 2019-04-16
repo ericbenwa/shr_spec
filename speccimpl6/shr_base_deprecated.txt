@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.base
 Description:       "Contains only the SHR Entry definition which is deprecated."
-Uses:              shr.core, brca, oncocore, dme, odh
 
 Element:           Entry
 Description:       "Obsolete. Use DomainResource"

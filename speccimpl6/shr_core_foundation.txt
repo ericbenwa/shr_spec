@@ -1,7 +1,6 @@
 Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
-Uses:              brca, oncocore
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
 
 Abstract:          Resource
@@ -34,9 +33,7 @@ Description:       "A composition represents a set of Entries sharing common pro
 Property:          Type 1..1
 Property:          Section 0..*
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/composition-status (required)
                    Identifier 0..1
-                   Type from http://hl7.org/fhir/ValueSet/doc-typecodes (preferred)
 
 Element:           Section
 Description:       "Represents a section containing entries in a composition."
@@ -82,12 +79,7 @@ Property:          CommentOrDescription 0..1
 Property:          SecurityLabel 0..*
 Property:          ClinicalContext 0..1
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/document-reference-status (required)
-                   DocumentStatus from http://hl7.org/fhir/ValueSet/composition-status (required)
-                   Type from http://hl7.org/fhir/ValueSet/c80-doc-typecodes (required)
-                   Category from http://hl7.org/fhir/ValueSet/c80-doc-classcodes (required)
                    SubjectOfRecord substitute PatientSubjectOfRecord
-                   SecurityLabel from http://hl7.org/fhir/ValueSet/security-labels (extensible)
 
 Element:           Language
 Concept:           MTH#C0023008
@@ -109,7 +101,7 @@ Value:             xhtml
 
 Element:           NarrativeQualifier
 Description:       "Additional information on how the narrative was generated, and the scope of information contained."
-Value:             concept from http://hl7.org/fhir/ValueSet/narrative-status (required)
+Value:             concept
 
 Element:           Metadata
 Description:       "Elements that belong to all information items."
@@ -163,7 +155,6 @@ Property:          IsExtensible 0..1
 Property:          ContentLogicalDefinition 0..1
 Property:          ValueSetExpansion 0..1
                    Status 1..1
-                   Status[CodeableConcept] from http://hl7.org/fhir/ValueSet/publication-status (required)
 
 Element:           IsExperimental
 Description:       "A Boolean value to indicate that the item is for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage."
@@ -179,7 +170,7 @@ Value:             boolean
 
 Element:           Jurisdiction
 Description:       "The country, state or other region taking legal responsibility for the conduct of the study."
-Value:             concept from http://hl7.org/fhir/ValueSet/jurisdiction (extensible)
+Value:             concept
 
 Element:           UseContext
 Description:       "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate questionnaire instances."
@@ -192,7 +183,7 @@ Value:             concept or Quantity or Range or Group or Location or Organiza
 
 Element:           SubjectType
 Description:       "Resource that can be subject of QuestionnaireResponse"
-Value:             concept from http://hl7.org/fhir/ValueSet/resource-types (required)
+Value:             concept
 
 Element:           PublisherName
 Description:       "The name of the organization or individual that published this item."
@@ -252,7 +243,6 @@ Description:       "Additional representations for this concept when used in thi
 Property:          Language 0..1
 Property:          Type 0..1
 Property:          DisplayText 1..1
-                   Type from http://hl7.org/fhir/ValueSet/designation-use (extensible)
 
 Element:           CodeSetFilter
 Description:       "Select concepts by specify a matching criteria based on the properties (including relationships) defined by the system. If multiple filters are specified, they SHALL all be true."
@@ -266,7 +256,7 @@ Value:             concept
 
 Element:           Operation
 Description:       "The kind of operation to perform as a part of the filter criteria."
-Value:             concept from http://hl7.org/fhir/ValueSet/filter-operator (required)
+Value:             concept
 
 Element:           ValueSetUri
 Description:       "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url. If multiple value sets are specified this includes the union of the contents of all of the referenced value sets."
@@ -336,9 +326,8 @@ Description:       "The document referenced."
 Property:          Attachment 1..1
 Property:          Attachment 1..1
 Property:          Type 0..1
-                   Attachment
-                   Attachment
-                   Type from http://hl7.org/fhir/ValueSet/formatcodes (extensible)
+                   Attachment.ContentType
+                   Attachment.ContentType
 
 Element:           Relationship
 Description:       "A description of the association between two items."
@@ -348,7 +337,6 @@ Element:           RelatedDocument
 Description:       "Documents related to this one."
 Property:          Relationship 1..1
 Property:          DocumentReference 1..1
-                   Relationship from http://hl7.org/fhir/ValueSet/document-relationship-type (required)
 
 Element:           ClinicalContext
 Description:       "Clinical context of document"
@@ -363,11 +351,11 @@ Property:          Identifier 0..*
 
 Element:           Event
 Description:       "Main clinical acts documented"
-Value:             concept from http://hl7.org/fhir/ValueSet/v3-ActCode (example)
+Value:             concept
 
 Element:           FacilityType
 Description:       "Kind of facility where patient was seen"
-Value:             concept from http://hl7.org/fhir/ValueSet/c80-facilitycodes (example)
+Value:             concept
 
 Element:           ContemporaneousPatientInformation
 Description:       "he Patient Information as known when the document was published. May be a reference to a version specific, or contained."
