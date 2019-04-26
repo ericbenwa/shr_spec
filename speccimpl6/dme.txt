@@ -2,8 +2,9 @@ Grammar:           DataElement 6.0
 Namespace:         dme
 Description:       "Classes pertaining to ordering durable medical devices."
 Uses:              shr.core
+CodeSystem:        PUB = http://hl7.org/fhir/publication-status
 
-Element:           DTR-QuestionnaireItem
+Group:             DTR-QuestionnaireItem
 Parent:            QuestionnaireItem
 Description:       "Includes extensions"
 Property:          CalculatedValue 1..1
@@ -12,12 +13,13 @@ Entry:             DTR-Questionnaire
 Parent:            Questionnaire
 Description:       "Document templates and rules."
 Property:          PayerLibrary 1..*
+                   Status = PUB#active
                    IsExperimental 0..0
                    LastUpdated 1..1
                    ContactDetail 1..*
-                   QuestionnaireItem 1..*
                    QuestionnaireItem substitute DTR-QuestionnaireItem
-                   QuestionnaireItem.Question 1..1
+                   DTR-QuestionnaireItem 1..*
+                   DTR-QuestionnaireItem.Question 1..1
 
 Element:           PayerLibrary
 Description:       "Computable rules and queries to determine if a patient meets requirements for desired service."

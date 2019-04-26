@@ -33,9 +33,11 @@ Description:       "A composition represents a set of Entries sharing common pro
 Property:          Type 1..1
 Property:          Section 0..*
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/composition-status (required)
                    Identifier 0..1
+                   Type from http://hl7.org/fhir/ValueSet/doc-typecodes (preferred)
 
-Element:           Section
+Group:             Section
 Description:       "Represents a section containing entries in a composition."
 Property:          DomainResource 0..*
 Property:          Section 0..*
@@ -78,8 +80,13 @@ Property:          RelatedDocument 0..*
 Property:          CommentOrDescription 0..1
 Property:          SecurityLabel 0..*
 Property:          ClinicalContext 0..1
-                   Status 1..1
                    SubjectOfRecord substitute PatientSubjectOfRecord
+                   Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/document-reference-status (required)
+                   DocumentStatus from http://hl7.org/fhir/ValueSet/composition-status (required)
+                   Type from http://hl7.org/fhir/ValueSet/c80-doc-typecodes (required)
+                   Category from http://hl7.org/fhir/ValueSet/c80-doc-classcodes (required)
+                   SecurityLabel from http://hl7.org/fhir/ValueSet/security-labels (extensible)
 
 Element:           Language
 Concept:           MTH#C0023008
@@ -90,7 +97,7 @@ Element:           ImplicitRules
 Description:       "A set of rules under which this content was created"
 Value:             uri
 
-Element:           Narrative
+Group:             Narrative
 Description:       "A human-readable narrative, potentially including images, that contains a summary of the resource, and may be used to represent the content of the resource to a human."
 Property:          NarrativeText 1..1
 Property:          NarrativeQualifier 1..1
@@ -101,9 +108,9 @@ Value:             xhtml
 
 Element:           NarrativeQualifier
 Description:       "Additional information on how the narrative was generated, and the scope of information contained."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/narrative-status (required)
 
-Element:           Metadata
+Group:             Metadata
 Description:       "Elements that belong to all information items."
 Property:          VersionId 0..1
 Property:          LastUpdated 0..1
@@ -155,6 +162,7 @@ Property:          IsExtensible 0..1
 Property:          ContentLogicalDefinition 0..1
 Property:          ValueSetExpansion 0..1
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/publication-status (required)
 
 Element:           IsExperimental
 Description:       "A Boolean value to indicate that the item is for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage."
@@ -170,9 +178,9 @@ Value:             boolean
 
 Element:           Jurisdiction
 Description:       "The country, state or other region taking legal responsibility for the conduct of the study."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/jurisdiction (extensible)
 
-Element:           UseContext
+Group:             UseContext
 Description:       "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate questionnaire instances."
 Property:          Code 1..1
 Property:          ContextValue 1..1
@@ -183,7 +191,7 @@ Value:             concept or Quantity or Range or Group or Location or Organiza
 
 Element:           SubjectType
 Description:       "Resource that can be subject of QuestionnaireResponse"
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/resource-types (required)
 
 Element:           PublisherName
 Description:       "The name of the organization or individual that published this item."
@@ -201,7 +209,7 @@ Element:           Copyright
 Description:       "A rights statement relating legal restrictions on the use and publishing of the item."
 Value:             markdown
 
-Element:           ContentLogicalDefinition
+Group:             ContentLogicalDefinition
 Description:       "Definition of the content of the value set."
 Property:          LockedDate 0..1
 Property:          IncludeInactiveCodes 0..1
@@ -224,7 +232,7 @@ Element:           ExcludeCodes
 Description:       "Exclude one or more codes from the value set based on code system filters and/or other value sets."
 Value:             CodeSet
 
-Element:           CodeSet
+Group:             CodeSet
 Description:       "A description of a set of codes, to be included or excluded from a value set."
 Property:          CodeSystem 0..1
 Property:          CodeSystemVersion 0..1
@@ -232,19 +240,20 @@ Property:          CodeSetConcept 0..*
 Property:          CodeSetFilter 0..*
 Property:          ValueSetUri 0..*
 
-Element:           CodeSetConcept
+Group:             CodeSetConcept
 Description:       "Specifies a concept to be included or excluded."
 Property:          CodeValue 0..1
 Property:          DisplayText 0..1
 Property:          Designation 0..*
 
-Element:           Designation
+Group:             Designation
 Description:       "Additional representations for this concept when used in this value set - other languages, aliases, specialized purposes, used for particular purposes, etc."
 Property:          Language 0..1
 Property:          Type 0..1
 Property:          DisplayText 1..1
+                   Type from http://hl7.org/fhir/ValueSet/designation-use (extensible)
 
-Element:           CodeSetFilter
+Group:             CodeSetFilter
 Description:       "Select concepts by specify a matching criteria based on the properties (including relationships) defined by the system. If multiple filters are specified, they SHALL all be true."
 Property:          Property 1..1
 Property:          Operation 1..1
@@ -256,13 +265,13 @@ Value:             concept
 
 Element:           Operation
 Description:       "The kind of operation to perform as a part of the filter criteria."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/filter-operator (required)
 
 Element:           ValueSetUri
 Description:       "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url. If multiple value sets are specified this includes the union of the contents of all of the referenced value sets."
 Value:             uri
 
-Element:           ValueSetExpansion
+Group:             ValueSetExpansion
 Description:       "The value set turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed."
 Property:          Url 0..1
 Property:          CreationDateTime 1..1
@@ -279,7 +288,7 @@ Element:           Offset
 Description:       "If paging is being used, the offset at which this resource starts. I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present."
 Value:             integer
 
-Element:           ExpansionParameter
+Group:             ExpansionParameter
 Description:       "A parameter that controlled the expansion process. These parameters may be used by users of expanded value sets to check whether the expansion is suitable for a particular purpose, or to pick the correct expansion."
 Property:          NameAsText 1..1
 Property:          ParameterValue 0..1
@@ -288,7 +297,7 @@ Element:           ParameterValue
 Description:       "The value of the parameter."
 Value:             string or boolean or integer or decimal or uri or concept or dateTime
 
-Element:           ExpansionCoding
+Group:             ExpansionCoding
 Parent:            Coding
 Description:       "The codes that are contained in the value set expansion."
 Property:          Inactive 0..1
@@ -321,24 +330,25 @@ Element:           Authenticator
 Description:       "Who authenticated the document"
 Value:             Practitioner or Organization
 
-Element:           DocumentReferenced
+Group:             DocumentReferenced
 Description:       "The document referenced."
 Property:          Attachment 1..1
-Property:          Attachment 1..1
 Property:          Type 0..1
-                   Attachment.ContentType
-                   Attachment.ContentType
+                   Attachment.ContentType 1..1
+                   Attachment.ResourceLocation 1..1
+                   Type from http://hl7.org/fhir/ValueSet/formatcodes (extensible)
 
 Element:           Relationship
 Description:       "A description of the association between two items."
 Value:             concept
 
-Element:           RelatedDocument
+Group:             RelatedDocument
 Description:       "Documents related to this one."
 Property:          Relationship 1..1
 Property:          DocumentReference 1..1
+                   Relationship from http://hl7.org/fhir/ValueSet/document-relationship-type (required)
 
-Element:           ClinicalContext
+Group:             ClinicalContext
 Description:       "Clinical context of document"
 Property:          Encounter 0..1
 Property:          Event 0..*
@@ -351,11 +361,11 @@ Property:          Identifier 0..*
 
 Element:           Event
 Description:       "Main clinical acts documented"
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/v3-ActCode (example)
 
 Element:           FacilityType
 Description:       "Kind of facility where patient was seen"
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/c80-facilitycodes (example)
 
 Element:           ContemporaneousPatientInformation
 Description:       "he Patient Information as known when the document was published. May be a reference to a version specific, or contained."

@@ -16,8 +16,8 @@ Property:          SubjectOfRecord 1..1
 Property:          Type 0..*
 Property:          Organization 0..1
 Property:          ReferralRequest 0..*
-                   Status 1..1
                    SubjectOfRecord substitute PatientSubjectOfRecord
+                   Status 1..1
 
 Entry:             Encounter
 Parent:            EncounterOrEpisode
@@ -33,14 +33,18 @@ Property:          ReasonCode 0..*
 Property:          EncounterLocation 0..*
 Property:          PartOf 0..1
                    Participation.Participant substitute EncounterParticipant
-                   PartOf.DomainResource substitute Encounter
+                   PartOf[DomainResource] substitute Encounter
+                   Type from http://hl7.org/fhir/ValueSet/v3-ActEncounterCode (extensible)
+                   PriorityCode from http://hl7.org/fhir/ValueSet/v3-ActPriority (example)
+                   Participation.ParticipationType from http://hl7.org/fhir/ValueSet/encounter-participant-type (extensible)
+                   ReasonCode from http://hl7.org/fhir/ValueSet/encounter-reason (preferred)
 
 Element:           EncounterParticipant
 Parent:            Participant
 Description:       "A choice of Practitioner and RelatedPerson as participant"
 Value:             Practitioner or RelatedPerson
 
-Element:           StatusHistory
+Group:             StatusHistory
 Description:       "List of past encounter statuses"
 Property:          Status 1..1
 Property:          TimePeriod 1..1
@@ -49,32 +53,37 @@ Element:           EncounterClass
 Description:       "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations."
 Value:             concept
 
-Element:           ClassHistory
+Group:             ClassHistory
 Description:       "List of past encounter statuses"
 Property:          EncounterClass 1..1
 Property:          TimePeriod 1..1
 
-Element:           EncounterDiagnosis
+Group:             EncounterDiagnosis
 Description:       "A diagnosis, which is a disease or injury determined to be present through evaluation of patient history, examination, and/or review of laboratory data. This element is not a stand-alone representation of the condition that was diagnosed, but is meant to be used as an sub-structure in a resource, such as Encounter."
 Property:          DiagnosisCode 0..1
 Property:          Condition 1..1
 Property:          PriorityRank 0..1
 Property:          Type 0..1
+                   Type from http://hl7.org/fhir/ValueSet/diagnosis-role (preferred)
 
 Element:           DiagnosisCode
 Description:       "Codes for a diagnosis."
 Value:             concept
 
-Element:           EncounterLocation
+Group:             EncounterLocation
 Description:       "Locations where the patient has been."
 Property:          Location 1..1
 Property:          Status 0..1
 Property:          TimePeriod 0..1
+                   Status from http://hl7.org/fhir/ValueSet/encounter-location-status (required)
 
 Entry:             EpisodeOfCare
 Parent:            EncounterOrEpisode
 Description:       "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time."
 Property:          CareManager 0..1
+                   Status from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
+                   StatusHistory from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
+                   Type from http://hl7.org/fhir/ValueSet/episodeofcare-type (example)
 
 Element:           CareManager
 Description:       "Care manager/care co-ordinator for the patient"
@@ -93,9 +102,12 @@ Property:          ReferralRecipient 0..*
 Property:          ServiceType 0..*
 Property:          CommentOrDescription 0..1
 Property:          RelatedInformation 0..*
+                   Replaces[ActionRequested] substitute ReferralRequest
                    SubjectOfRecord substitute ReferralSubjectOfRecord
                    ReasonCode 0..1
-                   Replaces.ActionRequested substitute ReferralRequest
+                   Type from http://hl7.org/fhir/ValueSet/referral-type (example)
+                   RequestIntent from http://hl7.org/fhir/ValueSet/request-intent (required)
+                   PriorityCode from http://hl7.org/fhir/ValueSet/request-priority (required)
 
 Element:           ReferralRequester
 Description:       "The person or organization originating this referral"
@@ -107,7 +119,7 @@ Value:             Practitioner or Organization
 
 Element:           ServiceType
 Description:       "A service requested or to be performed during this appointment"
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/service-type (example)
 
 Element:           RelatedInformation
 Description:       "Additional information to support referral or transfer of care request"
@@ -132,14 +144,16 @@ Property:          TimePeriod 0..1
 Property:          ExpectedPerformanceTime 0..*
 Property:          StatementDateTime 0..1
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/appointmentstatus (required)
+                   Type from http://hl7.org/fhir/ValueSet/v2-0276 (preferred)
 
 Element:           ServiceCategory
 Description:       "A broad categorization of the service (ordered, planned, or performed)."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/service-category (example)
 
 Element:           Specialty
 Description:       "The specialty of a practitioner who (should, will, or did) perform a service."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/c80-practice-codes (preferred)
 
 Element:           Indication
 Description:       "Conditions or situations where the procedure is recommended. In the Performed context, the actual indication should be reported."
@@ -149,13 +163,16 @@ Element:           Need
 Description:       "A code expressing the degree or type of need for the person or item."
 Value:             concept
 
-Element:           AppointmentParticipation
+Group:             AppointmentParticipation
 Description:       "Participants involved in appointment"
 Property:          ParticipationType 1..*
 Property:          Participant 0..1
 Property:          Need 0..1
 Property:          Status 1..1
                    Participant substitute AppointmentParticipant
+                   ParticipationType from http://hl7.org/fhir/ValueSet/encounter-participant-type (required)
+                   Need from http://hl7.org/fhir/ValueSet/participantrequired (required)
+                   Status from http://hl7.org/fhir/ValueSet/participationstatus (required)
 
 Element:           AppointmentParticipant
 Parent:            Participant

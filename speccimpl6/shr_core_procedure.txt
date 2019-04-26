@@ -3,7 +3,9 @@ Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
 CodeSystem:        SCT = http://snomed.info/sct
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+CodeSystem:        OBSCAT = http://hl7.org/fhir/observation-category
 CodeSystem:        LNC = http://loinc.org
+CodeSystem:        UCUM = http://unitsofmeasure.org
 
 Entry:             Procedure
 Parent:            ActionPerformed
@@ -17,15 +19,18 @@ Property:          TreatmentIntent 0..*
 Property:          Location 0..1
 Property:          Outcome 0..1
 Property:          MaterialUsed 0..*
+                   PartOf[DomainResource] substitute Procedure
                    SubjectOfRecord substitute PatientSubjectOfRecord
                    Participation.OnBehalfOf only Organization
                    Participation.Participant substitute ProcedureParticipant
                    Method 0..0
                    RelatedRequest only ProcedureRequest
-                   PartOf.DomainResource substitute Procedure
+                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code (extensible)
 
 Entry:             SurgicalProcedure
 Parent:            Procedure
+                   Method from SurgicalMethodVS (required)
+                   Code from SurgicalProcedureVS (extensible)
                    BodyLocation substitute SurgicalBodyLocation
 
 Entry:             RadiationProcedure
@@ -35,6 +40,8 @@ Property:          RadiationDosePerFraction 0..1
 Property:          RadiationFractionsDelivered 0..1
 Property:          TotalRadiationDoseDelivered 0..1
 Property:          TerminationReason 0..*
+                   Code from RadiationProcedureVS (required)
+                   TerminationReason from TreatmentTerminationReasonVS (required)
 
 Element:           ProcedureParticipant
 Parent:            Participant
@@ -48,7 +55,7 @@ Value:             Device or Medication or Substance
 Element:           TreatmentIntent
 Concept:           SCT#395077000 "Treatment intent (situation)"
 Description:       "The intended result from a given treatment.  Examples include curative, palliative, and supportive."
-Value:             concept
+Value:             concept from TreatmentIntentVS (required)
 
 Entry:             ProcedureRequest
 Parent:            ActionRequested
@@ -60,11 +67,13 @@ Property:          Category 0..1
 Property:          Method 0..1
 Property:          Location 0..1
 Property:          ExpectedPerformer 0..1
+                   PartOf[DomainResource] substitute Procedure
                    SubjectOfRecord substitute ReferralSubjectOfRecord
                    ReasonCode 0..1
                    ReasonReference 0..1
                    Type 1..1
-                   PartOf.DomainResource substitute Procedure
+                   Type from http://hl7.org/fhir/us/core/ValueSet/us-core-procedure-code (extensible)
+                   RequestIntent from http://hl7.org/fhir/ValueSet/request-intent (required)
 
 Element:           ExpectedPerformer
 Description:       "A choice of Person (in any role) or organization as recipient of a request. Needed for mapping to FHIR."
@@ -93,8 +102,10 @@ Parent:            Procedure
 Concept:           MTH#C0456984
 Description:       "A procedure performed on a collected specimen such as a blood panel or a biopsy."
 Property:          Specimen 0..1
+                   Code from http://hl7.org/fhir/ValueSet/observation-codes (required)
+                   Category = OBSCAT#laboratory
 
-Element:           SurgicalBodyLocation
+Group:             SurgicalBodyLocation
 Parent:            BodyLocation
 Description:       "The site where the procedure is performed."
 Property:          SurgicalBodyLocationRole 0..1
@@ -102,7 +113,7 @@ Property:          SurgicalBodyLocationRole 0..1
 Element:           SurgicalBodyLocationRole
 Parent:            BodyLocation
 Description:       "Describes the role played by the body site in the surgery."
-Value:             concept
+Value:             concept from SurgicalBodyLocationRoleVS (extensible)
 
 Element:           RadiationDosePerFraction
 Concept:           TBD#TBD
@@ -113,12 +124,15 @@ Element:           RadiationFractionsDelivered
 Concept:           LNC#21959-2 "Number of radiation treatment"
 Description:       "The total number of treatment sessions (fractions) administered during a course of radiation therapy therapy. A fraction is a portion of the total radiation dose, delivered as a series of treatments that make up the full course of radiotherapy. (source: LOINC)"
 Value:             Quantity
+                   Value[Quantity].Units = UCUM#1
 
 Element:           TotalRadiationDoseDelivered
 Concept:           SCT#445461008 "Total radiation dose delivered (observable entity)"
 Description:       "The total amount of radiation dose delivered for the course of therapy. (source: SNOMED, ASTRO)"
 Value:             Quantity
+                   Value[Quantity].Units = UCUM#Gy
 
 Entry:             DiagnosticImaging
 Parent:            ImagingProcedure
 Description:       "Diagnostic imaging procedure performed."
+                   Code from DiagnosticImagingVS (required)

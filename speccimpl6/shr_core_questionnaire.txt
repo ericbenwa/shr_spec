@@ -25,8 +25,10 @@ Property:          EffectiveTimePeriod 0..1
 Property:          Code 0..*
 Property:          QuestionnaireItem 0..*
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/publication-status (required)
+                   Code from http://hl7.org/fhir/ValueSet/questionnaire-questions (example)
 
-Element:           QuestionnaireItem
+Group:             QuestionnaireItem
 Description:       "Questions and sections within the Questionnaire."
 Property:          IdentifierString 1..1
 Property:          DetailsLink 0..1
@@ -43,6 +45,8 @@ Property:          AnswerValueSet 0..1
 Property:          AnswerOption 0..*
 Property:          PrepopulateValue 0..*
 Property:          QuestionnaireItem 0..*
+                   Code from http://hl7.org/fhir/ValueSet/questionnaire-questions (example)
+                   Type from http://hl7.org/fhir/ValueSet/item-type (required)
 
 Element:           LastReviewedDate
 Description:       "The most recent date the item was reviewed."
@@ -88,7 +92,7 @@ Element:           PrepopulateValue
 Description:       "One or more values that should be pre-populated in the answer when initially rendering the questionnaire for user input."
 Value:             boolean or decimal or integer or date or dateTime or time or string or uri or Attachment or concept or Quantity or DomainResource
 
-Element:           EnableWhen
+Group:             EnableWhen
 Description:       "A constraint indicating that this item should only be enabled (displayed/allow answers to be captured) when the specified condition is true."
 Property:          Question 1..1
 Property:          HasAnswer 0..1
@@ -117,16 +121,17 @@ Property:          StatementDateTime 0..1
 Property:          QuestionnaireResponseRecorder 0..1
 Property:          PersonInformationSource 0..1
 Property:          QuestionnaireResponseItem 0..*
-                   Status 1..1
-                   Identifier 0..1
                    RelatedRequest substitute ReferralOrProcedureRequest
-                   FocusOfResponse.DomainResource substitute DomainResource
+                   FocusOfResponse[DomainResource] substitute DomainResource
+                   Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/questionnaire-answers-status (required)
+                   Identifier 0..1
 
 Element:           QuestionnaireResponseRecorder
 Description:       "The recorder of the information, who received and recorded the answers. For example, the nurse taking a list of medications reported by the patient."
 Value:             Practitioner or Patient or RelatedPerson or Device
 
-Element:           QuestionnaireResponseItem
+Group:             QuestionnaireResponseItem
 Description:       "Questions and sections within the Questionnaire."
 Property:          IdentifierString 1..1
 Property:          DetailsLink 0..1
@@ -135,7 +140,7 @@ Property:          FocusOfResponse 0..1
 Property:          Answer 0..*
 Property:          QuestionnaireResponseItem 0..*
 
-Element:           Answer
+Group:             Answer
 Description:       "The respondent's answer(s) to the question."
 Property:          AnswerValue 0..1
 Property:          QuestionnaireResponseItem 0..*

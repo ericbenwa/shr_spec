@@ -8,7 +8,7 @@ Concept:           MTH#C2985911
 Description:       "A coded value specifying the level of injury suffered by the subject for whom the event is reported, using the CTCAE coding system."
 Value:             concept
 
-Element:           AdverseEvent
+Group:             AdverseEvent
 Parent:            ClinicalStatement
 Description:       "A record of an untoward or unexpected event in a patient under treatment, and which does not necessarily have to have a causal relationship with that treatment. Adverse events may capture either a workflow breach that may or may not result in harm, but must be documented for quality improvement purposes, or an adverse finding whether or not it can be traceable to an actual workflow breach."
 Property:          OccurrenceTime 1..1
@@ -22,8 +22,11 @@ Property:          CausalAttribution 0..*
 Property:          ActionTaken 0..*
 Property:          AssociatedStudy 0..1
                    Identifier 0..1
-                   SubjectOfRecord 1..1
                    SubjectOfRecord substitute AdverseEventSubjectOfRecord
+                   AdverseEventSubjectOfRecord 1..1
+                   Type from MedDRAVS (required)
+                   Seriousness from SeriousnessVS (required)
+                   Outcome from http://hl7.org/fhir/ValueSet/adverse-event-outcome (required)
 
 Element:           AdverseEventSubjectOfRecord
 Parent:            SubjectOfRecord
@@ -34,12 +37,12 @@ Element:           AdverseEventRecorder
 Description:       "A choice of Patient or Practitioner as recorder."
 Value:             Patient or Practitioner or RelatedPerson
 
-Element:           AdverseEventCondition
+Group:             AdverseEventCondition
 Concept:           MTH#C1280464
 Description:       "The condition, sign or symptom triggering the adverse event report."
 Property:          Condition 1..1
 
-Element:           CausalAttribution
+Group:             CausalAttribution
 Concept:           MTH#C1510821 "Adverse Event Attribution to Product or Procedure"
 Description:       "A possible cause of an observed adverse event, known or theorized. There can be more than one possible cause."
 Property:          PossibleCause 1..1
@@ -53,13 +56,13 @@ Value:             concept from http://hl7.org/fhir/ValueSet/substance-code (pre
 
 Element:           CauseCategory
 Description:       "Whether the adverse event is attributed to a treatment, course of the disease, unrelated to either, or unknown."
-Value:             concept
+Value:             concept from AttributionCategoryVS (required)
 
 Element:           Certainty
 Description:       "The degree of confidence in a conclusion or assertion."
 Value:             concept
 
-Element:           ActionTaken
+Group:             ActionTaken
 Description:       "The action taken as a result of the adverse reaction. May include changing or discontinuing medication, reducing dose, etc."
 Property:          CommentOrDescription 1..1
 Property:          ActionStatement 0..1

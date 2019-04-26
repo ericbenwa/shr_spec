@@ -19,6 +19,7 @@ Property:          TerminationReason 0..1
 Property:          Annotation 0..*
 Property:          StudyArm 0..*
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/research-study-status (required)
                    Identifier 1..1
                    PartOf[DomainResource] substitute ResearchStudy
 
@@ -35,11 +36,12 @@ Element:           PrincipalInvestigator
 Description:       "Indicates the individual who has primary oversite of the execution of the study."
 Value:             Practitioner
 
-Element:           StudyArm
+Group:             StudyArm
 Description:       "Arm refers to pre-specified group or subgroup of participant(s) in a clinical trial assigned to receive specific intervention(s) (or no intervention) according to a protocol."
 Property:          Title 1..1
 Property:          Type 0..1
 Property:          CommentOrDescription 0..1
+                   Type from StudyArmTypeVS (required)
 
 Entry:             ResearchSubject
 Parent:            Role
@@ -49,4 +51,6 @@ Property:          ResearchStudy 1..1
 Property:          ParticipationPeriod 1..1
 Property:          TerminationReason 0..1
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/research-subject-status (required)
                    Identifier 0..1
+                   TerminationReason from ResearchSubjectTerminationReasonVS (required)

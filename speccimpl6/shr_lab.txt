@@ -17,7 +17,7 @@ Element:           TableOfVariants
 Description:       "Where the table of variations is found."
 Value:             Url
 
-Element:           ColumnDefinition
+Group:             ColumnDefinition
 Description:       "The meaning of the columns in the external file with respect to the base resource or profile."
 Property:          ColumnNumber 1..1
 Property:          CorrespondingProperty 1..1
@@ -33,4 +33,4 @@ Value:             string
 
 Element:           ConstraintType
 Description:       "Indicates how the data in the spreadsheet should be applied."
-Value:             concept
+Value:             concept from ConstraintTypeVS (required)

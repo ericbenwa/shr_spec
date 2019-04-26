@@ -2,7 +2,7 @@ Grammar:           DataElement 6.0
 Namespace:         shr.base
 Description:       "Contains only the SHR Entry definition which is deprecated."
 
-Element:           Entry
+Group:             Entry
 Description:       "Obsolete. Use DomainResource"
 Property:          ShrId 0..1
 Property:          EntryId 0..1

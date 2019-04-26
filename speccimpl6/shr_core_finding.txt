@@ -2,7 +2,10 @@ Grammar:           DataElement 6.0
 Namespace:         shr.core
 Description:       "The SHR Core domain contains definitions for a variety of general-purpose elements that are used widely in SHR. These include definitions for coding, expressions of time, quantities, addresses, names, and more."
 CodeSystem:        MTH = http://ncimeta.nci.nih.gov
+CodeSystem:        OBSCAT = http://hl7.org/fhir/observation-category
+CodeSystem:        UNK0 = http://terminology.hl7.org/CodeSystem/v2-0203
 CodeSystem:        LNC = http://loinc.org
+CodeSystem:        SCT = http://snomed.info/sct
 
 Abstract:          SituationStatement
 Parent:            ClinicalStatement
@@ -34,10 +37,15 @@ Property:          Abatement 0..1
 Property:          Evidence 0..1
 Property:          DateOfDiagnosis 0..1
                    Status 1..1
-                   SubjectOfRecord 1..1
+                   Status from http://hl7.org/fhir/ValueSet/condition-ver-status (required)
                    SubjectOfRecord substitute PatientSubjectOfRecord
+                   PatientSubjectOfRecord 1..1
+                   Code from http://hl7.org/fhir/us/core/ValueSet/us-core-problem (extensible)
+                   Category from ConditionCategoryVS (required)
+                   ClinicalStatus from http://hl7.org/fhir/ValueSet/condition-clinical (required)
+                   Severity from http://hl7.org/fhir/ValueSet/condition-severity (required)
 
-Element:           StageInformation
+Group:             StageInformation
 Concept:           MTH#C0699749
 Description:       "The relative advancement in the course of a disease. The StageCode is the summary stage or stage group. StageDetail optionally contains the full staging information."
 Property:          StageSummary 0..1
@@ -47,14 +55,14 @@ Element:           StageDetail
 Description:       "The full staging information"
 Value:             Observation
 
-Element:           Evidence
+Group:             Evidence
 Description:       "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition."
 Property:          Manifestation 0..*
 Property:          DomainResource 0..*
 
 Element:           Manifestation
 Description:       "Clinical symptoms/signs."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/clinical-findings (example)
 
 Entry:             Observation
 Parent:            SituationStatement
@@ -75,9 +83,11 @@ Property:          ReferenceRange 0..1
 Property:          Components 0..1
 Property:          PanelMembers 0..1
                    Status 1..1
-                   SubjectOfRecord 1..1
+                   Status from http://hl7.org/fhir/ValueSet/observation-status (required)
                    SubjectOfRecord substitute ObservationSubjectOfRecord
+                   ObservationSubjectOfRecord 1..1
                    CareContext only Encounter
+                   Category from http://hl7.org/fhir/ValueSet/observation-category (extensible)
 
 Entry:             LaboratoryObservation
 Parent:            Observation
@@ -87,7 +97,9 @@ Property:          Specimen 0..1
                    includes AccessionIdentifier 0..1
                    includes FillerOrderNumber 0..1
                    includes PlacerOrderNumber 0..1
+                   Code from http://hl7.org/fhir/ValueSet/observation-codes (extensible)
                    Category 1..1
+                   Category = OBSCAT#laboratory
                    Performer
                    includes ResponsibleObserver 0..1
                    includes PerformingLaboratory 0..1
@@ -120,7 +132,7 @@ Description:       "The result of evaluations (measurements, tests, or questions
                    DataValue only concept
                    ReferenceRange 0..0
 
-Element:           PanelMembers
+Group:             PanelMembers
 Description:       "PanelMembers represent the elements of a group of a related but independent evaluations.
 
 Examples are the measurements that compose a complete blood count (CBC), or the elements of a pathology report. Each member is an independent evaluation, but the grouping reflects a composite lab order, shared specimen, or a single report author. Typically the Category and ReasonCode are not given for individual findings that are part of the panel, but rather given at the level of the panel itself."
@@ -134,7 +146,7 @@ Description:       "An observation with components, but without a result value o
                    ReferenceRange 0..0
                    PanelMembers 0..0
 
-Element:           Components
+Group:             Components
 Description:       "Sub-observations that are part of this observation. A sub-observation contributs to the parent observation and are always treated a part of a single observation (they are not separable). However, the reference range for the primary observation value is not inherited by the component values and is required when appropriate for each component observation."
 Property:          ObservationComponent 0..*
 
@@ -160,7 +172,7 @@ Description:       "A non-independent finding whose result is a quantity."
 Element:           Interpretation
 Concept:           MTH#C0420833
 Description:       "A clinical interpretation of a finding (applies to both assertions and observation)."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/observation-interpretation (extensible)
 
 Entry:             SimpleLaboratoryObservation
 Parent:            LaboratoryObservation
@@ -168,18 +180,19 @@ Description:       "A result from a laboratory test without panel members or com
                    Components 0..0
                    PanelMembers 0..0
 
-Element:           SocialHistoryObservation
+Group:             SocialHistoryObservation
 Parent:            NonLaboratoryObservation
 Description:       "A simplified observation for social histories."
                    SubjectOfRecord substitute PatientSubjectOfRecord
                    DataAbsentReason 0..0
                    Method 0..0
+                   Category = OBSCAT#social-history "Social History"
                    BodyLocation 0..0
                    Device 0..0
                    ReferenceRange 0..0
                    PanelMembers 0..0
 
-Element:           CodedSocialHistoryObservation
+Group:             CodedSocialHistoryObservation
 Parent:            SocialHistoryObservation
 Description:       "The result of social history questions, whose answer is expressed as a code."
                    DataValue only concept
@@ -197,6 +210,7 @@ Entry:             BodyStructure
 Parent:            Condition
 Description:       "A body structure such as wound or tumor, observed to be present in a patient. The body structure is a condition that persists over time. The Code represents the body structure itself (the morphology), while the BodyLocation is the location of that structure. This corresponds to FHIR R4, where the BodyStructure resource has morphology (corresponding to Code) and a location. For example, the Code could be blunt force injury (SCT 3821009) and location left knee."
 Property:          ReferenceRange 0..0
+                   Code from BodyStructureVS (extensible)
 
 Entry:             DiagnosticReport
 Parent:            SituationStatement
@@ -204,24 +218,23 @@ Property:          RelatedRequest 0..*
 Property:          Category 0..1
 Property:          RelevantTime 0..1
 Property:          Participation 0..1
-Property:          Participation 0..1
-Property:          Participation 0..1
-Property:          Participation 0..1
 Property:          Specimen 0..*
 Property:          Observation 0..*
 Property:          Media 0..*
 Property:          Conclusion 0..1
 Property:          DiagnosisCode 0..*
 Property:          OriginalReport 0..*
+                   RelatedRequest substitute MedicationStatementRelatedRequest
+                   Participation.Participant substitute DiagnosticReportParticipant
                    Status 1..1
+                   Status from http://hl7.org/fhir/ValueSet/diagnostic-report-status (required)
                    SubjectOfRecord substitute ObservationSubjectOfRecord
                    StatementDateTime 1..1
-                   RelatedRequest substitute MedicationStatementRelatedRequest
-                   Participation.Participant
-                   Participation.Participant substitute DiagnosticReportParticipant
-                   Participation.Participant
-                   Participation.Participant
-                   Participation.Participant
+                   Code from http://hl7.org/fhir/ValueSet/report-codes (preferred)
+                   Participation.Participant 1..1
+                   Participation.ParticipationPeriod 0..0
+                   Participation.ParticipationType 0..0
+                   Participation.OnBehalfOf 0..0
 
 Entry:             SimpleCodedNonLaboratoryObservation
 Parent:            CodedNonLaboratoryObservation
@@ -237,20 +250,21 @@ Description:       "An observation having no components or panel members"
 
 Element:           DataAbsentReason
 Description:       "Reason that a value associated with a test or other finding is missing."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/data-absent-reason (extensible)
 
-Element:           ReferenceRange
+Group:             ReferenceRange
 Concept:           MTH#C0883335
 Description:       "The usual or acceptable range for a test result."
 Property:          Range 0..1
 Property:          Type 0..1
 Property:          ApplicableSubpopulation 0..1
 Property:          ApplicableAgeRange 0..1
+                   Type from http://hl7.org/fhir/ValueSet/referencerange-meaning (extensible)
 
 Element:           ApplicableSubpopulation
 Concept:           MTH#C0039309 "Target Population"
 Description:       "Codes to indicate the target population this reference range applies to. For example, a reference range may be based on the normal population or a particular sex or race."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/referencerange-appliesto (extensible)
 
 Element:           ApplicableAgeRange
 Description:       "The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so."
@@ -269,16 +283,19 @@ Entry:             QuantitativeNonLaboratoryObservation
 Parent:            NonLaboratoryObservation
 Description:       "The result of evaluations (measurements, tests, or questions) whose answer is expressed as a code."
                    DataValue only Quantity
+                   Interpretation from QuantitativeResultInterpretationVS (extensible)
 
-Element:           PlacerOrderNumber
+Group:             PlacerOrderNumber
 Parent:            Identifier
 Description:       "Identifier assigned by the requester of the lab."
                    Type 1..1
+                   Type = UNK0#PLAC
 
-Element:           FillerOrderNumber
+Group:             FillerOrderNumber
 Parent:            Identifier
 Description:       "Identifier assigned by the lab carrying out the test."
                    Type 1..1
+                   Type = UNK0#FILL
 
 Element:           ResponsibleObserver
 Parent:            Performer
@@ -304,6 +321,7 @@ Entry:             QuantitativeLaboratoryObservation
 Parent:            LaboratoryObservation
 Description:       "A quantiative result from a laboratory test."
                    DataValue only Quantity
+                   Interpretation from QuantitativeResultInterpretationVS (extensible)
 
 Entry:             SimpleQuantitativeLaboratoryObservation
 Parent:            QuantitativeLaboratoryObservation
@@ -353,12 +371,12 @@ Value:             date
 Element:           PresentOnAdmission
 Concept:           LNC#89251-3 "Condition present on admission"
 Description:       "If the problem or condition existed before the current episode of care."
-Value:             concept
+Value:             concept from YesNoUnknownVS (required)
 
 Element:           Criticality
 Concept:           MTH#C3858539 "Criticality"
 Description:       "The potential clinical harm associated with a condition. When the worst case result is assessed to have a life-threatening or organ system threatening potential, it is considered to be of high criticality."
-Value:             concept
+Value:             concept from http://hl7.org/fhir/ValueSet/allergy-intolerance-criticality (required)
 
 Element:           StageSummary
 Description:       "A code representing the current stage of a disease."
@@ -387,11 +405,14 @@ Value:             dateTime or Age or boolean or TimePeriod or Range or string
 Entry:             ComorbidCondition
 Parent:            Condition
 Description:       "A comorbidity refers to one or more diseases or conditions that occur along with another condition in the same person at the same time. Conditions considered comorbidities are often long-term or chronic conditions. Comorbidities are defined relative to an index disease and may be categorical, rather than described in full detail. The comorbid condition class provides comorbidity codes corresponding to the Adult Cormorbidity Evaluation-27. If the grade (1-3) is reported, it shall be reported in the stage summary field."
+                   Code from ComorbidConditionCodeVS (extensible)
+                   Category = SCT#398192003 "Co-morbid conditions (finding)"
 
 Entry:             CongenitalAbnormality
 Parent:            Condition
 Concept:           MTH#C0000768 "Congenital Abnormality"
 Description:       "Any abnormality, genetic, anatomical, biochemical, evident at birth or during the neonatal period. Includes malformations, deformations, and chromosomal abnormalities."
+                   Code from CongenitalAbnormalitiesVS (extensible)
 
 Element:           DiagnosticReportParticipant
 Parent:            Participant
@@ -414,3 +435,4 @@ Entry:             ClinicalNote
 Parent:            DocumentReference
 Description:       "An entry concerning a patient where the result is a narrative text."
                    Category 1..1
+                   Category from http://fhir.org/guides/argonaut-clinicalnotes/ValueSet/documentreference-category (required)
