@@ -82,7 +82,7 @@ Parent:            EncounterOrEpisode
 Description:       "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time."
 Property:          CareManager 0..1
                    Status from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
-                   StatusHistory from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
+                   StatusHistory.Status from http://hl7.org/fhir/ValueSet/episode-of-care-status (required)
                    Type from http://hl7.org/fhir/ValueSet/episodeofcare-type (example)
 
 Element:           CareManager

@@ -35,8 +35,7 @@ Element:           WoundTypeEtiology
 Parent:            ConditionCause
 Concept:           LNC#11373-8 "Injury cause"
 Description:       "A specialization of condition cause, specific to the causes of injuries (or not having injury in the wound absent context)."
-                   Value only concept
-                   Value[concept] from https://vsac.nlm.nih.gov/valueset/2.16.840.1.113762.1.4.1181.3/expansion (required)
+Value:             concept from https://vsac.nlm.nih.gov/valueset/.840.1.113762.1.4.1181.3/expansion (required)
 
 Group:             WoundBodyLocation
 Parent:            BodyLocation
@@ -121,8 +120,7 @@ Element:           WoundAssessmentInterpretation
 Parent:            Interpretation
 Concept:           LNC#80338-7
 Description:       "Overall assessement of whether the wound is within normal parameters."
-                   Value only concept
-                   Value[concept] from http://loinc.org/vs/LL3816-7 (extensible)
+Value:             concept from http://loinc.org/vs/LL (extensible)
 
 Group:             WoundTrend
 Parent:            CodedObservationComponent

@@ -19,8 +19,7 @@ Property:          RelatedCancerCondition 0..1
 Element:           CancerStagingSystem
 Parent:            Method
 Description:       "Method of Staging (attribute) -  SCT#260713006"
-                   Value only concept
-                   Value[concept] from CancerStagingSystemVS (extensible)
+Value:             concept from CancerStagingSystemVS (extensible)
 
 Entry:             TNMClinicalStageGroup
 Parent:            CancerStageGroup
